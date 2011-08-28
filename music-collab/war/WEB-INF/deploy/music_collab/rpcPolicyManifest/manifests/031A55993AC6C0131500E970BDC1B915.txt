@@ -1,0 +1,2 @@
+serviceClass: com.solution.musiccollab.client.GreetingService
+path: 72753E87FD91853695656E3F711F6FC3.gwt.rpc

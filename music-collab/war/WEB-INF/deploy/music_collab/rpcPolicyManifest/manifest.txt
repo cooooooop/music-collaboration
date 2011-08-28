@@ -1,0 +1,3 @@
+# Module music_collab
+# RPC service class, partial path of RPC policy file
+com.solution.musiccollab.client.GreetingService, 72753E87FD91853695656E3F711F6FC3.gwt.rpc
