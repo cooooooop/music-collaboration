@@ -55,6 +55,17 @@
         <td id="nameFieldContainer"></td>
         <td id="sendButtonContainer"></td>
       </tr>
+      <!-- Comment: Adding a form entry for uploading files. -->
+      <tr>
+      	<td>
+	      	<form name="filesForm" action="uploadFiles" method="post" enctype="multipart/form-data">
+				File 1:<input type="file" name="file1"><br>
+				File 2:<input type="file" name="file2"><br>
+				File 3:<input type="file" name="file3"><br>
+				<input type="submit" name="Submit" value="Upload Files">
+			</form>
+      	</td>
+      </tr>
       <tr>
         <td colspan="2" style="color:red;" id="errorLabelContainer"></td>
       </tr>

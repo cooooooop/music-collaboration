@@ -11,9 +11,19 @@
     <servlet-class>com.solution.musiccollab.server.GreetingServiceImpl</servlet-class>
   </servlet>
   
+  <servlet>
+    <servlet-name>uploadFileServlet</servlet-name>
+    <servlet-class>com.solution.musiccollab.server.UploadFileServlet</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
     <url-pattern>/music_collab/greet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>uploadFileServlet</servlet-name>
+    <url-pattern>/uploadFiles</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
