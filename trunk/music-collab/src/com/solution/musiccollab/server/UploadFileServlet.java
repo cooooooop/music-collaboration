@@ -1,8 +1,11 @@
 package com.solution.musiccollab.server;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
+import org.apache.commons.fileupload.MultipartStream.ItemInputStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 
@@ -29,9 +33,11 @@ public class UploadFileServlet extends HttpServlet {
 	}
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		int fileSize = 10000000;
+		
 		try {
 			ServletFileUpload upload = new ServletFileUpload();
-			upload.setSizeMax(50000);
+			upload.setSizeMax(fileSize);
 			res.setContentType("text/plain");
 			PrintWriter out = res.getWriter();
 		
@@ -39,31 +45,22 @@ public class UploadFileServlet extends HttpServlet {
 				FileItemIterator iterator = upload.getItemIterator(req);
 				while (iterator.hasNext()) {
 					FileItemStream item = iterator.next();
-					InputStream in = item.openStream();
-				
-					if (item.isFormField()) {
-						out.println("Got a form field: " + item.getFieldName());
-					} 
-					else {
-						String fieldName = item.getFieldName();
-						String fileName = item.getName();
-						String contentType = item.getContentType();
-					
-						out.println("--------------");
-						out.println("fileName = " + fileName);
-						out.println("field name = " + fieldName);
-						out.println("contentType = " + contentType);
-					
-						String fileContents = null;
-						try {
-							 fileContents = IOUtils.toString(in);
-							 out.println("lenght: " + fileContents.length());
-							 out.println(fileContents);
-						} 
-						finally {		
-							IOUtils.closeQuietly(in);
+					if(item != null && item.getContentType()!= null && item.getContentType().equals("audio/mp3")) {
+						//an mp3 file has been uploaded
+						ItemInputStream in = (ItemInputStream) item.openStream();
+						ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+						while(in.available() > 0) {
+							byteArrayOutputStream.write(in.read());
+						}
+						out.println("item.getName() = " + item.getName());
+						
+						byte[] bytes = byteArrayOutputStream.toByteArray();
+						for(int i = 0; i < 1000; i += 10) {
+							System.out.println(i);
+							out.println("bytes[" + i + "]:" + bytes[i]);
 						}
 					}
+				
 				}
 			} 
 			catch (SizeLimitExceededException e) {
