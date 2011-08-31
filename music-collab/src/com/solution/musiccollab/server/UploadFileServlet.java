@@ -24,9 +24,14 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.googlecode.objectify.util.DAOBase;
+import com.solution.musiccollab.value.AudioFile;
+import com.solution.musiccollab.value.DAO;
 
 public class UploadFileServlet extends HttpServlet {
 	
+	private DAO dao = new DAO();
+
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/plain");
 		resp.getWriter().println("Hello, world");
@@ -59,6 +64,12 @@ public class UploadFileServlet extends HttpServlet {
 							System.out.println(i);
 							out.println("bytes[" + i + "]:" + bytes[i]);
 						}
+						
+						//Store the file in the Datastore
+						AudioFile file = dao.getOrCreateAudioFile(item.getName());
+						file.setData(bytes);
+						file.setOwner("cooooooop@gmail.com");
+						dao.ofy().put(file);
 					}
 				
 				}
