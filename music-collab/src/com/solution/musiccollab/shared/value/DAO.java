@@ -1,4 +1,4 @@
-package com.solution.musiccollab.value;
+package com.solution.musiccollab.shared.value;
 
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
@@ -7,7 +7,7 @@ public class DAO extends DAOBase {
 	
 	static {
 		try {
-			ObjectifyService.register(AudioFile.class);
+			ObjectifyService.register(AudioFileDAO.class);
 		}
 		catch (Exception e) {
 			e.printStackTrace(); 
@@ -15,11 +15,11 @@ public class DAO extends DAOBase {
 	}
 
     /** Your DAO can have your own useful methods */
-    public AudioFile getOrCreateAudioFile(String fileName)
+    public AudioFileDAO getOrCreateAudioFile(String fileName)
     {
-    	AudioFile found = ofy().find(AudioFile.class, fileName);
+    	AudioFileDAO found = ofy().find(AudioFileDAO.class, fileName);
         if (found == null)
-            return new AudioFile(fileName);
+            return new AudioFileDAO(fileName);
         else
             return found;
     }

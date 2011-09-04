@@ -2,16 +2,8 @@ package com.solution.musiccollab.server;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,15 +13,12 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.MultipartStream.ItemInputStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
-
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.googlecode.objectify.util.DAOBase;
-import com.solution.musiccollab.value.AudioFile;
-import com.solution.musiccollab.value.DAO;
+import com.solution.musiccollab.shared.value.AudioFileDAO;
+import com.solution.musiccollab.shared.value.DAO;
 
 public class UploadFileServlet extends HttpServlet {
 	
+	private static final long serialVersionUID = 1L;
 	private DAO dao = new DAO();
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -66,7 +55,7 @@ public class UploadFileServlet extends HttpServlet {
 						}
 						
 						//Store the file in the Datastore
-						AudioFile file = dao.getOrCreateAudioFile(item.getName());
+						AudioFileDAO file = dao.getOrCreateAudioFile(item.getName());
 						file.setData(bytes);
 						file.setOwner("cooooooop@gmail.com");
 						dao.ofy().put(file);

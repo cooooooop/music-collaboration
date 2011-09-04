@@ -1,21 +1,21 @@
-package com.solution.musiccollab.value;
+package com.solution.musiccollab.shared.value;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class AudioFile
+public class AudioFileDAO
 {
     @Id
 	private String fileName;
     private String owner;
     private byte[] data;
 
-    public AudioFile() {
+    public AudioFileDAO() {
     	super();
     }
     
-    public AudioFile(String fileName) {
+    public AudioFileDAO(String fileName) {
     	this.setFileName(fileName);
     }
 
