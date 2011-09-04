@@ -9,4 +9,5 @@ import com.solution.musiccollab.shared.value.UserDAO;
 @RemoteServiceRelativePath("users")
 public interface UsersService extends RemoteService {
 	List<UserDAO> getAll();
+	String getCurrentUser();
 }

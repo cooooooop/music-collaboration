@@ -7,6 +7,16 @@
   
   <!-- Servlets -->
   <servlet>
+    <servlet-name>loginServlet</servlet-name>
+    <servlet-class>com.solution.musiccollab.server.LoginServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>logoutServlet</servlet-name>
+    <servlet-class>com.solution.musiccollab.server.LogoutServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
     <servlet-name>userServlet</servlet-name>
     <servlet-class>com.solution.musiccollab.server.UsersServiceImpl</servlet-class>
   </servlet>
@@ -15,6 +25,16 @@
     <servlet-name>uploadFileServlet</servlet-name>
     <servlet-class>com.solution.musiccollab.server.UploadFileServlet</servlet-class>
   </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>loginServlet</servlet-name>
+    <url-pattern>/login</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>logoutServlet</servlet-name>
+    <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
   
   <servlet-mapping>
     <servlet-name>userServlet</servlet-name>
