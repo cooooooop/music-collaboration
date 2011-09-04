@@ -7,4 +7,5 @@ import com.solution.musiccollab.shared.value.UserDAO;
 
 public interface UsersServiceAsync {
 	void getAll(AsyncCallback<List<UserDAO>> callback);
+	void getCurrentUser(AsyncCallback<String> callback);
 }

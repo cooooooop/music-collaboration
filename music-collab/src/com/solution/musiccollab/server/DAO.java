@@ -1,7 +1,8 @@
-package com.solution.musiccollab.shared.value;
+package com.solution.musiccollab.server;
 
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
+import com.solution.musiccollab.shared.value.AudioFileDAO;
 
 public class DAO extends DAOBase {
 	
