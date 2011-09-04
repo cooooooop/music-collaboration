@@ -8,6 +8,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.solution.musiccollab.client.interfaces.UsersService;
+import com.solution.musiccollab.client.interfaces.UsersServiceAsync;
 import com.solution.musiccollab.shared.value.UserDAO;
 
 public class Music_collab implements EntryPoint {

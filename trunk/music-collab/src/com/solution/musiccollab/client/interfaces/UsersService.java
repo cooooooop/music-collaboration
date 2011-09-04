@@ -1,4 +1,4 @@
-package com.solution.musiccollab.client;
+package com.solution.musiccollab.client.interfaces;
 
 import java.util.List;
 
