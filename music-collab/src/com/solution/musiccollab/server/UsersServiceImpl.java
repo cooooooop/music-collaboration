@@ -3,7 +3,7 @@ package com.solution.musiccollab.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.solution.musiccollab.client.UsersService;
+import com.solution.musiccollab.client.interfaces.UsersService;
 import com.solution.musiccollab.shared.value.UserDAO;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
