@@ -12,13 +12,31 @@ public class UserDAO implements Serializable
 	
 	@Id
 	private String userid;
-    
-    public UserDAO() {
+	private String email;
+	private String nickname;
+
+	public UserDAO() {
     	super();
     }
     
     public UserDAO(String userid) {
     	this.setUserid(userid);
+    }
+    
+    public String getEmail() {
+    	return email;
+    }
+    
+    public void setEmail(String email) {
+    	this.email = email;
+    }
+    
+    public String getNickname() {
+    	return nickname;
+    }
+    
+    public void setNickname(String nickname) {
+    	this.nickname = nickname;
     }
 
     public String getUserid() {

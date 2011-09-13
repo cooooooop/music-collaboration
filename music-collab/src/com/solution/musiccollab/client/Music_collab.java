@@ -4,14 +4,25 @@ import java.util.List;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.VerticalAlign;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
+import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.solution.musiccollab.client.interfaces.UsersService;
 import com.solution.musiccollab.client.interfaces.UsersServiceAsync;
 import com.solution.musiccollab.shared.value.UserDAO;
@@ -38,7 +49,7 @@ public class Music_collab implements EntryPoint {
 		final UsersList list = new UsersList();
 		final Label label = new Label();
 		
-		RootPanel.get("usersList").add(list);
+		
 		RootPanel.get("errorLabelContainer").add(label);
 		
 		usersService.getCurrentUser(new AsyncCallback<String>() {
@@ -51,9 +62,12 @@ public class Music_collab implements EntryPoint {
 			@Override
 			public void onSuccess(String result) {
 				if(result != null) {
+					RootPanel.get("usersList").add(list);
 					Label userLabel = new Label("Logged in as " + result);
 					Button logoutButton = new Button("Logout");
 					HorizontalPanel hPanel = new HorizontalPanel();
+					hPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+					hPanel.setSpacing(5);
 					hPanel.add(userLabel);
 					hPanel.add(logoutButton);
 					RootPanel.get("loginButtonContainer").add(hPanel);
