@@ -1,10 +1,13 @@
 package com.solution.musiccollab.shared.value;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+@SuppressWarnings("serial")
 @Entity
-public class AudioFileDAO
+public class AudioFileDAO implements Serializable
 {
     @Id
 	private String fileName;

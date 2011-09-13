@@ -8,6 +8,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.solution.musiccollab.client.interfaces.UsersService;
+import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.UserDAO;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -35,6 +36,11 @@ public class UsersServiceImpl extends RemoteServiceServlet implements
         }
         
         return null;
+	}
+	
+	public List<AudioFileDAO> getAudioByUser(UserDAO user) {
+		DAO dao = new DAO();
+		return dao.ofy().query(AudioFileDAO.class).filter("owner", user.getUserid()).list();
 	}
 	
 }
