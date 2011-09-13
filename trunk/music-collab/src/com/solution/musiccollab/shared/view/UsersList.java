@@ -13,7 +13,7 @@ public class UsersList extends ListBox {
 	
 	public void addItems(List<UserDAO> users) {
 		for (UserDAO user : users) {
-			addItem(user.getUserid());
+			addItem(user.getNickname());
 		}
 	}
 	
