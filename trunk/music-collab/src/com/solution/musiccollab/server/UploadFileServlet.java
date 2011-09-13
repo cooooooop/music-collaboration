@@ -13,6 +13,11 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.MultipartStream.ItemInputStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.core.client.GWT;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 
 public class UploadFileServlet extends HttpServlet {
@@ -38,7 +43,7 @@ public class UploadFileServlet extends HttpServlet {
 				FileItemIterator iterator = upload.getItemIterator(req);
 				while (iterator.hasNext()) {
 					FileItemStream item = iterator.next();
-					if(item != null && item.getContentType()!= null && item.getContentType().equals("audio/mp3")) {
+					if(item != null && item.getContentType()!= null && (item.getContentType().equals("audio/mp3") || item.getContentType().equals("audio/mpeg"))) {
 						//an mp3 file has been uploaded
 						ItemInputStream in = (ItemInputStream) item.openStream();
 						ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -53,13 +58,22 @@ public class UploadFileServlet extends HttpServlet {
 							out.println("bytes[" + i + "]:" + bytes[i]);
 						}
 						
-						//Store the file in the Datastore
-						AudioFileDAO file = dao.getOrCreateAudioFile(item.getName());
-						file.setData(bytes);
-						file.setOwner("cooooooop@gmail.com");
-						dao.ofy().put(file);
+						//Store the file in the Datastore under the current user
+						UserService userService = UserServiceFactory.getUserService();
+				        User user = userService.getCurrentUser();
+						
+				        if(user != null) {
+							AudioFileDAO file = dao.getOrCreateAudioFile(item.getName());
+							file.setData(bytes);
+							file.setOwner(user.getUserId());
+							dao.ofy().put(file);
+				        }
 					}
-				
+					else {
+						//not an mp3
+						out.println(item.getName() + " is not an mp3 file.");
+					}
+					
 				}
 			} 
 			catch (SizeLimitExceededException e) {
@@ -72,5 +86,8 @@ public class UploadFileServlet extends HttpServlet {
 	
 			throw new ServletException(ex);
 		}
+		
+		//redirect back to the page that we came from
+		res.sendRedirect(req.getHeader("Referer"));
 	}
 }
