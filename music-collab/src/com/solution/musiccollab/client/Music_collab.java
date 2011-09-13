@@ -5,12 +5,13 @@ import java.util.List;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.VerticalAlign;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -26,6 +27,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.solution.musiccollab.client.interfaces.UsersService;
 import com.solution.musiccollab.client.interfaces.UsersServiceAsync;
 import com.solution.musiccollab.shared.value.UserDAO;
+import com.solution.musiccollab.shared.value.AudioFileDAO;
+import com.solution.musiccollab.shared.view.AudioFilesList;
 import com.solution.musiccollab.shared.view.UsersList;
 
 public class Music_collab implements EntryPoint {
@@ -46,8 +49,31 @@ public class Music_collab implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		final UsersList list = new UsersList();
 		final Label label = new Label();
+		final AudioFilesList audioFilesList = new AudioFilesList();
+		final UsersList list = new UsersList();
+		list.addChangeHandler(new ChangeHandler() {
+			
+			@Override
+			public void onChange(ChangeEvent event) {
+				//populate the audioFilesList
+				usersService.getAudioByUser(list.getSelected(), new AsyncCallback<List<AudioFileDAO>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						label.setText(SERVER_ERROR);
+					}
+
+					@Override
+					public void onSuccess(List<AudioFileDAO> result) {
+						audioFilesList.addItems(result);
+						label.setText("Successfully retrieved AudioFile list.");
+					}
+
+				});
+			}
+		});
+		
 		
 		
 		RootPanel.get("errorLabelContainer").add(label);
@@ -62,7 +88,12 @@ public class Music_collab implements EntryPoint {
 			@Override
 			public void onSuccess(String result) {
 				if(result != null) {
-					RootPanel.get("usersList").add(list);
+					HorizontalPanel listPanel = new HorizontalPanel();
+					listPanel.setSpacing(5);
+					listPanel.add(list);
+					listPanel.add(audioFilesList);
+					
+					RootPanel.get("usersList").add(listPanel);
 					Label userLabel = new Label("Logged in as " + result);
 					Button logoutButton = new Button("Logout");
 					HorizontalPanel hPanel = new HorizontalPanel();
@@ -101,7 +132,7 @@ public class Music_collab implements EntryPoint {
 			@Override
 			public void onSuccess(List<UserDAO> result) {
 				list.addItems(result);
-				label.setText("Success");
+				label.setText("Successfully retrieved Users list.");
 			}
 			
 			@Override
