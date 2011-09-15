@@ -47,9 +47,19 @@ public class UploadFileServlet extends HttpServlet {
 						//an mp3 file has been uploaded
 						ItemInputStream in = (ItemInputStream) item.openStream();
 						ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-						while(in.available() > 0) {
-							byteArrayOutputStream.write(in.read());
-						}
+						
+						byte[] buf = new byte[1024];
+				        while (true) {
+				            int length = in.read(buf);
+				            if (length == -1)
+				                break;
+
+				            byteArrayOutputStream.write(buf, 0, length);
+				        }
+				        byteArrayOutputStream.flush();
+				        byteArrayOutputStream.close();
+				        in.close();
+				        
 						out.println("item.getName() = " + item.getName());
 						
 						byte[] bytes = byteArrayOutputStream.toByteArray();
