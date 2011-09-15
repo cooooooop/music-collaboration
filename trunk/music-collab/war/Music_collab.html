@@ -37,10 +37,12 @@
       <!-- Comment: Adding a form entry for uploading files. -->
       <tr>
       	<td>
+      	<div id="uploadFormDiv" style="visibility:hidden">
 	      	<form name="filesForm" action="uploadFiles" method="post" enctype="multipart/form-data">
-				File 1:<input type="file" name="file1" size="40"><br>
-				<input type="submit" name="Submit" value="Upload Files">
+				File:<input type="file" name="file1" size="40"><br>
+				<input type="submit" name="Submit" value="Upload File">
 			</form>
+		</div>
       	</td>
       </tr>
       <tr>

@@ -26,6 +26,11 @@
     <servlet-class>com.solution.musiccollab.server.UploadFileServlet</servlet-class>
   </servlet>
   
+  <servlet>
+    <servlet-name>downloadFileServlet</servlet-name>
+    <servlet-class>com.solution.musiccollab.server.DownloadFileServlet</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>loginServlet</servlet-name>
     <url-pattern>/login</url-pattern>
@@ -44,6 +49,11 @@
   <servlet-mapping>
     <servlet-name>uploadFileServlet</servlet-name>
     <url-pattern>/uploadFiles</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>downloadFileServlet</servlet-name>
+    <url-pattern>/downloadFile</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
