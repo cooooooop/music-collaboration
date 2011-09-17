@@ -19,11 +19,11 @@ public class DAO extends DAOBase {
 	}
 
     /** Your DAO can have your own useful methods */
-    public AudioFileDAO getOrCreateAudioFile(String fileName)
+    public AudioFileDAO getOrCreateAudioFile(String filePath)
     {
-    	AudioFileDAO found = ofy().find(AudioFileDAO.class, fileName);
+    	AudioFileDAO found = ofy().find(AudioFileDAO.class, filePath);
         if (found == null)
-            return new AudioFileDAO(fileName);
+            return new AudioFileDAO(filePath);
         else
             return found;
     }

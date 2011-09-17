@@ -4,27 +4,17 @@ import java.util.List;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.VerticalAlign;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FileUpload;
-import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
-import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
-import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.solution.musiccollab.client.interfaces.UsersService;
 import com.solution.musiccollab.client.interfaces.UsersServiceAsync;
 import com.solution.musiccollab.shared.value.UserDAO;
@@ -84,11 +74,6 @@ public class Music_collab implements EntryPoint {
 			@Override
 			public void onSuccess(String result) {
 				if(result != null) {
-					//make upload form visible
-					RootPanel uploadFormDiv = RootPanel.get("uploadFormDiv");
-					Element element = uploadFormDiv.getElement();
-					element.setAttribute("style", "visibility: visible");
-					
 					HorizontalPanel listPanel = new HorizontalPanel();
 					RootPanel.get("usersList").add(listPanel);
 
@@ -113,7 +98,7 @@ public class Music_collab implements EntryPoint {
 						@Override
 						public void onClick(ClickEvent event) {
 							//download file
-							Window.open("downloadFile?owner=" + usersList.getSelected().getUserid() + "&fileName=" + audioFilesList.getSelected().getFileName(), "_self", "");
+							Window.open("downloadFile?owner=" + usersList.getSelected().getUserid() + "&filePath=" + audioFilesList.getSelected().getFilePath(), "_self", "");
 						}
 					});
 					
@@ -122,11 +107,21 @@ public class Music_collab implements EntryPoint {
 					
 					Label userLabel = new Label("Logged in as " + result);
 					Button logoutButton = new Button("Logout");
+					Button uploadButton = new Button("Upload New File");
+					
+					uploadButton.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							Window.open("/uploadFile", "_blank", "width=420,height=230,resizable,scrollbars=yes,status=1");	
+						}
+					});
 					HorizontalPanel hPanel = new HorizontalPanel();
 					hPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 					hPanel.setSpacing(5);
 					hPanel.add(userLabel);
 					hPanel.add(logoutButton);
+					hPanel.add(uploadButton);
 					RootPanel.get("loginButtonContainer").add(hPanel);
 					
 					logoutButton.addClickHandler(new ClickHandler() {

@@ -15,6 +15,7 @@ public class AudioFilesList extends ListBox {
 	}
 	
 	public void addItems(List<AudioFileDAO> audioFiles) {
+		clear();
 		for (AudioFileDAO audioFile : audioFiles) {
 			addItem(audioFile.getFileName());
 		}

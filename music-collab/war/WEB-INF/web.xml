@@ -48,7 +48,7 @@
   
   <servlet-mapping>
     <servlet-name>uploadFileServlet</servlet-name>
-    <url-pattern>/uploadFiles</url-pattern>
+    <url-pattern>/uploadFile</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
