@@ -12,14 +12,14 @@ public class AudioFileDAO implements Serializable
     @Id
 	private String fileName;
     private String owner;
-    private byte[] data;
+    private String filePath;
 
     public AudioFileDAO() {
     	super();
     }
     
-    public AudioFileDAO(String fileName) {
-    	this.setFileName(fileName);
+    public AudioFileDAO(String filePath) {
+    	this.setFilePath(filePath);
     }
 
 	public void setFileName(String fileName) {
@@ -38,11 +38,12 @@ public class AudioFileDAO implements Serializable
 		this.owner = owner;
 	}
 
-	public byte[] getData() {
-		return data;
+	public String getFilePath() {
+		return filePath;
 	}
 
-	public void setData(byte[] data) {
-		this.data = data;
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
+
 }
