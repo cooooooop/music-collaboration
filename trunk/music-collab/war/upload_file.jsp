@@ -20,8 +20,13 @@ String uploadUrl = (String) request.getAttribute("uploadUrl");
 					</td>
 				</tr>
 				<tr>
+					Allow commercial uses of your work?<br>
+					<input type="radio" name="ccRadio" value="yes">Yes <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Tell me more...</a><br>
+					<input type="radio" name="ccRadio" value="no" checked>No <a href="http://creativecommons.org/licenses/by-nc/3.0/" target="_blank">Tell me more...</a><br>
+				</tr>
+				<tr>
 					<td colspan="2"><input type="submit" /></td>
-				</tr>				
+				</tr>			
 			</table>
 		</form>
 	</body>	

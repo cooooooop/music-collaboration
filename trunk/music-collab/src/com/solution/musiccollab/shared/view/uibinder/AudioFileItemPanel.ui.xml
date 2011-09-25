@@ -31,5 +31,10 @@
 			     </g:HorizontalPanel>
 	        </g:VerticalPanel>
         </g:cell>
+        <g:cell width="100%" horizontalAlignment="ALIGN_RIGHT">
+	        <g:VerticalPanel spacing="0">
+		        <g:HTML ui:field="commercialUseHTML"/>
+	        </g:VerticalPanel>
+        </g:cell>
 	</g:HorizontalPanel>
 </ui:UiBinder> 

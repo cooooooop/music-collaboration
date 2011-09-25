@@ -14,6 +14,7 @@ public class AudioFileDAO implements Serializable
 	private String fileName;
     private String owner;
     private String filePath;
+    private Boolean allowCommercialUse;
     
     @Transient
     private UserDAO ownerUserDAO;
@@ -56,6 +57,14 @@ public class AudioFileDAO implements Serializable
 
 	public UserDAO getOwnerUserDAO() {
 		return ownerUserDAO;
+	}
+
+	public void setAllowCommercialUse(Boolean allowCommercialUse) {
+		this.allowCommercialUse = allowCommercialUse;
+	}
+
+	public Boolean getAllowCommercialUse() {
+		return allowCommercialUse;
 	}
 
 }
