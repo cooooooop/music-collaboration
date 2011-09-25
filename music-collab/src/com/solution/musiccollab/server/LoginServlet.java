@@ -17,7 +17,7 @@ public class LoginServlet extends HttpServlet {
         User user = userService.getCurrentUser();
 
         if (user == null) {
-            resp.sendRedirect(userService.createLoginURL("../"));
+            resp.sendRedirect(userService.createLoginURL(req.getHeader("Referer")));
         }
 	}
 }

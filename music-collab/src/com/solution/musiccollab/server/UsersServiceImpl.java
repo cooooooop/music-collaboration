@@ -24,15 +24,21 @@ public class UsersServiceImpl extends RemoteServiceServlet implements
 		return dao.ofy().query(UserDAO.class).list();
 	}
 	
-	public String getCurrentUser() {
+	public List<UserDAO> getUsersLimit(int limit) {
+		DAO dao = new DAO();
+		return dao.ofy().query(UserDAO.class).limit(limit).list();
+	}
+	
+	public UserDAO getCurrentUser() {
 		UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
         
         if(user!=null) {
         	//create user and store if does not exist
         	DAO dao = new DAO();
-        	dao.ofy().put(dao.getOrCreateUser(user));
-        	return user.getNickname();
+        	UserDAO userDAO = dao.getOrCreateUser(user);
+        	dao.ofy().put(userDAO);
+        	return userDAO;
         }
         
         return null;

@@ -17,7 +17,7 @@ public class LogoutServlet extends HttpServlet {
         User user = userService.getCurrentUser();
 
         if (user != null) {
-            resp.sendRedirect(userService.createLogoutURL("../"));
+            resp.sendRedirect(userService.createLogoutURL(req.getHeader("Referer")));
         }
 	}
 }

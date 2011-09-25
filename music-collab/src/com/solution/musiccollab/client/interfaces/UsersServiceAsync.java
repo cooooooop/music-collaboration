@@ -8,6 +8,6 @@ import com.solution.musiccollab.shared.value.UserDAO;
 
 public interface UsersServiceAsync {
 	void getAll(AsyncCallback<List<UserDAO>> callback);
-	void getCurrentUser(AsyncCallback<String> callback);
-	void getAudioByUser(UserDAO user, AsyncCallback<List<AudioFileDAO>> callback);
+	void getCurrentUser(AsyncCallback<UserDAO> callback);
+	void getUsersLimit(int limit, AsyncCallback<List<UserDAO>> callback); 
 }

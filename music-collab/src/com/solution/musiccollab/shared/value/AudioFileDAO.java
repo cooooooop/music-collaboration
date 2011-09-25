@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @SuppressWarnings("serial")
 @Entity
@@ -13,6 +14,9 @@ public class AudioFileDAO implements Serializable
 	private String fileName;
     private String owner;
     private String filePath;
+    
+    @Transient
+    private UserDAO ownerUserDAO;
 
     public AudioFileDAO() {
     	super();
@@ -44,6 +48,14 @@ public class AudioFileDAO implements Serializable
 
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
+	}
+
+	public void setOwnerUserDAO(UserDAO ownerUserDAO) {
+		this.ownerUserDAO = ownerUserDAO;
+	}
+
+	public UserDAO getOwnerUserDAO() {
+		return ownerUserDAO;
 	}
 
 }

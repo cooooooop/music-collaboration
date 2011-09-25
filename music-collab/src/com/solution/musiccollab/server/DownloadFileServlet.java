@@ -6,26 +6,39 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 
 public class DownloadFileServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private BlobstoreService blobService = BlobstoreServiceFactory.getBlobstoreService();
+	private BlobInfoFactory blobInfoFactory = new BlobInfoFactory(DatastoreServiceFactory.getDatastoreService());
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        String owner = request.getParameter("owner");
         String filePath = request.getParameter("filePath");
+        String action = request.getParameter("action");
         
         DAO dao = new DAO();
         
         try {
-			AudioFileDAO audioFileDAO = dao.ofy().query(AudioFileDAO.class).filter("owner", owner).filter("filePath", filePath).get();
-			blobService.serve(new BlobKey(audioFileDAO.getFilePath()), response);
+			AudioFileDAO audioFileDAO = dao.ofy().query(AudioFileDAO.class).filter("filePath", filePath).get();
+			
+			BlobKey blobKey = new BlobKey(audioFileDAO.getFilePath());
+			BlobInfo blobInfo =  blobInfoFactory.loadBlobInfo(blobKey);
+			
+			if(action != null && action.equals("download")) {
+				response.setHeader("Content-Type", "audio/mp3");
+		        response.setHeader("Content-Length", String.valueOf(blobInfo.getSize()));
+				response.setHeader("Content-disposition", "attachment;filename=\"" + audioFileDAO.getFileName() + "\"");
+			}
+			blobService.serve(blobKey, response);
         }
         catch (Exception e) {
         	throw new ServletException(e);

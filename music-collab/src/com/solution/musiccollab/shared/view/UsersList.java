@@ -1,30 +1,62 @@
 package com.solution.musiccollab.shared.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.solution.musiccollab.shared.event.FileSelectEventHandler;
+import com.solution.musiccollab.shared.event.NavigationEventHandler;
+import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.UserDAO;
 
-public class UsersList extends ListBox {
+public class UsersList extends CaptionPanel {
 	
-	protected List<UserDAO> data;
+	private ArrayList<NavigationEventHandler> handlers = new ArrayList<NavigationEventHandler>();
+	
+	private List<UserDAO> data;
+	private String caption = "Users";
+	private VerticalPanel list;
 	
 	public UsersList() {
-	    setVisibleItemCount(4);
+		
+		setCaptionText(caption);
+		list = new VerticalPanel();
+
+		list.setHeight("100%");
+		list.setWidth("100%");
+
+		list.getElement().setAttribute("style", "background-color:#C5A159; border-style:solid; border-color:#FFF;");
+		
+		add(list);
 	}
 	
-	public void addItems(List<UserDAO> users) {
-		clear();
-		
-		for (UserDAO user : users) {
-			addItem(user.getNickname());
+	public void setItems(List<UserDAO> userDAOs) {
+		list.clear();
+		for (UserDAO userDAO : userDAOs) {
+			UserItemPanel userItemPanel = new UserItemPanel();
+			userItemPanel.setupPanel(this, userDAO);
+			list.add(userItemPanel);
 		}
-		
-		data = users;
+		data = userDAOs;
 	}
 	
-	public UserDAO getSelected() {
-		return data.get(getSelectedIndex());
+	public int getSize() {
+		if(data != null)
+			return data.size();
+		return 0;
 	}
 	
+	public void addNavigationEventHandler(NavigationEventHandler handler) {
+		handlers.add(handler);
+    }
+
+    public void removeNavigationEventHandler(NavigationEventHandler handler) {
+    	handlers.remove(handler);
+    }
+    
+    public ArrayList<NavigationEventHandler> getHandlers() {
+    	return handlers;
+    }
 }
