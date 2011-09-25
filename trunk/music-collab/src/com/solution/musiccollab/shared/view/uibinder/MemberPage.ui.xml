@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+        xmlns:g='urn:import:com.google.gwt.user.client.ui'
+        xmlns:s='urn:import:com.solution.musiccollab.shared.view'>
+	<ui:style>
+		.scrollPanel
+		{
+			background-color			:	#4E6BAE;	
+		}
+	
+		.audio
+		{
+		    border-style				:	solid;
+			border-color				:	#001C5E;
+		    background-color            :   #4E6BAE;
+		    display						: 	inline-block;
+		    color						:	#FFF;
+		}
+		
+		.header
+		{
+			font-size: x-large;
+			color: #FFF;	
+		}
+		
+	</ui:style>
+	
+	
+	<g:ScrollPanel styleName="{style.scrollPanel}">
+		<g:VerticalPanel width="100%" height="100%" horizontalAlignment="ALIGN_CENTER">
+			<g:cell horizontalAlignment="ALIGN_LEFT">
+				<g:Label ui:field="userNameLabel" styleName="{style.header}"/>
+			</g:cell>
+	   		<g:VerticalPanel width="100%">
+	    		<g:cell horizontalAlignment="ALIGN_LEFT">
+	    			<g:Label ui:field="fileCountLabel"/>
+	    		</g:cell>
+	   			<g:cell horizontalAlignment="ALIGN_LEFT">
+	    			<g:Button ui:field="backButton" text="Back"/>
+	    		</g:cell>
+	   		</g:VerticalPanel>
+	   		<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_CENTER" >
+	    		<s:AudioFilesList ui:field="audioFilesList" styleName="{style.audio}" visible="false"/>
+	   		</g:HorizontalPanel>
+		</g:VerticalPanel>
+	</g:ScrollPanel>
+</ui:UiBinder> 

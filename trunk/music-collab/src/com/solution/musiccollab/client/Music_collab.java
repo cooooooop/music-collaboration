@@ -1,152 +1,73 @@
 package com.solution.musiccollab.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.DeckLayoutPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.solution.musiccollab.client.interfaces.AudioService;
+import com.solution.musiccollab.client.interfaces.AudioServiceAsync;
 import com.solution.musiccollab.client.interfaces.UsersService;
 import com.solution.musiccollab.client.interfaces.UsersServiceAsync;
-import com.solution.musiccollab.shared.value.UserDAO;
+import com.solution.musiccollab.shared.event.FileSelectEvent;
+import com.solution.musiccollab.shared.event.FileSelectEventHandler;
+import com.solution.musiccollab.shared.event.NavigationEvent;
+import com.solution.musiccollab.shared.event.NavigationEventHandler;
+import com.solution.musiccollab.shared.model.Model;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
+import com.solution.musiccollab.shared.value.UserDAO;
 import com.solution.musiccollab.shared.view.AudioFilesList;
+import com.solution.musiccollab.shared.view.BodyPanel;
+import com.solution.musiccollab.shared.view.HeaderBar;
+import com.solution.musiccollab.shared.view.IUpdatable;
+import com.solution.musiccollab.shared.view.MemberPage;
 import com.solution.musiccollab.shared.view.UsersList;
 
-public class Music_collab implements EntryPoint {
+public class Music_collab implements EntryPoint, NavigationEventHandler, FileSelectEventHandler {
 	private static final String SERVER_ERROR = "An error occurred while "
 			+ "attempting to contact the server. Please check your network "
 			+ "connection and try again.";
 
 	private final UsersServiceAsync usersService = GWT.create(UsersService.class);
-
+	private final AudioServiceAsync audioService = GWT.create(AudioService.class);
 	
-	/**
-	 * This is the entry point method.
-	 */
+	private List<IUpdatable> updatableWidgets;
+	private HeaderBar headerBar = new HeaderBar();
+	private RootLayoutPanel rootLayoutPanel;
+	private BodyPanel bodyPanel = new BodyPanel();
+	private MemberPage memberPage = new MemberPage();
+	private DeckLayoutPanel bodyDeck = new DeckLayoutPanel();
+	
 	public void onModuleLoad() {
-		final Label label = new Label();
-		final AudioFilesList audioFilesList = new AudioFilesList();
-		final UsersList usersList = new UsersList();
+		updatableWidgets = new ArrayList<IUpdatable>();
+		updatableWidgets.add(headerBar);
+		updatableWidgets.add(bodyPanel);
+		updatableWidgets.add(memberPage);
+		headerBar.addNavigationEventHandler(this);
 		
-		usersList.addChangeHandler(new ChangeHandler() {
-			
-			@Override
-			public void onChange(ChangeEvent event) {
-				//populate the audioFilesList
-				usersService.getAudioByUser(usersList.getSelected(), new AsyncCallback<List<AudioFileDAO>>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						label.setText(SERVER_ERROR);
-					}
-
-					@Override
-					public void onSuccess(List<AudioFileDAO> result) {
-						audioFilesList.addItems(result);
-						label.setText("Successfully retrieved AudioFile list.");
-					}
-
-				});
-			}
-		});
+		rootLayoutPanel = (RootLayoutPanel) RootLayoutPanel.get();
+		rootLayoutPanel.add(headerBar);
 		
+		bodyDeck.add(bodyPanel);
+		bodyDeck.add(memberPage);
 		
+		bodyPanel.getAudioFilesList().addFileSelectEventHandler(this);
+		bodyPanel.getUsersList().addNavigationEventHandler(this);
+		memberPage.addNavigationEventHandler(this);
 		
-		RootPanel.get("errorLabelContainer").add(label);
+		memberPage.getAudioFilesList().addFileSelectEventHandler(this);
 		
-		usersService.getCurrentUser(new AsyncCallback<String>() {
+		rootLayoutPanel.add(bodyDeck);
+		rootLayoutPanel.setWidgetTopBottom(bodyDeck, headerBar.getOffsetHeight(), Unit.PX, 0, Unit.PX);
 
-			@Override
-			public void onFailure(Throwable caught) {
-				label.setText(SERVER_ERROR);				
-			}
-
-			@Override
-			public void onSuccess(String result) {
-				if(result != null) {
-					HorizontalPanel listPanel = new HorizontalPanel();
-					RootPanel.get("usersList").add(listPanel);
-
-					listPanel.setSpacing(5);
-					listPanel.add(usersList);
-					getUsersList(usersList);
-					listPanel.add(audioFilesList);
-					
-
-					Button downloadButton = new Button("Download") {
-						
-						@Override
-						public boolean isEnabled() {
-							if(audioFilesList.getSelectedIndex() >= 0)
-								return true;
-							return false;
-						};
-					};
-					
-					downloadButton.addClickHandler(new ClickHandler() {
-						
-						@Override
-						public void onClick(ClickEvent event) {
-							//download file
-							Window.open("downloadFile?owner=" + usersList.getSelected().getUserid() + "&filePath=" + audioFilesList.getSelected().getFilePath(), "_self", "");
-						}
-					});
-					
-					listPanel.add(downloadButton);
-					
-					
-					Label userLabel = new Label("Logged in as " + result);
-					Button logoutButton = new Button("Logout");
-					Button uploadButton = new Button("Upload New File");
-					
-					uploadButton.addClickHandler(new ClickHandler() {
-						
-						@Override
-						public void onClick(ClickEvent event) {
-							Window.open("/uploadFile", "_blank", "width=420,height=230,resizable,scrollbars=yes,status=1");	
-						}
-					});
-					HorizontalPanel hPanel = new HorizontalPanel();
-					hPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-					hPanel.setSpacing(5);
-					hPanel.add(userLabel);
-					hPanel.add(logoutButton);
-					hPanel.add(uploadButton);
-					RootPanel.get("loginButtonContainer").add(hPanel);
-					
-					logoutButton.addClickHandler(new ClickHandler() {
-						
-						@Override
-						public void onClick(ClickEvent event) {
-							Window.open("logout", "_self", "");
-						}
-					});
-					
-				}
-				else {
-					Button loginButton = new Button("Login");
-					RootPanel.get("loginButtonContainer").add(loginButton);
-					loginButton.addClickHandler(new ClickHandler() {
-						
-						@Override
-						public void onClick(ClickEvent event) {
-							Window.open("login", "_self", "");
-						}
-					});
-				}
-				
-			}
-		});
+		onHomeNavigation(null);
+		
+		loadCurrentUser();
 		
 	}
 	
@@ -155,12 +76,134 @@ public class Music_collab implements EntryPoint {
 			
 			@Override
 			public void onSuccess(List<UserDAO> result) {
-				list.addItems(result);
+				list.setItems(result);
+				updateUI();
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
 			}
 		});
+	}
+	
+	private void getAudioFilesList(final AudioFilesList list) {
+		audioService.getAll(new AsyncCallback<List<AudioFileDAO>>() {
+			
+			@Override
+			public void onSuccess(List<AudioFileDAO> result) {
+				list.setItems(result);
+				updateUI();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+		});
+	}
+	
+	private void getAudioFilesList(final AudioFilesList list, UserDAO userDAO) {
+		audioService.getAudioByUser(userDAO, new AsyncCallback<List<AudioFileDAO>>() {
+			
+			@Override
+			public void onSuccess(List<AudioFileDAO> result) {
+				list.setItems(result);
+				updateUI();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+		});
+	}
+	
+	private void getLastTenUsers(final UsersList list) {
+		usersService.getUsersLimit(10, new AsyncCallback<List<UserDAO>>() {
+			
+			@Override
+			public void onSuccess(List<UserDAO> result) {
+				list.setItems(result);
+				updateUI();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+		});
+	}
+	
+	private void getLastFiveAudioFiles(final AudioFilesList list) {
+		audioService.getAudioFilesLimit(5, new AsyncCallback<List<AudioFileDAO>>() {
+			
+			@Override
+			public void onSuccess(List<AudioFileDAO> result) {
+				list.setItems(result);
+				updateUI();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Help");
+			}
+		});
+	}
+	
+	private void loadCurrentUser() {
+		usersService.getCurrentUser(new AsyncCallback<UserDAO>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				//label.setText(SERVER_ERROR);				
+			}
+
+			@Override
+			public void onSuccess(UserDAO result) {
+				Model.currentUser = result;
+				updateUI();
+			}
+		});
+	}
+	
+	private void updateUI() {
+		for(IUpdatable updatableWidget : updatableWidgets) {
+			updatableWidget.update();
+		}
+	}
+
+	@Override
+	public void onLoginRequest(NavigationEvent event) {
+		Window.open("login", "_self", "");
+	}
+
+	@Override
+	public void onLogoutRequest(NavigationEvent event) {
+		Window.open("logout", "_self", "");
+	}
+
+	@Override
+	public void onHomeNavigation(NavigationEvent event) {
+		
+		bodyDeck.showWidget(bodyPanel);
+		getUsersList(bodyPanel.getUsersList());
+		getAudioFilesList(bodyPanel.getAudioFilesList());
+		bodyPanel.update();
+	}
+	
+	@Override
+	public void onFileSelected(FileSelectEvent event) {
+		Window.open("downloadFile?filePath=" + event.getSelectedFile().getFilePath() + "&action=download", "_self", "");									
+	}
+	
+	@Override
+	public void onFilePlay(FileSelectEvent event) {
+		Window.open("downloadFile?filePath=" + event.getSelectedFile().getFilePath(), "_blank", "");									
+	}
+
+	@Override
+	public void onMemberPageNavigation(NavigationEvent event) {
+		bodyDeck.showWidget(memberPage);
+		getAudioFilesList(memberPage.getAudioFilesList(), event.getUserDAO());
+		memberPage.setUserDAO(event.getUserDAO());
+		memberPage.update();
+
 	}
 }

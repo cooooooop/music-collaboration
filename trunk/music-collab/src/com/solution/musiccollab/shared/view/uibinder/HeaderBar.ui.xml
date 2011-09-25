@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+        xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+        
+	<ui:style>
+        .menu
+		{
+        	border                      :   1px solid #666;
+    		border-width                :   1px 1px;
+        	cursor: pointer;
+		    margin                      :   0 auto;
+		    font-size                   :   80%;
+		    background-color            :   #eee;
+		}
+		.menu .gwt-MenuItem
+		{
+			cursor: pointer;
+		    border-left                 :   1px solid #999;
+		    border-right                :   1px solid #999;
+		    background-color            :   #eee;
+		    padding                     :   0 10px;
+		    white-space:				: 	nowrap;
+		    float						:	right;
+		}
+		.menu .gwt-MenuItem-selected
+		{
+			cursor: pointer;
+		    background-color            :   #ace;
+		    float						:	right;
+		}
+		
+		.login
+		{
+			white-space:nowrap;
+		}
+		
+		.label
+		{
+			white-space: nowrap;
+			color: #222;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-o-user-select: none;
+			user-select: none;
+		}
+		
+		.disabled
+		{
+			white-space: nowrap;
+			color: #aaa;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-o-user-select: none;
+			user-select: none;
+		}
+		
+		.header
+		{
+			cursor: pointer;
+			font-family: cursive;
+			font-size: xx-large;	
+		}
+		
+		.backgroundColor
+		{
+			background-color: #C5A159;
+			border-color: #001C5E;
+			border-bottom-style: solid;
+		}
+		
+		.debug
+		{
+			background-color: #f00;
+			border: thin;	
+		}
+    </ui:style>
+        
+    <g:LayoutPanel height="8em">
+    	<g:layer>
+    		<g:LayoutPanel styleName="{style.backgroundColor}">
+		    	<g:layer left="5" right="100">
+			        <g:Label ui:field="titleHeader" text="Jamster Collab" wordWrap="false" styleName="{style.header}"/>
+		    	</g:layer>
+		    	<g:layer left="0" width="100%" bottom='0' height='55'>
+		   			<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_LEFT" spacing="5">
+					   <g:MenuBar ui:field="accountMenuBar" styleName="{style.menu}">
+					        <g:MenuItem ui:field="accountMenuItem" text="LOG IN" styleName="{style.login}">
+						        <g:MenuBar vertical="true" styleName="{style.menu}">
+							        <g:MenuItem ui:field="myPageMenuItem"><div class="{style.label}">My Page</div></g:MenuItem>
+							        <g:MenuItem ui:field="uploadMenuItem"><div class="{style.label}">Upload File</div></g:MenuItem>
+							        <g:MenuItem ui:field="logoutMenuItem"><div class="{style.label}">Log Out</div></g:MenuItem>
+						        </g:MenuBar>
+					        </g:MenuItem>
+					   </g:MenuBar>
+					   <g:MenuBar styleName="{style.menu}">
+					        <g:MenuItem text="ABOUT">
+						        <g:MenuBar vertical="true" styleName="{style.menu}">
+							        <g:MenuItem ui:field="copyrightMenuItem"><div class="{style.label}">Copyright</div></g:MenuItem>
+							        <g:MenuItem ui:field="openSourceMenuItem"><div class="{style.label}">Open Source</div></g:MenuItem>
+						        </g:MenuBar>
+					        </g:MenuItem>
+					   </g:MenuBar>
+					   <g:MenuBar styleName="{style.menu}">
+					        <g:MenuItem text="MEMBERS">
+						        <g:MenuBar vertical="true" styleName="{style.menu}" autoOpen="true">
+							        <g:MenuItem ui:field="loginMembersMenuItem"><div class="{style.label}">Log In/Register</div></g:MenuItem>
+							        <g:MenuItem ui:field="directoryMenuItem"><div class="{style.disabled}">Directory</div></g:MenuItem>
+							        <g:MenuItem ui:field="forumMenuItem"><div class="{style.disabled}">Forum</div></g:MenuItem>
+						        </g:MenuBar>
+					        </g:MenuItem>
+					    </g:MenuBar>
+				        <g:Label ui:field="userLabel" wordWrap="false"/>
+				        <!-- 
+				        TODO: add search/filter
+				        <g:cell width="100%" horizontalAlignment="ALIGN_RIGHT">
+					        <g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" spacing="5">
+						        <g:Label text="Search:"/>
+						        <g:TextBox/>
+					        </g:HorizontalPanel>
+				        </g:cell> -->
+			    	</g:HorizontalPanel>
+				</g:layer>
+    		</g:LayoutPanel>
+    	</g:layer>
+    </g:LayoutPanel>
+</ui:UiBinder> 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+        xmlns:g='urn:import:com.google.gwt.user.client.ui'
+        xmlns:s='urn:import:com.solution.musiccollab.shared.view'>
+	<ui:style>
+		.scrollPanel
+		{
+			background-color			:	#4E6BAE;	
+		}
+	
+		.users
+		{
+			border-style				:	solid;
+			border-color				:	#001C5E;
+		    background-color            :   #4E6BAE;
+		    display						: 	inline-block;
+		    color						:	#FFF;
+		}
+		
+		.audio
+		{
+		    border-style				:	solid;
+			border-color				:	#001C5E;
+		    background-color            :   #4E6BAE;
+		    display						: 	inline-block;
+		    color						:	#FFF;
+		}
+		
+	</ui:style>
+	
+	
+	<g:ScrollPanel styleName="{style.scrollPanel}">
+    		<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_CENTER" >
+	    		<s:UsersList ui:field="usersList" styleName="{style.users}" visible="false"/>
+	    		<s:AudioFilesList ui:field="audioFilesList" styleName="{style.audio}" visible="false"/>
+    		</g:HorizontalPanel>
+	</g:ScrollPanel>
+</ui:UiBinder> 

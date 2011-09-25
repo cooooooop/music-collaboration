@@ -2,14 +2,15 @@
 <module rename-to='music_collab'>
   <!-- Inherit the core Web Toolkit stuff.                        -->
   <inherits name='com.google.gwt.user.User'/>
+  <inherits name="com.googlecode.objectify.Objectify" />
+  <inherits name="com.google.gwt.uibinder.UiBinder"/>
 
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->
   <!-- any one of the following lines.                            -->
-  <inherits name='com.google.gwt.user.theme.clean.Clean'/>
-  <inherits name="com.googlecode.objectify.Objectify" />
+<!--   <inherits name='com.google.gwt.user.theme.clean.Clean'/>-->  
   <!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
-  <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+ <!--  <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
@@ -20,5 +21,7 @@
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
   <source path='shared'/>
+  
+  <set-configuration-property name="UiBinder.useSafeHtmlTemplates" value="true" />
 
 </module>

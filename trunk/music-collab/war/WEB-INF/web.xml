@@ -17,8 +17,13 @@
   </servlet>
   
   <servlet>
-    <servlet-name>userServlet</servlet-name>
+    <servlet-name>userService</servlet-name>
     <servlet-class>com.solution.musiccollab.server.UsersServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>audioService</servlet-name>
+    <servlet-class>com.solution.musiccollab.server.AudioServiceImpl</servlet-class>
   </servlet>
   
   <servlet>
@@ -42,8 +47,13 @@
   </servlet-mapping>
   
   <servlet-mapping>
-    <servlet-name>userServlet</servlet-name>
+    <servlet-name>userService</servlet-name>
     <url-pattern>/music_collab/users</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>audioService</servlet-name>
+    <url-pattern>/music_collab/audio</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
