@@ -36,6 +36,7 @@ public class UploadFileServlet extends HttpServlet {
 
         String filePath = blobKey.getKeyString();
 	    String title = req.getParameter("title");
+	    Boolean commercialUse = req.getParameter("ccRadio").equals("yes");
 	    
 	    //Store the file in the Datastore under the current user
 		UserService userService = UserServiceFactory.getUserService();
@@ -45,6 +46,7 @@ public class UploadFileServlet extends HttpServlet {
 			AudioFileDAO file = dao.getOrCreateAudioFile(filePath);
 			file.setFileName(title);
 			file.setOwner(user.getUserId());
+			file.setAllowCommercialUse(commercialUse);
 			dao.ofy().put(file);
         }
         
