@@ -85,9 +85,9 @@
 		    	</g:layer>
 		    	<g:layer left="0" width="100%" bottom='0' height='55'>
 		   			<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_LEFT" spacing="5">
-					   <g:MenuBar ui:field="accountMenuBar" styleName="{style.menu}">
+					   <g:MenuBar styleName="{style.menu}">
 					        <g:MenuItem ui:field="accountMenuItem" text="LOG IN" styleName="{style.login}">
-						        <g:MenuBar vertical="true" styleName="{style.menu}">
+						        <g:MenuBar ui:field="accountMenuBar" vertical="true" styleName="{style.menu}">
 							        <g:MenuItem ui:field="myPageMenuItem"><div class="{style.label}">My Page</div></g:MenuItem>
 							        <g:MenuItem ui:field="uploadMenuItem"><div class="{style.label}">Upload File</div></g:MenuItem>
 							        <g:MenuItem ui:field="logoutMenuItem"><div class="{style.label}">Log Out</div></g:MenuItem>

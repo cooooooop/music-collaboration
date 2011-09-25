@@ -128,6 +128,7 @@ public class HeaderBar extends Composite implements IUpdatable {
 			accountMenuItem.setText("ACCOUNT");
 			
 			accountMenuItem.setCommand(null);
+			accountMenuItem.setSubMenu(accountMenuBar);
 			if(loginMembersMenuItem != null && loginMembersMenuItem.getParentMenu() != null)
 				loginMembersMenuItem.getParentMenu().removeItem(loginMembersMenuItem);
 		}
