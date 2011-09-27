@@ -3,8 +3,6 @@ package com.solution.musiccollab.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sound.sampled.SourceDataLine;
-
 import com.allen_sauer.gwt.voices.client.Sound;
 import com.allen_sauer.gwt.voices.client.SoundController;
 import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
