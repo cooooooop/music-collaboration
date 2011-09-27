@@ -1,14 +1,22 @@
 Hi Dave,
 
 Thanks for maintaining interest in helping me with this project. If you are not able to connect to the internet with your laptop at work you will probably want to download all the files you need first at home, then try to setup everything. I imagine you are interested in some specifics about how the application will work but I think that is getting several steps ahead of ourselves. As you are coming into this blind I will first need to introduce you to the different technologies that we will be using, to program and to work together.
- 
+
+
+
 The most important technology you will be using is Eclipse - http://eclipse.org/
 When you go to download Eclipse you might be put off by how many different versions there are, I think if you download the first one (Java EE) you should be fine. The good thing about Eclipse is that it can be easily modified to do what you want, so no matter what version you get you can always "upgrade" it to do something new.
  
+
+
 Since I suggest you get the Java version, you can probably guess that much of the work we will do will be in the Java language. This is somewhat irrelevant. You will likely be using many languages. Some will be simple, like XML and HTML and others will be more complex like Java. The easiest way to learn these is to look at examples. You might find that you spend more time finding the right search in Google to find code that is already made for you, than you spend actually writing code down. There are many helpful tools available, and tricks to make things easier, but since I am not there to point them out in person you will likely have to do things the hard way. Expect that things will not be easy at first and ask all the questions you need to.
  
+
+
 You will need to download and install the Java Development Kit (JDK). I think you want "JDK 6 Update 27 with Java EE", search for that on this page: http://www.oracle.com/technetwork/java/javase/downloads/index.html. By the way, EE stands for Enterprise Edition. I don't know what the difference is between this version and the standard version.
  
+
+
 At this point I should probably mention that setting up your programming environment and getting the project to compile and run without errors often takes several hours. Don't get discouraged when you find that something is not working and the solution is not obvious. This will happen and it will likely be my fault for not communicating properly. Again, ask questions.
  
 OK. The second most important technology you will be using is Subversion (SVN) - http://subversion.apache.org/
