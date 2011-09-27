@@ -1,4 +1,5 @@
 Hi Dave,
+
 Thanks for maintaining interest in helping me with this project. If you are not able to connect to the internet with your laptop at work you will probably want to download all the files you need first at home, then try to setup everything. I imagine you are interested in some specifics about how the application will work but I think that is getting several steps ahead of ourselves. As you are coming into this blind I will first need to introduce you to the different technologies that we will be using, to program and to work together.
  
 The most important technology you will be using is Eclipse - http://eclipse.org/
