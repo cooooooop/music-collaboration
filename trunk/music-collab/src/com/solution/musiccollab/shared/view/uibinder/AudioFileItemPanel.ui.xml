@@ -26,8 +26,9 @@
 		        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
 		        <g:Label ui:field="fileOwnerLabel" styleName="{style.subtitle}"/>
 			     <g:HorizontalPanel>
-			        <g:Button ui:field="playButton" text="Play"/>
 			        <g:Button ui:field="downloadButton" text="Download" />
+			        <g:Button ui:field="playStopButton" text="Play"/>
+			        <g:CheckBox ui:field="loopingCheckBox" checked="true" text="Loop"/>
 			     </g:HorizontalPanel>
 	        </g:VerticalPanel>
         </g:cell>

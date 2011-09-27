@@ -4,7 +4,8 @@
   <inherits name='com.google.gwt.user.User'/>
   <inherits name="com.googlecode.objectify.Objectify" />
   <inherits name="com.google.gwt.uibinder.UiBinder"/>
-
+  <inherits name='com.allen_sauer.gwt.voices.gwt-voices'/>
+  
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->
   <!-- any one of the following lines.                            -->
