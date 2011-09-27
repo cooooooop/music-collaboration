@@ -3,6 +3,13 @@ package com.solution.musiccollab.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sound.sampled.SourceDataLine;
+
+import com.allen_sauer.gwt.voices.client.Sound;
+import com.allen_sauer.gwt.voices.client.SoundController;
+import com.allen_sauer.gwt.voices.client.handler.PlaybackCompleteEvent;
+import com.allen_sauer.gwt.voices.client.handler.SoundHandler;
+import com.allen_sauer.gwt.voices.client.handler.SoundLoadStateChangeEvent;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -35,6 +42,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 
 	private final UsersServiceAsync usersService = GWT.create(UsersService.class);
 	private final AudioServiceAsync audioService = GWT.create(AudioService.class);
+	private final SoundController soundController = new SoundController();
 	
 	private List<IUpdatable> updatableWidgets;
 	private HeaderBar headerBar = new HeaderBar();
@@ -181,6 +189,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 
 	@Override
 	public void onHomeNavigation(NavigationEvent event) {
+		stopPlaying();
 		
 		bodyDeck.showWidget(bodyPanel);
 		getUsersList(bodyPanel.getUsersList());
@@ -193,17 +202,54 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		Window.open("downloadFile?filePath=" + event.getSelectedFile().getFilePath() + "&action=download", "_self", "");									
 	}
 	
+	private void stopPlaying() {
+		if(Model.currentPlayingAudioPanel != null) {
+			Model.currentPlayingAudioPanel.setPlayStopStatus(false);
+			Model.currentPlayingAudioPanel = null;
+			
+			if(Model.currentSound != null) {
+				Model.currentSound.stop();
+				Model.currentSound = null;
+			}
+		}
+	}
+	
 	@Override
-	public void onFilePlay(FileSelectEvent event) {
-		Window.open("downloadFile?filePath=" + event.getSelectedFile().getFilePath(), "_blank", "");									
+	public void onFilePlay(final FileSelectEvent fileSelectEvent) {
+		stopPlaying();
+		
+		Model.currentPlayingAudioPanel = fileSelectEvent.getOriginator();
+	    Model.currentSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_MPEG_MP3, "downloadFile?filePath=" + fileSelectEvent.getSelectedFile().getFilePath());
+	    Model.currentSound.setLooping(fileSelectEvent.isLooping());
+	    Model.currentSound.play();
+	    
+	    Model.currentSound.addEventHandler(new SoundHandler() {
+			
+			@Override
+			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
+				event.getLoadState();
+			}
+			
+			@Override
+			public void onPlaybackComplete(PlaybackCompleteEvent event) {
+				fileSelectEvent.getOriginator().setPlayStopStatus(false);
+				Model.currentSound = null;
+			}
+		});
+	}
+	
+	@Override
+	public void onFileStop(FileSelectEvent event) {
+		stopPlaying();
 	}
 
 	@Override
 	public void onMemberPageNavigation(NavigationEvent event) {
+		stopPlaying();
+		
 		bodyDeck.showWidget(memberPage);
 		getAudioFilesList(memberPage.getAudioFilesList(), event.getUserDAO());
 		memberPage.setUserDAO(event.getUserDAO());
 		memberPage.update();
-
 	}
 }

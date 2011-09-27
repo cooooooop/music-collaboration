@@ -8,12 +8,14 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.solution.musiccollab.shared.event.FileSelectEvent;
 import com.solution.musiccollab.shared.event.FileSelectEventHandler;
+import com.solution.musiccollab.shared.model.Model;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 
 public class AudioFileItemPanel extends Composite {
@@ -25,6 +27,9 @@ public class AudioFileItemPanel extends Composite {
 	Label fileNameLabel;
 	
 	@UiField
+	CheckBox loopingCheckBox;
+	
+	@UiField
 	HTML commercialUseHTML;
 	
 	@UiField
@@ -34,7 +39,9 @@ public class AudioFileItemPanel extends Composite {
 	Button downloadButton;
 	
 	@UiField
-	Button playButton;
+	Button playStopButton;
+	
+	private boolean playing = false;
 	
 	@UiTemplate("uibinder/AudioFileItemPanel.ui.xml")
 	interface MyUiBinder extends UiBinder<Widget, AudioFileItemPanel> { }
@@ -77,20 +84,38 @@ public class AudioFileItemPanel extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				for(FileSelectEventHandler handler : parentList.getHandlers()) {
-					handler.onFileSelected(new FileSelectEvent(data));
+					handler.onFileSelected(new FileSelectEvent(data, false, AudioFileItemPanel.this));
 		        }
 			}
 		});
 		
-		playButton.addClickHandler(new ClickHandler() {
+		playStopButton.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				for(FileSelectEventHandler handler : parentList.getHandlers()) {
-					handler.onFilePlay(new FileSelectEvent(data));
-		        }
+				if(playing) {
+					for(FileSelectEventHandler handler : parentList.getHandlers()) {
+						handler.onFileStop(new FileSelectEvent(data, loopingCheckBox.getValue(), AudioFileItemPanel.this));
+			        }
+					
+					setPlayStopStatus(playing = false);
+				}
+				else {
+					for(FileSelectEventHandler handler : parentList.getHandlers()) {
+						handler.onFilePlay(new FileSelectEvent(data, loopingCheckBox.getValue(), AudioFileItemPanel.this));
+			        }
+					
+					setPlayStopStatus(playing = true);
+				}
 			}
 		});
+	}
+	
+	public void setPlayStopStatus(boolean playing) {
+		if(playing)
+			playStopButton.setText("Stop");
+		else
+			playStopButton.setText("Play");
 	}
 	
 }
