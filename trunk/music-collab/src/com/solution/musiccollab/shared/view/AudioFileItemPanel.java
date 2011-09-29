@@ -15,7 +15,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.solution.musiccollab.shared.event.FileSelectEvent;
 import com.solution.musiccollab.shared.event.FileSelectEventHandler;
-import com.solution.musiccollab.shared.model.Model;
+import com.solution.musiccollab.shared.event.NavigationEvent;
+import com.solution.musiccollab.shared.event.NavigationEventHandler;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 
 public class AudioFileItemPanel extends Composite {
@@ -34,6 +35,9 @@ public class AudioFileItemPanel extends Composite {
 	
 	@UiField
 	Label fileOwnerLabel;
+	
+	@UiField
+	Label downloadsLabel;
 	
 	@UiField
 	Button downloadButton;
@@ -56,11 +60,22 @@ public class AudioFileItemPanel extends Composite {
 		this.data = audioFileDAO;
 		
 		fileNameLabel.setText(audioFileDAO.getFileName());
-		
-		if(audioFileDAO.getOwnerUserDAO() == null)
-			fileOwnerLabel.setText(audioFileDAO.getOwner());
+		if(audioFileDAO.getDownloads() == 1)
+			downloadsLabel.setText(audioFileDAO.getDownloads() + " listen");
 		else
-			fileOwnerLabel.setText(audioFileDAO.getOwnerUserDAO().getNickname());
+			downloadsLabel.setText(audioFileDAO.getDownloads() + " listens");
+		
+		fileOwnerLabel.setText(audioFileDAO.getOwnerUserDAO().getNickname());
+		
+		fileOwnerLabel.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				for(NavigationEventHandler handler : parentList.getNavigationHandlers()) {
+					handler.onMemberPageNavigation(new NavigationEvent(data.getOwnerUserDAO()));
+		        }
+			}
+		});
 		
 		if(audioFileDAO.getAllowCommercialUse() != null && audioFileDAO.getAllowCommercialUse())
 			commercialUseHTML.setHTML(new SafeHtml() {

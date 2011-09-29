@@ -24,14 +24,15 @@ public class UploadFileServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String uploadUrl = blobService.createUploadUrl("/uploadFile");
+        String uploadUrl = blobService.createUploadUrl("/uploadFile?message=");
         req.setAttribute("uploadUrl", uploadUrl);
         req.getRequestDispatcher("upload_file.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Map<String, BlobKey> blobs = blobService.getUploadedBlobs(req);
+        //TODO: check contentType of upload, make sure it is valid audio. store contentType for later download
+    	Map<String, BlobKey> blobs = blobService.getUploadedBlobs(req);
         BlobKey blobKey = blobs.get(blobs.keySet().iterator().next());
 
         String filePath = blobKey.getKeyString();
@@ -50,6 +51,6 @@ public class UploadFileServlet extends HttpServlet {
 			dao.ofy().put(file);
         }
         
-        resp.sendRedirect("/uploadFile");
+        resp.sendRedirect("/uploadFile?message=Upload Successful");
     }
 }

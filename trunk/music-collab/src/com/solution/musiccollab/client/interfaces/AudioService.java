@@ -13,4 +13,5 @@ public interface AudioService extends RemoteService {
 	List<AudioFileDAO> getAudioByUser(UserDAO user);
 	List<AudioFileDAO> getAudioFilesLimit(int limit);
 	byte[] getAudioData(AudioFileDAO audioFileDAO);
+	AudioFileDAO saveAudioFile(AudioFileDAO audioFileDAO);
 }

@@ -63,6 +63,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		bodyDeck.add(memberPage);
 		
 		bodyPanel.getAudioFilesList().addFileSelectEventHandler(this);
+		bodyPanel.getAudioFilesList().addNavigationEventHandler(this);
 		bodyPanel.getUsersList().addNavigationEventHandler(this);
 		memberPage.addNavigationEventHandler(this);
 		
@@ -197,7 +198,10 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 	
 	@Override
 	public void onFileSelected(FileSelectEvent event) {
-		Window.open("downloadFile?filePath=" + event.getSelectedFile().getFilePath() + "&action=download", "_self", "");									
+		String useridArg = "";
+		if(Model.currentUser != null)
+			useridArg = "&userid=" + Model.currentUser.getUserid();
+		Window.open("downloadFile?filePath=" + event.getSelectedFile().getFilePath() + "&action=download" + useridArg, "_self", "");									
 	}
 	
 	private void stopPlaying() {
@@ -216,8 +220,12 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 	public void onFilePlay(final FileSelectEvent fileSelectEvent) {
 		stopPlaying();
 		
+		String useridArg = "";
+		if(Model.currentUser != null)
+			useridArg = "&userid=" + Model.currentUser.getUserid();
+		
 		Model.currentPlayingAudioPanel = fileSelectEvent.getOriginator();
-	    Model.currentSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_MPEG_MP3, "downloadFile?filePath=" + fileSelectEvent.getSelectedFile().getFilePath());
+	    Model.currentSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_MPEG_MP3, "downloadFile?filePath=" + fileSelectEvent.getSelectedFile().getFilePath() + useridArg);
 	    Model.currentSound.setLooping(fileSelectEvent.isLooping());
 	    Model.currentSound.play();
 	    
@@ -250,4 +258,5 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		memberPage.setUserDAO(event.getUserDAO());
 		memberPage.update();
 	}
+
 }

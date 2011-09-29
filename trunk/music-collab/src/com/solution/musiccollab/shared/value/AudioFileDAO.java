@@ -1,6 +1,10 @@
 package com.solution.musiccollab.shared.value;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,7 +18,8 @@ public class AudioFileDAO implements Serializable
 	private String fileName;
     private String owner;
     private String filePath;
-    private Boolean allowCommercialUse;
+    private Boolean allowCommercialUse = false;
+    private List<String> userDownloads = new ArrayList<String>();
     
     @Transient
     private UserDAO ownerUserDAO;
@@ -65,6 +70,15 @@ public class AudioFileDAO implements Serializable
 
 	public Boolean getAllowCommercialUse() {
 		return allowCommercialUse;
+	}
+
+	public void addDownload(String userid) {
+		if(!userDownloads.contains(userid))
+			userDownloads.add(userid);
+	}
+
+	public Integer getDownloads() {
+		return userDownloads.size();
 	}
 
 }

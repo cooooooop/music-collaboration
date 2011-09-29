@@ -15,7 +15,7 @@
 		}
 	</ui:style>
 	
-	<g:HorizontalPanel width="30em" height="2em" verticalAlignment="ALIGN_MIDDLE" styleName="{style.main}">
+	<g:HorizontalPanel width="20em" height="2em" verticalAlignment="ALIGN_MIDDLE" styleName="{style.main}">
 		<g:cell width="100%" horizontalAlignment="ALIGN_LEFT">
 	        <g:Label ui:field="nameLabel" styleName="{style.label}"/>
         </g:cell>

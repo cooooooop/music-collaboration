@@ -6,11 +6,13 @@ import java.util.List;
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.solution.musiccollab.shared.event.FileSelectEventHandler;
+import com.solution.musiccollab.shared.event.NavigationEventHandler;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 
 public class AudioFilesList extends CaptionPanel {
 	
 	private ArrayList<FileSelectEventHandler> handlers = new ArrayList<FileSelectEventHandler>();
+	private ArrayList<NavigationEventHandler> navigationHandlers = new ArrayList<NavigationEventHandler>();
 	private List<AudioFileDAO> data;
 	private String caption = "Audio Files";
 	private VerticalPanel list;
@@ -54,5 +56,17 @@ public class AudioFilesList extends CaptionPanel {
     public ArrayList<FileSelectEventHandler> getHandlers() {
     	return handlers;
     }
-	
+    
+    public void addNavigationEventHandler(NavigationEventHandler handler) {
+    	navigationHandlers.add(handler);
+    }
+
+    public void removeNavigationEventHandler(NavigationEventHandler handler) {
+    	navigationHandlers.remove(handler);
+    }
+    
+    public ArrayList<NavigationEventHandler> getNavigationHandlers() {
+    	return navigationHandlers;
+    }
+    
 }
