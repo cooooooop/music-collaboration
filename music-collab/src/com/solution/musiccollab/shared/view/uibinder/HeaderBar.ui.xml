@@ -112,14 +112,6 @@
 					        </g:MenuItem>
 					    </g:MenuBar>
 				        <g:Label ui:field="userLabel" wordWrap="false"/>
-				        <!-- 
-				        TODO: add search/filter
-				        <g:cell width="100%" horizontalAlignment="ALIGN_RIGHT">
-					        <g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" spacing="5">
-						        <g:Label text="Search:"/>
-						        <g:TextBox/>
-					        </g:HorizontalPanel>
-				        </g:cell> -->
 			    	</g:HorizontalPanel>
 				</g:layer>
     		</g:LayoutPanel>

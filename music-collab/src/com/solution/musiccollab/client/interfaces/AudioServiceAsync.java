@@ -11,5 +11,6 @@ public interface AudioServiceAsync {
 	void getAudioByUser(UserDAO user, AsyncCallback<List<AudioFileDAO>> callback);
 	void getAudioFilesLimit(int limit, AsyncCallback<List<AudioFileDAO>> callback);
 	void getAudioData(AudioFileDAO audioFileDAO, AsyncCallback<byte[]> callback);
+	void saveAudioFile(AudioFileDAO audioFileDAO, AsyncCallback<AudioFileDAO> callback);
 
 }

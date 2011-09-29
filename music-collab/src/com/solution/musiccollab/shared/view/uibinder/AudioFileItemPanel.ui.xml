@@ -16,6 +16,13 @@
 		.subtitle
 		{
 			color: #2C53AE;
+			cursor: pointer;
+		}
+		
+		.listens
+		{
+			
+			white-space: nowrap;
 		}
 		
 	</ui:style>
@@ -25,16 +32,21 @@
 	        <g:VerticalPanel spacing="0">
 		        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
 		        <g:Label ui:field="fileOwnerLabel" styleName="{style.subtitle}"/>
-			     <g:HorizontalPanel>
+			     <g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
 			        <g:Button ui:field="downloadButton" text="Download" />
 			        <g:Button ui:field="playStopButton" text="Play"/>
-			        <g:CheckBox ui:field="loopingCheckBox" checked="true" text="Loop"/>
+			        <g:CheckBox ui:field="loopingCheckBox" text="repeat" wordWrap="false"/>
 			     </g:HorizontalPanel>
 	        </g:VerticalPanel>
         </g:cell>
         <g:cell width="100%" horizontalAlignment="ALIGN_RIGHT">
-	        <g:VerticalPanel spacing="0">
-		        <g:HTML ui:field="commercialUseHTML"/>
+	        <g:VerticalPanel spacing="0" height="100%">
+	        	<g:cell width="100%" horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
+			        <g:HTML ui:field="commercialUseHTML"/>
+	        	</g:cell>
+	        	<g:cell width="100%" horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_BOTTOM">
+		        	<g:Label ui:field="downloadsLabel" styleName="{style.listens}"/>
+	        	</g:cell>
 	        </g:VerticalPanel>
         </g:cell>
 	</g:HorizontalPanel>

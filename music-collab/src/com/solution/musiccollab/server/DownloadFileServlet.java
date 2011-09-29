@@ -12,6 +12,7 @@ import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.solution.musiccollab.shared.model.Model;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 
 public class DownloadFileServlet extends HttpServlet {
@@ -24,11 +25,16 @@ public class DownloadFileServlet extends HttpServlet {
         throws ServletException, IOException {
         String filePath = request.getParameter("filePath");
         String action = request.getParameter("action");
+        String userid = request.getParameter("userid");
         
         DAO dao = new DAO();
         
         try {
 			AudioFileDAO audioFileDAO = dao.ofy().query(AudioFileDAO.class).filter("filePath", filePath).get();
+			if(userid != null)
+				audioFileDAO.addDownload(userid);
+			
+			dao.ofy().put(audioFileDAO);
 			
 			BlobKey blobKey = new BlobKey(audioFileDAO.getFilePath());
 			BlobInfo blobInfo =  blobInfoFactory.loadBlobInfo(blobKey);
@@ -36,7 +42,7 @@ public class DownloadFileServlet extends HttpServlet {
 			if(action != null && action.equals("download")) {
 				response.setHeader("Content-Type", "audio/mp3");
 		        response.setHeader("Content-Length", String.valueOf(blobInfo.getSize()));
-				response.setHeader("Content-disposition", "attachment;filename=\"" + audioFileDAO.getFileName() + "\"");
+				response.setHeader("Content-disposition", "attachment;filename=\"" + audioFileDAO.getFileName() + ".mp3\"");
 			}
 			blobService.serve(blobKey, response);
         }

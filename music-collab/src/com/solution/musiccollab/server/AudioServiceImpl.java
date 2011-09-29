@@ -59,5 +59,13 @@ public class AudioServiceImpl extends RemoteServiceServlet implements AudioServi
 		
 		return blobService.fetchData(blobKey, 0, blobInfo.getSize());
 	}
+
+	@Override
+	public AudioFileDAO saveAudioFile(AudioFileDAO audioFileDAO) {
+		DAO dao = new DAO();
+		dao.ofy().put(audioFileDAO);
+		
+		return audioFileDAO;
+	}
 	
 }
