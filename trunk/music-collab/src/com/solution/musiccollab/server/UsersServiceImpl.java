@@ -1,7 +1,5 @@
 package com.solution.musiccollab.server;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.google.appengine.api.users.User;
@@ -21,12 +19,12 @@ public class UsersServiceImpl extends RemoteServiceServlet implements
 
 	public List<UserDAO> getAll() {
 		DAO dao = new DAO();
-		return dao.ofy().query(UserDAO.class).list();
+		return dao.ofy().query(UserDAO.class).order("lastLogin").list();
 	}
 	
 	public List<UserDAO> getUsersLimit(int limit) {
 		DAO dao = new DAO();
-		return dao.ofy().query(UserDAO.class).limit(limit).list();
+		return dao.ofy().query(UserDAO.class).limit(limit).order("lastLogin").list();
 	}
 	
 	public UserDAO getCurrentUser() {

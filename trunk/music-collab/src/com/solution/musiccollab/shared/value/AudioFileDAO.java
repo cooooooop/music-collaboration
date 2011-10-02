@@ -2,6 +2,7 @@ package com.solution.musiccollab.shared.value;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ public class AudioFileDAO implements Serializable
     private String filePath;
     private Boolean allowCommercialUse = false;
     private List<String> userDownloads = new ArrayList<String>();
+    private Date uploadDate;
     
     @Transient
     private UserDAO ownerUserDAO;
@@ -79,6 +81,14 @@ public class AudioFileDAO implements Serializable
 
 	public Integer getDownloads() {
 		return userDownloads.size();
+	}
+
+	public void setUploadDate(Date uploadDate) {
+		this.uploadDate = uploadDate;
+	}
+
+	public Date getUploadDate() {
+		return uploadDate;
 	}
 
 }
