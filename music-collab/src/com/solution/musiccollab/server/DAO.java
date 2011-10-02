@@ -1,5 +1,7 @@
 package com.solution.musiccollab.server;
 
+import java.util.Date;
+
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
@@ -36,6 +38,7 @@ public class DAO extends DAOBase {
         
     	found.setEmail(user.getEmail());
     	found.setNickname(user.getNickname());
+    	found.setLastLogin(new Date());
     	return found;
     }
 }

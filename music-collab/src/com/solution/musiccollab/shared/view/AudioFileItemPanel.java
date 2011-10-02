@@ -3,6 +3,7 @@ package com.solution.musiccollab.shared.view;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -23,9 +24,12 @@ public class AudioFileItemPanel extends Composite {
 	
 	private AudioFilesList parentList;
 	private AudioFileDAO data;
-	
+
 	@UiField
 	Label fileNameLabel;
+	
+	@UiField
+	Label uploadDateLabel;
 	
 	@UiField
 	CheckBox loopingCheckBox;
@@ -66,6 +70,9 @@ public class AudioFileItemPanel extends Composite {
 			downloadsLabel.setText(audioFileDAO.getDownloads() + " listens");
 		
 		fileOwnerLabel.setText(audioFileDAO.getOwnerUserDAO().getNickname());
+		
+		DateTimeFormat fmt = DateTimeFormat.getFormat("MMM dd, yyyy 'at' HH:mm:ss a");
+		uploadDateLabel.setText("uploaded " + fmt.format(audioFileDAO.getUploadDate()));
 		
 		fileOwnerLabel.addClickHandler(new ClickHandler() {
 			

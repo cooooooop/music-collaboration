@@ -13,10 +13,18 @@
 			color: #001C5E;
 		}
 		
+		.upload
+		{
+			color: #4D5D83;
+			font-size: x-small;
+		}
+		
 		.subtitle
 		{
 			color: #2C53AE;
+			font-size: small;
 			cursor: pointer;
+			padding-left: 5;
 		}
 		
 		.listens
@@ -29,10 +37,14 @@
 	
 	<g:HorizontalPanel width="30em" height="3em" styleName="{style.main}">
 		<g:cell width="100%" horizontalAlignment="ALIGN_LEFT">
-	        <g:VerticalPanel spacing="0">
-		        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
+	        <g:VerticalPanel>
+		        <g:HorizontalPanel verticalAlignment="ALIGN_TOP">
+			        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
+			        <g:Label width="1em"/>
+			        <g:Label ui:field="uploadDateLabel" styleName="{style.upload}"/>
+		        </g:HorizontalPanel>
 		        <g:Label ui:field="fileOwnerLabel" styleName="{style.subtitle}"/>
-			     <g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
+			    <g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
 			        <g:Button ui:field="downloadButton" text="Download" />
 			        <g:Button ui:field="playStopButton" text="Play"/>
 			        <g:CheckBox ui:field="loopingCheckBox" text="repeat" wordWrap="false"/>

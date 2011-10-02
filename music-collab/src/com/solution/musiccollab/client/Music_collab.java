@@ -72,8 +72,6 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		rootLayoutPanel.add(bodyDeck);
 		rootLayoutPanel.setWidgetTopBottom(bodyDeck, headerBar.getOffsetHeight(), Unit.PX, 0, Unit.PX);
 
-		onHomeNavigation(null);
-		
 		loadCurrentUser();
 		
 	}
@@ -165,6 +163,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 			@Override
 			public void onSuccess(UserDAO result) {
 				Model.currentUser = result;
+				onHomeNavigation(null);
 				updateUI();
 			}
 		});

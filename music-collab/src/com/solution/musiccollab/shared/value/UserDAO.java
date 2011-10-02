@@ -1,9 +1,12 @@
 package com.solution.musiccollab.shared.value;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import com.googlecode.objectify.annotation.Indexed;
 
 @Entity
 public class UserDAO implements Serializable
@@ -14,6 +17,8 @@ public class UserDAO implements Serializable
 	private String userid;
 	private String email;
 	private String nickname;
+	@Indexed
+	private Date lastLogin;
 
 	public UserDAO() {
     	super();
@@ -45,6 +50,14 @@ public class UserDAO implements Serializable
 
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public Date getLastLogin() {
+		return lastLogin;
 	}
 
 }
