@@ -19,7 +19,7 @@
 		    border-right                :   1px solid #999;
 		    background-color            :   #eee;
 		    padding                     :   0 10px;
-		    white-space:				: 	nowrap;
+		    white-space					: 	nowrap;
 		    float						:	right;
 		}
 		.menu .gwt-MenuItem-selected
