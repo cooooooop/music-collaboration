@@ -224,7 +224,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 			useridArg = "&userid=" + Model.currentUser.getUserid();
 		
 		Model.currentPlayingAudioPanel = fileSelectEvent.getOriginator();
-	    Model.currentSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_MPEG_MP3, "downloadFile?filePath=" + fileSelectEvent.getSelectedFile().getFilePath() + useridArg);
+	    Model.currentSound = soundController.createSound(fileSelectEvent.getSelectedFile().getContentType(), "downloadFile?filePath=" + fileSelectEvent.getSelectedFile().getFilePath() + useridArg);
 	    Model.currentSound.setLooping(fileSelectEvent.isLooping());
 	    Model.currentSound.play();
 	    

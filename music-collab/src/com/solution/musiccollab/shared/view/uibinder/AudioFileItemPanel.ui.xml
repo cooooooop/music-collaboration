@@ -47,7 +47,7 @@
 			    <g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
 			        <g:Button ui:field="downloadButton" text="Download" />
 			        <g:Button ui:field="playStopButton" text="Play"/>
-			        <g:CheckBox ui:field="loopingCheckBox" text="repeat" wordWrap="false"/>
+			        <!-- <g:CheckBox ui:field="loopingCheckBox" text="repeat" wordWrap="false"/> -->
 			     </g:HorizontalPanel>
 	        </g:VerticalPanel>
         </g:cell>

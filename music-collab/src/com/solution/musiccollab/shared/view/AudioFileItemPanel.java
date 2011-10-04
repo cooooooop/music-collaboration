@@ -31,8 +31,8 @@ public class AudioFileItemPanel extends Composite {
 	@UiField
 	Label uploadDateLabel;
 	
-	@UiField
-	CheckBox loopingCheckBox;
+/*	@UiField
+	CheckBox loopingCheckBox;*/
 	
 	@UiField
 	HTML commercialUseHTML;
@@ -117,14 +117,16 @@ public class AudioFileItemPanel extends Composite {
 			public void onClick(ClickEvent event) {
 				if(playing) {
 					for(FileSelectEventHandler handler : parentList.getHandlers()) {
-						handler.onFileStop(new FileSelectEvent(data, loopingCheckBox.getValue(), AudioFileItemPanel.this));
+//						handler.onFileStop(new FileSelectEvent(data, loopingCheckBox.getValue(), AudioFileItemPanel.this));
+						handler.onFileStop(new FileSelectEvent(data, false, AudioFileItemPanel.this));
 			        }
 					
 					setPlayStopStatus(playing = false);
 				}
 				else {
 					for(FileSelectEventHandler handler : parentList.getHandlers()) {
-						handler.onFilePlay(new FileSelectEvent(data, loopingCheckBox.getValue(), AudioFileItemPanel.this));
+//						handler.onFilePlay(new FileSelectEvent(data, loopingCheckBox.getValue(), AudioFileItemPanel.this));
+						handler.onFilePlay(new FileSelectEvent(data, false, AudioFileItemPanel.this));
 			        }
 					
 					setPlayStopStatus(playing = true);
@@ -134,7 +136,8 @@ public class AudioFileItemPanel extends Composite {
 	}
 	
 	public void setPlayStopStatus(boolean playing) {
-		if(playing)
+		this.playing = playing;
+		if(this.playing)
 			playStopButton.setText("Stop");
 		else
 			playStopButton.setText("Play");
