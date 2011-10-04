@@ -22,6 +22,7 @@ public class AudioFileDAO implements Serializable
     private Boolean allowCommercialUse = false;
     private List<String> userDownloads = new ArrayList<String>();
     private Date uploadDate;
+    private String contentType;
     
     @Transient
     private UserDAO ownerUserDAO;
@@ -89,6 +90,14 @@ public class AudioFileDAO implements Serializable
 
 	public Date getUploadDate() {
 		return uploadDate;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 }

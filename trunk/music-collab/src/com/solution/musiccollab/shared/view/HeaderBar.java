@@ -81,7 +81,7 @@ public class HeaderBar extends Composite implements IUpdatable {
 			
 			@Override
 			public void execute() {
-				Window.open("/uploadFile?message=", "_blank", "width=443,height=274,resizable,scrollbars=yes,status=1");	
+				Window.open("/uploadFile?message=&userid=" + Model.currentUser.getUserid(), "_blank", "width=443,height=274,resizable,scrollbars=yes,status=1");	
 			}
 		});
 		
