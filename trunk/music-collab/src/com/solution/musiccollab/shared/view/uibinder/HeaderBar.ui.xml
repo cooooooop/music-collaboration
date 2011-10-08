@@ -75,13 +75,24 @@
 			background-color: #f00;
 			border: thin;	
 		}
+		
+		.link
+		{
+			color: #2C53AE;
+			font-size: small;
+			cursor: pointer;
+			text-decoration: underline;
+		}
     </ui:style>
         
     <g:LayoutPanel height="8em">
     	<g:layer>
     		<g:LayoutPanel styleName="{style.backgroundColor}">
-		    	<g:layer left="5" right="100">
+		    	<g:layer left="5" width="300">
 			        <g:Label ui:field="titleHeader" text="Jamster Collab" wordWrap="false" styleName="{style.header}"/>
+		    	</g:layer>
+		    	<g:layer right="5" width="300">
+			        <g:Label ui:field="issuesLink" text="Suggestions?" horizontalAlignment="ALIGN_RIGHT" wordWrap="false" styleName="{style.link}"/>
 		    	</g:layer>
 		    	<g:layer left="0" width="100%" bottom='0' height='55'>
 		   			<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_LEFT" spacing="5">

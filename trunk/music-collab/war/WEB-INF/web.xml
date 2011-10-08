@@ -32,6 +32,11 @@
   </servlet>
   
   <servlet>
+    <servlet-name>mixServlet</servlet-name>
+    <servlet-class>com.solution.musiccollab.server.MixServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
     <servlet-name>downloadFileServlet</servlet-name>
     <servlet-class>com.solution.musiccollab.server.DownloadFileServlet</servlet-class>
   </servlet>
@@ -59,6 +64,11 @@
   <servlet-mapping>
     <servlet-name>uploadFileServlet</servlet-name>
     <url-pattern>/uploadFile</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>mixServlet</servlet-name>
+    <url-pattern>/mix</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>

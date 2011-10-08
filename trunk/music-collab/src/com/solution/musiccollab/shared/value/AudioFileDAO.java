@@ -21,15 +21,14 @@ public class AudioFileDAO implements Serializable
     private String filePath;
     private Boolean allowCommercialUse = false;
     private List<String> userDownloads = new ArrayList<String>();
+    private List<String> mixes = new ArrayList<String>();
     private Date uploadDate;
     private String contentType;
     
     @Transient
     private UserDAO ownerUserDAO;
 
-    public AudioFileDAO() {
-    	super();
-    }
+    public AudioFileDAO() { /*empty constructor required for objectify*/ }
     
     public AudioFileDAO(String filePath) {
     	this.setFilePath(filePath);
@@ -97,7 +96,22 @@ public class AudioFileDAO implements Serializable
 	}
 
 	public void setContentType(String contentType) {
-		this.contentType = contentType;
+		if(contentType.equals("audio/mp3"))
+			this.contentType = "audio/mpeg";
+		else
+			this.contentType = contentType;
+	}
+
+	public List<String> getMixes() {
+		return mixes;
+	}
+
+	public void setMixes(List<String> mixes) {
+		this.mixes = mixes;
+	}
+	
+	public void addMix(String mix) {
+		this.mixes.add(mix);
 	}
 
 }

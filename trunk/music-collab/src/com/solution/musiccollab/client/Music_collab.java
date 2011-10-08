@@ -258,4 +258,25 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		memberPage.update();
 	}
 
+	@Override
+	public void onUploadNavigation(NavigationEvent event) {
+		Window.open("/uploadFile?message=&userid=" + event.getUserDAO().getUserid(), "_blank", "width=443,height=274,resizable,scrollbars=yes,status=1");	
+	}
+
+	@Override
+	public void onJamNavigation(NavigationEvent event) {
+		Window.open("/mix?message=&userid=" + event.getUserDAO().getUserid() + "&audioFilePath=" + event.getAudioFileDAO().getFilePath(), "_blank", "width=443,height=274,resizable,scrollbars=yes,status=1");	
+	}
+
+	@Override
+	public void onMixPlay(FileSelectEvent event) {
+		String useridArg = "";
+		if(Model.currentUser != null)
+			useridArg = "&userid=" + Model.currentUser.getUserid();
+		
+		Model.currentPlayingAudioPanel = event.getOriginator();
+		Model.currentSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS, "mix?mixName=" + event.getSelectedMix() + useridArg + "&action=play");
+	    Model.currentSound.play();
+	}
+
 }

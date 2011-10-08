@@ -6,4 +6,5 @@ public interface FileSelectEventHandler extends EventHandler {
     void onFileSelected(FileSelectEvent event);
     void onFilePlay(FileSelectEvent event);
     void onFileStop(FileSelectEvent event);
+    void onMixPlay(FileSelectEvent event);
 }

@@ -32,6 +32,9 @@ public class HeaderBar extends Composite implements IUpdatable {
 	
 	@UiField
 	Label titleHeader;
+
+	@UiField
+	Label issuesLink;
 	
 	@UiField
 	Label userLabel;
@@ -81,7 +84,9 @@ public class HeaderBar extends Composite implements IUpdatable {
 			
 			@Override
 			public void execute() {
-				Window.open("/uploadFile?message=&userid=" + Model.currentUser.getUserid(), "_blank", "width=443,height=274,resizable,scrollbars=yes,status=1");	
+				for(NavigationEventHandler handler : handlers) {
+					handler.onUploadNavigation(new NavigationEvent(Model.currentUser));
+		        }
 			}
 		});
 		
@@ -98,6 +103,14 @@ public class HeaderBar extends Composite implements IUpdatable {
 			@Override
 			public void execute() {
 				Window.open("http://code.google.com/p/music-collaboration/", "_blank", "");	
+			}
+		});
+		
+		issuesLink.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Window.open("http://code.google.com/p/music-collaboration/issues/list", "_blank", "");	
 			}
 		});
 		

@@ -6,6 +6,7 @@ import com.google.appengine.api.users.User;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.util.DAOBase;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
+import com.solution.musiccollab.shared.value.MixDAO;
 import com.solution.musiccollab.shared.value.UserDAO;
 
 public class DAO extends DAOBase {
@@ -14,6 +15,7 @@ public class DAO extends DAOBase {
 		try {
 			ObjectifyService.register(AudioFileDAO.class);
 			ObjectifyService.register(UserDAO.class);
+			ObjectifyService.register(MixDAO.class);
 		}
 		catch (Exception e) {
 			e.printStackTrace(); 
@@ -40,5 +42,14 @@ public class DAO extends DAOBase {
     	found.setNickname(user.getNickname());
     	found.setLastLogin(new Date());
     	return found;
+    }
+    
+    public MixDAO getOrCreateMix(String mixName)
+    {
+    	MixDAO found = ofy().find(MixDAO.class, mixName);
+        if (found == null)
+            return new MixDAO(mixName);
+        else
+            return found;
     }
 }
