@@ -8,11 +8,14 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.solution.musiccollab.shared.event.FileSelectEvent;
 import com.solution.musiccollab.shared.event.FileSelectEventHandler;
@@ -41,13 +44,19 @@ public class AudioFileItemPanel extends Composite {
 	Label fileOwnerLabel;
 	
 	@UiField
+	MenuBar jamMenuBar;
+	
+	@UiField
 	Label downloadsLabel;
 	
 	@UiField
 	Button downloadButton;
-	
+
 	@UiField
 	Button playStopButton;
+
+	@UiField
+	Button jamButton;
 	
 	private boolean playing = false;
 	
@@ -74,12 +83,24 @@ public class AudioFileItemPanel extends Composite {
 		DateTimeFormat fmt = DateTimeFormat.getFormat("MMM dd, yyyy 'at' HH:mm:ss a");
 		uploadDateLabel.setText("uploaded " + fmt.format(audioFileDAO.getUploadDate()));
 		
+		for (final String mixName : audioFileDAO.getMixes()) {
+			jamMenuBar.addItem(new MenuItem(mixName, new Command() {
+				
+				@Override
+				public void execute() {
+					for(FileSelectEventHandler handler : parentList.getHandlers()) {
+						handler.onMixPlay(new FileSelectEvent(mixName, false, AudioFileItemPanel.this));
+			        }
+				}
+			}));
+		}
+		
 		fileOwnerLabel.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
 				for(NavigationEventHandler handler : parentList.getNavigationHandlers()) {
-					handler.onMemberPageNavigation(new NavigationEvent(data.getOwnerUserDAO()));
+					handler.onMemberPageNavigation(new NavigationEvent(data));
 		        }
 			}
 		});
@@ -131,6 +152,16 @@ public class AudioFileItemPanel extends Composite {
 					
 					setPlayStopStatus(playing = true);
 				}
+			}
+		});
+		
+		jamButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				for(NavigationEventHandler handler : parentList.getNavigationHandlers()) {
+					handler.onJamNavigation(new NavigationEvent(data));
+		        }
 			}
 		});
 	}

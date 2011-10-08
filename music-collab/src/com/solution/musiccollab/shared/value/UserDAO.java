@@ -20,9 +20,7 @@ public class UserDAO implements Serializable
 	@Indexed
 	private Date lastLogin;
 
-	public UserDAO() {
-    	super();
-    }
+	public UserDAO() { /*empty constructor required for objectify*/ }
     
     public UserDAO(String userid) {
     	this.setUserid(userid);

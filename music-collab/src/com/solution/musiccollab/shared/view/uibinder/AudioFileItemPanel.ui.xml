@@ -2,6 +2,48 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
         xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<ui:style>
+		.menu
+		{
+        	border                      :   1px solid #666;
+    		border-width                :   1px 1px;
+        	cursor: pointer;
+		    margin                      :   0 auto;
+		    font-size                   :   80%;
+		    background-color            :   #eee;
+		}
+		.menu .gwt-MenuItem
+		{
+			cursor: pointer;
+		    border-left                 :   1px solid #999;
+		    border-right                :   1px solid #999;
+		    background-color            :   #eee;
+		    padding                     :   0 10px;
+		    white-space					: 	nowrap;
+		    float						:	right;
+		}
+		.menu .gwt-MenuItem-selected
+		{
+			cursor: pointer;
+		    background-color            :   #ace;
+		    float						:	right;
+		}
+		
+		.login
+		{
+			white-space:nowrap;
+		}
+		
+		.label
+		{
+			white-space: nowrap;
+			color: #222;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-o-user-select: none;
+			user-select: none;
+		}
+		
         .main
 		{
         	border-bottom-style: solid;
@@ -47,6 +89,13 @@
 			    <g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
 			        <g:Button ui:field="downloadButton" text="Download" />
 			        <g:Button ui:field="playStopButton" text="Play"/>
+			        <g:Button ui:field="jamButton" text="Jam!" visible="false"/>
+			        <g:MenuBar ui:field="mainMenuBar" visible="false">
+					        <g:MenuItem ui:field="jamMenuItem" text="Mixes" styleName="{style.login}">
+						        <g:MenuBar ui:field="jamMenuBar" vertical="true" styleName="{style.menu}">
+						        </g:MenuBar>
+					        </g:MenuItem>
+					   </g:MenuBar>
 			        <!-- <g:CheckBox ui:field="loopingCheckBox" text="repeat" wordWrap="false"/> -->
 			     </g:HorizontalPanel>
 	        </g:VerticalPanel>
