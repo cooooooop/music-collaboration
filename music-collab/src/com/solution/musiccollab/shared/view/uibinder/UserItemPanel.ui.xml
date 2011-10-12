@@ -13,11 +13,19 @@
 		{
 			cursor: pointer;	
 		}
+		
+		.login
+		{
+			font-size: x-small;
+		}
 	</ui:style>
 	
 	<g:HorizontalPanel width="20em" height="2em" verticalAlignment="ALIGN_MIDDLE" styleName="{style.main}">
-		<g:cell width="100%" horizontalAlignment="ALIGN_LEFT">
+		<g:cell horizontalAlignment="ALIGN_LEFT">
 	        <g:Label ui:field="nameLabel" styleName="{style.label}"/>
+        </g:cell>
+        <g:cell horizontalAlignment="ALIGN_RIGHT">
+	        <g:Label ui:field="loginLabel" styleName="{style.login}"/>
         </g:cell>
 	</g:HorizontalPanel>
 </ui:UiBinder> 
