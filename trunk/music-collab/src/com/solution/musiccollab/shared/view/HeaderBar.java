@@ -63,6 +63,9 @@ public class HeaderBar extends Composite implements IUpdatable {
 	@UiField
 	MenuItem openSourceMenuItem;
 	
+	@UiField
+	MenuItem directoryMenuItem;
+	
 	@UiTemplate("uibinder/HeaderBar.ui.xml")
 	interface MyUiBinder extends UiBinder<Widget, HeaderBar> { }
 	private static final MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
@@ -120,6 +123,16 @@ public class HeaderBar extends Composite implements IUpdatable {
 			public void onClick(ClickEvent event) {
 				for(NavigationEventHandler handler : handlers) {
 					handler.onHomeNavigation(new NavigationEvent(Model.currentUser));
+		        }
+			}
+		});
+		
+		directoryMenuItem.setCommand(new Command() {
+			
+			@Override
+			public void execute() {
+				for(NavigationEventHandler handler : handlers) {
+					handler.onDirectoryPageNavigation(new NavigationEvent(Model.currentUser));
 		        }
 			}
 		});
