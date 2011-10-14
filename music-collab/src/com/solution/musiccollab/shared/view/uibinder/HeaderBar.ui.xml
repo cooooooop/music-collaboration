@@ -117,7 +117,7 @@
 					        <g:MenuItem text="MEMBERS">
 						        <g:MenuBar vertical="true" styleName="{style.menu}" autoOpen="true">
 							        <g:MenuItem ui:field="loginMembersMenuItem"><div class="{style.label}">Log In/Register</div></g:MenuItem>
-							        <g:MenuItem ui:field="directoryMenuItem"><div class="{style.disabled}">Directory</div></g:MenuItem>
+							        <g:MenuItem ui:field="directoryMenuItem"><div class="{style.label}">Directory</div></g:MenuItem>
 							        <g:MenuItem ui:field="forumMenuItem"><div class="{style.disabled}">Forum</div></g:MenuItem>
 						        </g:MenuBar>
 					        </g:MenuItem>

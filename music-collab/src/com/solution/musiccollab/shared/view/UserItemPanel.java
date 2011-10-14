@@ -56,12 +56,18 @@ public class UserItemPanel extends Composite {
 		int hours = getHoursDiff(today, data.getLastLogin());
 		int mins = getMinsDiff(today, data.getLastLogin());
 		
-		if(days > 0)
+		if(days > 1)
 			return "Last seen: " + days + " days ago";
-		else if(hours > 0)
+		else if(days == 1)
+			return "Last seen: " + days + " day ago";
+		else if(hours > 1)
 			return "Last seen: " + hours + " hours ago";
-		else if(mins > 0)
+		else if(hours == 1)
+			return "Last seen: " + hours + " hour ago";
+		else if(mins > 1)
 			return "Last seen: " + mins + " minutes ago";
+		else if(mins == 1)
+			return "Last seen: " + mins + " minute ago";
 		
 		return "Online now";
 	}

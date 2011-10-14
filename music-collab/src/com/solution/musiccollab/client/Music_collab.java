@@ -28,6 +28,7 @@ import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.UserDAO;
 import com.solution.musiccollab.shared.view.AudioFilesList;
 import com.solution.musiccollab.shared.view.BodyPanel;
+import com.solution.musiccollab.shared.view.DirectoryPage;
 import com.solution.musiccollab.shared.view.HeaderBar;
 import com.solution.musiccollab.shared.view.IUpdatable;
 import com.solution.musiccollab.shared.view.MemberPage;
@@ -47,6 +48,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 	private RootLayoutPanel rootLayoutPanel;
 	private BodyPanel bodyPanel = new BodyPanel();
 	private MemberPage memberPage = new MemberPage();
+	private DirectoryPage directoryPage = new DirectoryPage();
 	private DeckLayoutPanel bodyDeck = new DeckLayoutPanel();
 	
 	public void onModuleLoad() {
@@ -54,6 +56,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		updatableWidgets.add(headerBar);
 		updatableWidgets.add(bodyPanel);
 		updatableWidgets.add(memberPage);
+		updatableWidgets.add(directoryPage);
 		headerBar.addNavigationEventHandler(this);
 		
 		rootLayoutPanel = (RootLayoutPanel) RootLayoutPanel.get();
@@ -61,13 +64,16 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		
 		bodyDeck.add(bodyPanel);
 		bodyDeck.add(memberPage);
+		bodyDeck.add(directoryPage);
 		
 		bodyPanel.getAudioFilesList().addFileSelectEventHandler(this);
 		bodyPanel.getAudioFilesList().addNavigationEventHandler(this);
 		bodyPanel.getUsersList().addNavigationEventHandler(this);
 		memberPage.addNavigationEventHandler(this);
+		directoryPage.addNavigationEventHandler(this);
 		
 		memberPage.getAudioFilesList().addFileSelectEventHandler(this);
+		directoryPage.getUsersList().addNavigationEventHandler(this);
 		
 		rootLayoutPanel.add(bodyDeck);
 		rootLayoutPanel.setWidgetTopBottom(bodyDeck, headerBar.getOffsetHeight(), Unit.PX, 0, Unit.PX);
@@ -277,6 +283,15 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		Model.currentPlayingAudioPanel = event.getOriginator();
 		Model.currentSound = soundController.createSound(Sound.MIME_TYPE_AUDIO_OGG_VORBIS, "mix?mixName=" + event.getSelectedMix() + useridArg + "&action=play");
 	    Model.currentSound.play();
+	}
+
+	@Override
+	public void onDirectoryPageNavigation(NavigationEvent event) {
+		stopPlaying();
+		
+		bodyDeck.showWidget(directoryPage);
+		getUsersList(directoryPage.getUsersList());
+		directoryPage.update();
 	}
 
 }
