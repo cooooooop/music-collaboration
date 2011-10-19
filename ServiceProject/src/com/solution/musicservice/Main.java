@@ -23,8 +23,10 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		//System.out.println("Hello World");
 		
-		writeBytesToFile("mothaMerge.wav", AudioUtil.merge(motha_reverse_wav, motha_wav));
-		writeBytesToFile("mothaConcat.wav", AudioUtil.concat(motha_reverse_wav, motha_wav));
+		//writeBytesToFile("mothaMerge.wav", AudioUtil.merge(motha_wav, motha_reverse_wav));
+		//writeBytesToFile("mothaConcat.wav", AudioUtil.concat(motha_wav, motha_reverse_wav));
+		//AudioUtil.decodeOgg(motha_ogg);
+		AudioUtil.decodeMp3(motha_mp3);
 	}
 	
 	// Returns the contents of the file in a byte array.
