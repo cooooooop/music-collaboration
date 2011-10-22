@@ -53,6 +53,8 @@
 		.title
 		{
 			color: #001C5E;
+			white-space: nowrap;
+			
 		}
 		
 		.upload
@@ -77,21 +79,16 @@
 		
 	</ui:style>
 	
-	<g:HorizontalPanel width="30em" height="3em" styleName="{style.main}">
+	<g:HorizontalPanel width="20em" height="3em" styleName="{style.main}">
 		<g:cell width="100%" horizontalAlignment="ALIGN_LEFT">
 	        <g:VerticalPanel>
 		        <g:HorizontalPanel verticalAlignment="ALIGN_TOP">
-			        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
-			        <g:Label width="1em"/>
-			        <g:Label ui:field="uploadDateLabel" styleName="{style.upload}"/>
+			        <g:Label ui:field="titleLabel" styleName="{style.title}"/>
 		        </g:HorizontalPanel>
 		        <g:Label ui:field="fileOwnerLabel" styleName="{style.subtitle}"/>
 			    <g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
 			        <g:Button ui:field="downloadButton" text="Download" />
 			        <g:Button ui:field="playStopButton" text="Play"/>
-			        <g:Button ui:field="jamButton" text="Editor"/>
-			        <g:Button ui:field="deleteButton" text="Delete"/>
-			        <!-- <g:CheckBox ui:field="loopingCheckBox" text="repeat" wordWrap="false"/> -->
 			     </g:HorizontalPanel>
 	        </g:VerticalPanel>
         </g:cell>
@@ -101,7 +98,7 @@
 			        <g:HTML ui:field="commercialUseHTML"/>
 	        	</g:cell>
 	        	<g:cell width="100%" horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_BOTTOM">
-		        	<g:Label ui:field="downloadsLabel" styleName="{style.listens}"/>
+			        <g:Button ui:field="addToMixButton" text="Add To Mix"/>
 	        	</g:cell>
 	        </g:VerticalPanel>
         </g:cell>

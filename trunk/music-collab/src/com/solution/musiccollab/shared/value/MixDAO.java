@@ -7,23 +7,38 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @SuppressWarnings("serial")
 @Entity
 public class MixDAO implements Serializable
 {
     @Id
+    private String uniqueID;
 	private String mixName;
     private String owner;
     private List<String> userDownloads = new ArrayList<String>();
     private List<String> samplePathList = new ArrayList<String>();
     private Date createDate;
+    private String contentType = "audio/wav";
+    
+    @Transient
+    private UserDAO ownerUserDAO;
     
     public MixDAO() { /*empty constructor required for objectify*/ }
     
-    public MixDAO(String mixName) {
-    	this.mixName = mixName;
+    public MixDAO(String uniqueID) {
+    	this.uniqueID = uniqueID;
+    	this.createDate = new Date();
     }
+
+	public String getUniqueID() {
+		return uniqueID;
+	}
+
+	public void setUniqueID(String uniqueID) {
+		this.uniqueID = uniqueID;
+	}
 
 	public String getMixName() {
 		return mixName;
@@ -64,6 +79,10 @@ public class MixDAO implements Serializable
 	public List<String> getUserDownloads() {
 		return userDownloads;
 	}
+	
+	public Integer getDownloads() {
+		return userDownloads.size();
+	}
 
 	public void setUserDownloads(List<String> userDownloads) {
 		this.userDownloads = userDownloads;
@@ -72,6 +91,23 @@ public class MixDAO implements Serializable
 	public void addDownload(String userid) {
 		if(!userDownloads.contains(userid))
 			userDownloads.add(userid);
+	}
+
+	public UserDAO getOwnerUserDAO() {
+		return ownerUserDAO;
+	}
+
+	public void setOwnerUserDAO(UserDAO ownerUserDAO) {
+		this.ownerUserDAO = ownerUserDAO;
+		this.owner = ownerUserDAO.getUserid();
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 }

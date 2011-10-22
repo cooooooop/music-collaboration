@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+        xmlns:g='urn:import:com.google.gwt.user.client.ui'
+        xmlns:s='urn:import:com.solution.musiccollab.shared.view'>
+	<ui:style>
+		.scrollPanel
+		{
+			background-color			:	#4E6BAE;	
+		}
+		
+		.audio
+		{
+		    border-style				:	solid;
+			border-color				:	#001C5E;
+		    background-color            :   #4E6BAE;
+		    display						: 	inline-block;
+		    color						:	#FFF;
+		}
+		
+		.upload
+		{
+			color: #4D5D83;
+			font-size: x-small;
+		}
+		
+		.subtitle
+		{
+			color: #2C53AE;
+			font-size: small;
+			cursor: pointer;
+			padding-left: 5;
+		}
+		
+		.listens
+		{
+			
+			white-space: nowrap;
+		}
+		
+		.title
+		{
+			color: #001C5E;
+		}
+		
+	</ui:style>
+	
+	
+	<g:ScrollPanel styleName="{style.scrollPanel}">
+    	<g:HorizontalPanel width="100%" >
+	    	<g:VerticalPanel width="100%">
+		        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
+		        <g:Label ui:field="uploadDateLabel" styleName="{style.upload}"/>
+	        	<g:Label ui:field="fileOwnerLabel" styleName="{style.subtitle}"/>
+	        	<g:HorizontalPanel>
+			        <g:Button ui:field="downloadButton" text="Download" />
+			        <g:Button ui:field="playStopButton" text="Play"/>
+			        <g:Button ui:field="saveButton" text="Save"/>
+	        	</g:HorizontalPanel>
+	        	<g:Label ui:field="downloadsLabel" styleName="{style.listens}"/>
+	    	</g:VerticalPanel>
+   			<s:MixerList ui:field="mixerList" styleName="{style.audio}" visible="false"/>
+   			<s:AudioFilesList ui:field="audioFilesList" styleName="{style.audio}" visible="false"/>
+	   	</g:HorizontalPanel>
+	</g:ScrollPanel>
+</ui:UiBinder> 

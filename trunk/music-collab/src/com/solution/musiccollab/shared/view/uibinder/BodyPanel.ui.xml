@@ -8,18 +8,9 @@
 			background-color			:	#4E6BAE;	
 		}
 	
-		.users
+		.list
 		{
 			border-style				:	solid;
-			border-color				:	#001C5E;
-		    background-color            :   #4E6BAE;
-		    display						: 	inline-block;
-		    color						:	#FFF;
-		}
-		
-		.audio
-		{
-		    border-style				:	solid;
 			border-color				:	#001C5E;
 		    background-color            :   #4E6BAE;
 		    display						: 	inline-block;
@@ -31,8 +22,11 @@
 	
 	<g:ScrollPanel styleName="{style.scrollPanel}">
     		<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_CENTER" >
-	    		<s:UsersList ui:field="usersList" styleName="{style.users}" visible="false"/>
-	    		<s:AudioFilesList ui:field="audioFilesList" styleName="{style.audio}" visible="false"/>
+	    		<s:UsersList ui:field="usersList" styleName="{style.list}" visible="false"/>
+	    		<g:VerticalPanel>
+		    		<s:AudioFilesList ui:field="audioFilesList" styleName="{style.list}" visible="false"/>
+		    		<s:MixesList ui:field="mixesList" styleName="{style.list}" visible="false"/>
+	    		</g:VerticalPanel>
     		</g:HorizontalPanel>
 	</g:ScrollPanel>
 </ui:UiBinder> 

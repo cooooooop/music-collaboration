@@ -46,5 +46,19 @@ public class UsersServiceImpl extends RemoteServiceServlet implements
 		DAO dao = new DAO();
 		return dao.ofy().query(AudioFileDAO.class).filter("owner", user.getUserid()).list();
 	}
+
+	@Override
+	public UserDAO saveUser(UserDAO userDAO) {
+		DAO dao = new DAO();
+		dao.ofy().put(userDAO);
+		return userDAO;
+	}
+
+	@Override
+	public Boolean deleteUser(UserDAO userDAO) {
+		DAO dao = new DAO();
+		dao.ofy().delete(userDAO);
+		return true;
+	}
 	
 }
