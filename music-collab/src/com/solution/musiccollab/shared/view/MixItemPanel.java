@@ -25,10 +25,10 @@ import com.solution.musiccollab.shared.event.NavigationEventHandler;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.MixDAO;
 
-public class AudioFileItemPanel extends Composite implements IAudioItemPanel, IDAOEditor {
+public class MixItemPanel extends Composite implements IDAOEditor {
 	
-	private IAudioList parentList;
-	private AudioFileDAO data;
+	private MixesList parentList;
+	private MixDAO data;
 
 	@UiField
 	Label fileNameLabel;
@@ -62,62 +62,63 @@ public class AudioFileItemPanel extends Composite implements IAudioItemPanel, ID
 	
 	private boolean playing = false;
 	
-	@UiTemplate("uibinder/AudioFileItemPanel.ui.xml")
-	interface MyUiBinder extends UiBinder<Widget, AudioFileItemPanel> { }
+	@UiTemplate("uibinder/MixItemPanel.ui.xml")
+	interface MyUiBinder extends UiBinder<Widget, MixItemPanel> { }
 	private static final MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
-	public AudioFileItemPanel() {
+	public MixItemPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-	public void setupPanel(IAudioList parent, AudioFileDAO audioFileDAO) {
+	public void setupPanel(MixesList parent, MixDAO mixDAO) {
 		this.parentList = parent;
-		this.data = audioFileDAO;
+		this.data = mixDAO;
 		
-		fileNameLabel.setText(audioFileDAO.getFileName());
-		if(audioFileDAO.getDownloads() == 1)
-			downloadsLabel.setText(audioFileDAO.getDownloads() + " listen");
+		fileNameLabel.setText(mixDAO.getMixName());
+		if(mixDAO.getDownloads() == 1)
+			downloadsLabel.setText(mixDAO.getDownloads() + " listen");
 		else
-			downloadsLabel.setText(audioFileDAO.getDownloads() + " listens");
+			downloadsLabel.setText(mixDAO.getDownloads() + " listens");
 		
-		fileOwnerLabel.setText(audioFileDAO.getOwnerUserDAO().getNickname());
+		fileOwnerLabel.setText(mixDAO.getOwnerUserDAO().getNickname());
 		
 		DateTimeFormat fmt = DateTimeFormat.getFormat("MMM dd, yyyy 'at' HH:mm:ss a");
-		uploadDateLabel.setText("uploaded " + fmt.format(audioFileDAO.getUploadDate()));
+		uploadDateLabel.setText("created " + fmt.format(mixDAO.getCreateDate()));
 		
 		fileOwnerLabel.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
 				for(NavigationEventHandler handler : parentList.getNavigationHandlers()) {
-					handler.onMemberPageNavigation(new NavigationEvent(data));
+					handler.onMemberPageNavigation(new NavigationEvent(data.getOwnerUserDAO()));
 		        }
 			}
 		});
-		
-		if(audioFileDAO.getAllowCommercialUse() != null && audioFileDAO.getAllowCommercialUse())
-			commercialUseHTML.setHTML(new SafeHtml() {
-				
-				@Override
-				public String asString() {
-					return "<a rel=\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\" target=\"_blank\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by/3.0/80x15.png\" /></a";
-				}
-			});
-		else
-			commercialUseHTML.setHTML(new SafeHtml() {
-				
-				@Override
-				public String asString() {
-					return "<a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc/3.0/\" target=\"_blank\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc/3.0/80x15.png\" /></a";
-				}
-			});
+
+		//TODO: use most restrictive license of all related audiofiles
+//		if(audioFileDAO.getAllowCommercialUse() != null && audioFileDAO.getAllowCommercialUse())
+//			commercialUseHTML.setHTML(new SafeHtml() {
+//				
+//				@Override
+//				public String asString() {
+//					return "<a rel=\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\" target=\"_blank\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by/3.0/80x15.png\" /></a";
+//				}
+//			});
+//		else
+//			commercialUseHTML.setHTML(new SafeHtml() {
+//				
+//				@Override
+//				public String asString() {
+//					return "<a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc/3.0/\" target=\"_blank\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc/3.0/80x15.png\" /></a";
+//				}
+//			});
 
 		downloadButton.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
 				for(FileSelectEventHandler handler : parentList.getHandlers()) {
-					handler.onFileSelected(new FileSelectEvent(data, false, AudioFileItemPanel.this));
+					handler.onMixSelected(new FileSelectEvent(data, false, MixItemPanel.this));
 		        }
 			}
 		});
@@ -128,16 +129,14 @@ public class AudioFileItemPanel extends Composite implements IAudioItemPanel, ID
 			public void onClick(ClickEvent event) {
 				if(playing) {
 					for(FileSelectEventHandler handler : parentList.getHandlers()) {
-//						handler.onFileStop(new FileSelectEvent(data, loopingCheckBox.getValue(), AudioFileItemPanel.this));
-						handler.onFileStop(new FileSelectEvent(data, false, AudioFileItemPanel.this));
+						handler.onMixStop(new FileSelectEvent(data, false, MixItemPanel.this));
 			        }
 					
 					setPlayStopStatus(playing = false);
 				}
 				else {
 					for(FileSelectEventHandler handler : parentList.getHandlers()) {
-//						handler.onFilePlay(new FileSelectEvent(data, loopingCheckBox.getValue(), AudioFileItemPanel.this));
-						handler.onFilePlay(new FileSelectEvent(data, false, AudioFileItemPanel.this));
+						handler.onMixPlay(new FileSelectEvent(data, false, MixItemPanel.this));
 			        }
 					
 					setPlayStopStatus(playing = true);
@@ -155,12 +154,13 @@ public class AudioFileItemPanel extends Composite implements IAudioItemPanel, ID
 			}
 		});
 		
+
 		deleteButton.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
 				for(DAOEventHandler handler : parentList.getDAOEventHandlers()) {
-					handler.onDeleteAudio(new DAOEvent(data, AudioFileItemPanel.this));
+					handler.onDeleteMix(new DAOEvent(data, MixItemPanel.this));
 		        }
 			}
 		});
@@ -176,8 +176,8 @@ public class AudioFileItemPanel extends Composite implements IAudioItemPanel, ID
 
 	@Override
 	public void removeDAO(Object dao) {
-		if(dao instanceof AudioFileDAO) {
-			parentList.removeItem((AudioFileDAO) dao, AudioFileItemPanel.this); 
+		if(dao instanceof MixDAO) {
+			parentList.removeItem((MixDAO) dao, MixItemPanel.this); 
 		}
 	}
 

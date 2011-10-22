@@ -7,7 +7,7 @@ public interface NavigationEventHandler extends EventHandler {
     void onMemberPageNavigation(NavigationEvent event);
     void onDirectoryPageNavigation(NavigationEvent event);
     void onUploadNavigation(NavigationEvent event);
-    void onJamNavigation(NavigationEvent event);
+    void onMixerNavigation(NavigationEvent event);
     void onLoginRequest(NavigationEvent event);
     void onLogoutRequest(NavigationEvent event);
 }

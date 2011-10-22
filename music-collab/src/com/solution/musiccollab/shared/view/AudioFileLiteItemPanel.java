@@ -16,28 +16,20 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
-import com.solution.musiccollab.shared.event.DAOEvent;
-import com.solution.musiccollab.shared.event.DAOEventHandler;
 import com.solution.musiccollab.shared.event.FileSelectEvent;
 import com.solution.musiccollab.shared.event.FileSelectEventHandler;
 import com.solution.musiccollab.shared.event.NavigationEvent;
 import com.solution.musiccollab.shared.event.NavigationEventHandler;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
-import com.solution.musiccollab.shared.value.MixDAO;
 
-public class AudioFileItemPanel extends Composite implements IAudioItemPanel, IDAOEditor {
+public class AudioFileLiteItemPanel extends Composite implements IAudioItemPanel {
 	
 	private IAudioList parentList;
 	private AudioFileDAO data;
+	private MixerPanel mixerPanel;
 
 	@UiField
-	Label fileNameLabel;
-	
-	@UiField
-	Label uploadDateLabel;
-	
-/*	@UiField
-	CheckBox loopingCheckBox;*/
+	Label titleLabel;
 	
 	@UiField
 	HTML commercialUseHTML;
@@ -46,27 +38,21 @@ public class AudioFileItemPanel extends Composite implements IAudioItemPanel, ID
 	Label fileOwnerLabel;
 	
 	@UiField
-	Label downloadsLabel;
-	
-	@UiField
 	Button downloadButton;
 
 	@UiField
 	Button playStopButton;
 
 	@UiField
-	Button jamButton;
+	Button addToMixButton;
 
-	@UiField
-	Button deleteButton;
-	
 	private boolean playing = false;
 	
-	@UiTemplate("uibinder/AudioFileItemPanel.ui.xml")
-	interface MyUiBinder extends UiBinder<Widget, AudioFileItemPanel> { }
+	@UiTemplate("uibinder/AudioFileLiteItemPanel.ui.xml")
+	interface MyUiBinder extends UiBinder<Widget, AudioFileLiteItemPanel> { }
 	private static final MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
-	public AudioFileItemPanel() {
+	public AudioFileLiteItemPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
@@ -74,16 +60,8 @@ public class AudioFileItemPanel extends Composite implements IAudioItemPanel, ID
 		this.parentList = parent;
 		this.data = audioFileDAO;
 		
-		fileNameLabel.setText(audioFileDAO.getFileName());
-		if(audioFileDAO.getDownloads() == 1)
-			downloadsLabel.setText(audioFileDAO.getDownloads() + " listen");
-		else
-			downloadsLabel.setText(audioFileDAO.getDownloads() + " listens");
-		
+		titleLabel.setText(audioFileDAO.getFileName());
 		fileOwnerLabel.setText(audioFileDAO.getOwnerUserDAO().getNickname());
-		
-		DateTimeFormat fmt = DateTimeFormat.getFormat("MMM dd, yyyy 'at' HH:mm:ss a");
-		uploadDateLabel.setText("uploaded " + fmt.format(audioFileDAO.getUploadDate()));
 		
 		fileOwnerLabel.addClickHandler(new ClickHandler() {
 			
@@ -117,7 +95,7 @@ public class AudioFileItemPanel extends Composite implements IAudioItemPanel, ID
 			@Override
 			public void onClick(ClickEvent event) {
 				for(FileSelectEventHandler handler : parentList.getHandlers()) {
-					handler.onFileSelected(new FileSelectEvent(data, false, AudioFileItemPanel.this));
+					handler.onFileSelected(new FileSelectEvent(data, false, AudioFileLiteItemPanel.this));
 		        }
 			}
 		});
@@ -128,16 +106,14 @@ public class AudioFileItemPanel extends Composite implements IAudioItemPanel, ID
 			public void onClick(ClickEvent event) {
 				if(playing) {
 					for(FileSelectEventHandler handler : parentList.getHandlers()) {
-//						handler.onFileStop(new FileSelectEvent(data, loopingCheckBox.getValue(), AudioFileItemPanel.this));
-						handler.onFileStop(new FileSelectEvent(data, false, AudioFileItemPanel.this));
+						handler.onFileStop(new FileSelectEvent(data, false, AudioFileLiteItemPanel.this));
 			        }
 					
 					setPlayStopStatus(playing = false);
 				}
 				else {
 					for(FileSelectEventHandler handler : parentList.getHandlers()) {
-//						handler.onFilePlay(new FileSelectEvent(data, loopingCheckBox.getValue(), AudioFileItemPanel.this));
-						handler.onFilePlay(new FileSelectEvent(data, false, AudioFileItemPanel.this));
+						handler.onFilePlay(new FileSelectEvent(data, false, AudioFileLiteItemPanel.this));
 			        }
 					
 					setPlayStopStatus(playing = true);
@@ -145,25 +121,15 @@ public class AudioFileItemPanel extends Composite implements IAudioItemPanel, ID
 			}
 		});
 		
-		jamButton.addClickHandler(new ClickHandler() {
+		addToMixButton.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				for(NavigationEventHandler handler : parentList.getNavigationHandlers()) {
-					handler.onMixerNavigation(new NavigationEvent(data));
-		        }
+				if(mixerPanel != null)
+					mixerPanel.addToMix(data);
 			}
 		});
 		
-		deleteButton.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				for(DAOEventHandler handler : parentList.getDAOEventHandlers()) {
-					handler.onDeleteAudio(new DAOEvent(data, AudioFileItemPanel.this));
-		        }
-			}
-		});
 	}
 	
 	public void setPlayStopStatus(boolean playing) {
@@ -174,17 +140,12 @@ public class AudioFileItemPanel extends Composite implements IAudioItemPanel, ID
 			playStopButton.setText("Play");
 	}
 
-	@Override
-	public void removeDAO(Object dao) {
-		if(dao instanceof AudioFileDAO) {
-			parentList.removeItem((AudioFileDAO) dao, AudioFileItemPanel.this); 
-		}
+	public MixerPanel getMixerPanel() {
+		return mixerPanel;
 	}
 
-	@Override
-	public void updateDAO(Object dao) {
-		// TODO Auto-generated method stub
-		
+	public void setMixerPanel(MixerPanel mixerPanel) {
+		this.mixerPanel = mixerPanel;
 	}
 	
 }

@@ -33,11 +33,11 @@ public class MixServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     	DAO dao = new DAO();
         String action = req.getParameter("action");
-    	String mixName = req.getParameter("mixName");
+    	String uniqueID = req.getParameter("uniqueID");
     	String userid = req.getParameter("userid");
         
     	if(action != null && action.equals("play")) {
-    		MixDAO mixDAO = dao.ofy().query(MixDAO.class).filter("mixName", mixName).get();
+    		MixDAO mixDAO = dao.ofy().query(MixDAO.class).filter("uniqueID", uniqueID).get();
     		for (String filePath : mixDAO.getSamplePathList()) {
 	    		AudioFileDAO audioFileDAO = dao.ofy().query(AudioFileDAO.class).filter("filePath", filePath).get();
 				if(userid != null)

@@ -44,11 +44,11 @@ public class DAO extends DAOBase {
     	return found;
     }
     
-    public MixDAO getOrCreateMix(String mixName)
+    public MixDAO getOrCreateMix(String uniqueID)
     {
-    	MixDAO found = ofy().find(MixDAO.class, mixName);
+    	MixDAO found = ofy().find(MixDAO.class, uniqueID);
         if (found == null)
-            return new MixDAO(mixName);
+            return new MixDAO(uniqueID);
         else
             return found;
     }
