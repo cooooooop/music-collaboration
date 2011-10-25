@@ -22,6 +22,7 @@ import com.solution.musiccollab.shared.event.FileSelectEvent;
 import com.solution.musiccollab.shared.event.FileSelectEventHandler;
 import com.solution.musiccollab.shared.event.NavigationEvent;
 import com.solution.musiccollab.shared.event.NavigationEventHandler;
+import com.solution.musiccollab.shared.model.Model;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.MixDAO;
 
@@ -154,16 +155,20 @@ public class MixItemPanel extends Composite implements IDAOEditor {
 			}
 		});
 		
-
-		deleteButton.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				for(DAOEventHandler handler : parentList.getDAOEventHandlers()) {
-					handler.onDeleteMix(new DAOEvent(data, MixItemPanel.this));
-		        }
-			}
-		});
+		if(Model.currentUser == null || !Model.currentUser.getUserid().equals(data.getOwner())) {
+			deleteButton.setVisible(false);
+		}
+		else {
+			deleteButton.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					for(DAOEventHandler handler : parentList.getDAOEventHandlers()) {
+						handler.onDeleteMix(new DAOEvent(data, MixItemPanel.this));
+					}
+				}
+			});
+		}
 	}
 	
 	public void setPlayStopStatus(boolean playing) {

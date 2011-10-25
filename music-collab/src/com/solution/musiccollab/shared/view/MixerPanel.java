@@ -116,7 +116,7 @@ public class MixerPanel extends Composite implements IUpdatable, IDAOEditor {
 		});
 	}
 	
-	public IAudioList getMixerList() {
+	public MixerList getMixerList() {
 		return mixerList;
 	}
 	
@@ -139,6 +139,8 @@ public class MixerPanel extends Composite implements IUpdatable, IDAOEditor {
 		
 		if(mixDAO == null)
 			return;
+		
+		mixerList.setMixDAO(mixDAO);
 		
 		fileNameLabel.setText(mixDAO.getMixName());
 
@@ -181,8 +183,7 @@ public class MixerPanel extends Composite implements IUpdatable, IDAOEditor {
 	}
 	
 	public void addToMix(AudioFileDAO audioFileDAO) {
-		mixDAO.addSamplePath(audioFileDAO.getFilePath());
-		mixerList.addItem(audioFileDAO, "MixerItemPanel");
+		mixerList.addItem(mixDAO.addMixDetail(audioFileDAO));
 	}
 	
 	public void setPlayStopStatus(boolean playing) {

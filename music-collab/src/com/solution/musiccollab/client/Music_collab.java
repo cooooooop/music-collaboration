@@ -40,6 +40,7 @@ import com.solution.musiccollab.shared.event.NavigationEventHandler;
 import com.solution.musiccollab.shared.model.Model;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.MixDAO;
+import com.solution.musiccollab.shared.value.MixDetails;
 import com.solution.musiccollab.shared.value.UserDAO;
 import com.solution.musiccollab.shared.view.AudioFileItemPanel;
 import com.solution.musiccollab.shared.view.AudioFileLiteItemPanel;
@@ -51,6 +52,7 @@ import com.solution.musiccollab.shared.view.IAudioList;
 import com.solution.musiccollab.shared.view.IUpdatable;
 import com.solution.musiccollab.shared.view.MemberPage;
 import com.solution.musiccollab.shared.view.MixerItemPanel;
+import com.solution.musiccollab.shared.view.MixerList;
 import com.solution.musiccollab.shared.view.MixerPanel;
 import com.solution.musiccollab.shared.view.MixesList;
 import com.solution.musiccollab.shared.view.UsersList;
@@ -130,19 +132,23 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		});
 	}
 	
-	private void getAudioFilesList(final MixDAO mix, final IAudioList list) {
-		audioService.getAudioFileList(mix, new AsyncCallback<List<AudioFileDAO>>() {
+	private void getMixDetailsList(final MixDAO mix, final MixerList list) {
+		audioService.getMixDetailsList(mix, new AsyncCallback<List<MixDetails>>() {
 			
 			@Override
-			public void onSuccess(List<AudioFileDAO> result) {
-				list.setItems(result, "MixerItemPanel");
+			public void onSuccess(List<MixDetails> result) {
+				mix.setMixDetailsList(result);
+				list.setItems(result);
 				updateUI();
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
+		
 	}
 	
 	private void saveMix(final MixDAO mix) {
@@ -150,7 +156,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 			
 			@Override
 			public void onSuccess(MixDAO result) {
-				getAudioFilesList(result, mixerPanel.getMixerList());
+				getMixDetailsList(result, mixerPanel.getMixerList());
 				mixerPanel.setMixDAO(result);
 				updateUI();
 			}
@@ -372,7 +378,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 	public void onMixerNavigation(final NavigationEvent event) {
 		if(event.getMixDAO() != null) {
 			stopPlaying();
-			getAudioFilesList(event.getMixDAO(), mixerPanel.getMixerList());
+			getMixDetailsList(event.getMixDAO(), mixerPanel.getMixerList());
 			getAudioFilesList(mixerPanel.getAudioList(), "AudioFileLiteItemPanel");
 			mixerPanel.setMixDAO(event.getMixDAO());
 			bodyDeck.showWidget(mixerPanel);
@@ -437,7 +443,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 					@Override
 					public void onClick(ClickEvent e) {
 						MixDAO mixDAO = new MixDAO(null);
-						mixDAO.getSamplePathList().add(event.getAudioFileDAO().getFilePath());
+						mixDAO.addMixDetail(event.getAudioFileDAO());
 						mixDAO.setOwnerUserDAO(event.getUserDAO());
 						mixDAO.setMixName(mixNameTextInput.getText());
 						saveMix(mixDAO);

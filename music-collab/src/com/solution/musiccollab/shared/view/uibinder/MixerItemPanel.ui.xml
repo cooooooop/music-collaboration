@@ -6,6 +6,8 @@
         .main
 		{
 			background-color: #00CC33;
+			border                      :   1px solid #000;
+    		border-width                :   1px 1px;
 		}
 		
 		.title
@@ -13,10 +15,28 @@
 			color: #001C5E;
 		}
 		
+		.labels
+		{
+			color: #FFF;
+			white-space: nowrap;
+			font-size: x-small;
+		}
+		
 		
 	</ui:style>
 	
 	<g:HorizontalPanel width="30em" height="3em" styleName="{style.main}">
-        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
+		<g:VerticalPanel>
+	        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
+	        <g:HorizontalPanel>
+		        <g:Label text="Start Time" styleName="{style.labels}"/>
+		        <g:TextBox ui:field="startTimeTextBox" width="1em"/>
+		        <g:Label text="Trim Start Time" styleName="{style.labels}"/>
+		        <g:TextBox ui:field="trimStartTimeTextBox" width="1em"/>
+		        <g:Label text="Trim End Time" styleName="{style.labels}"/>
+		        <g:TextBox ui:field="trimEndTimeTextBox" width="1em"/>
+	        
+	        </g:HorizontalPanel>
+		</g:VerticalPanel>
 	</g:HorizontalPanel>
 </ui:UiBinder> 
