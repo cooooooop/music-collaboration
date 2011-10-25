@@ -24,6 +24,8 @@ public class AudioFileDAO implements Serializable
     private List<String> mixes = new ArrayList<String>();
     private Date uploadDate;
     private String contentType;
+    private long fileSize;
+    private int bitrate;
     
     @Transient
     private UserDAO ownerUserDAO;
@@ -112,6 +114,22 @@ public class AudioFileDAO implements Serializable
 	
 	public void addMix(String mix) {
 		this.mixes.add(mix);
+	}
+
+	public long getFileSize() {
+		return fileSize;
+	}
+
+	public void setFileSize(long fileSize) {
+		this.fileSize = fileSize;
+	}
+
+	public int getBitrate() {
+		return bitrate;
+	}
+
+	public void setBitrate(int bitrate) {
+		this.bitrate = bitrate;
 	}
 
 }

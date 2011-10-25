@@ -2,6 +2,8 @@ package com.solution.musiccollab.shared.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -12,15 +14,17 @@ import com.solution.musiccollab.shared.event.FileSelectEventHandler;
 import com.solution.musiccollab.shared.event.NavigationEventHandler;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.MixDAO;
+import com.solution.musiccollab.shared.value.MixDetails;
 
-public class MixerList extends CaptionPanel implements IAudioList {
+public class MixerList extends CaptionPanel {
 	
 	private ArrayList<FileSelectEventHandler> handlers = new ArrayList<FileSelectEventHandler>();
 	private ArrayList<NavigationEventHandler> navigationHandlers = new ArrayList<NavigationEventHandler>();
 	private ArrayList<DAOEventHandler> daoHandlers = new ArrayList<DAOEventHandler>();
-	private List<IAudioItemPanel> data;
+	private List<MixerItemPanel> data;
 	private String caption = "Mix Editor";
 	private VerticalPanel list;
+	private MixDAO mixDAO;
 	
 	public MixerList() {
 		
@@ -34,20 +38,20 @@ public class MixerList extends CaptionPanel implements IAudioList {
 		add(list);
 	}
 	
-	public void setItems(List<AudioFileDAO> audioFileDAOs, String itemPanelType) {
+	public void setItems(List<MixDetails> mixDetailsList) {
 		list.clear();
-		data = new ArrayList<IAudioItemPanel>();
-		for (AudioFileDAO audioFileDAO : audioFileDAOs) {
-			IAudioItemPanel panel = (IAudioItemPanel) ClassGenerator.newInstance(itemPanelType);
-			panel.setupPanel(this, audioFileDAO);
+		data = new ArrayList<MixerItemPanel>();
+		for (MixDetails mixDetails : mixDetailsList) {
+			MixerItemPanel panel = new MixerItemPanel();
+			panel.setupPanel(this, mixDetails);
 			list.add((Widget)panel);
 			data.add(panel);
 		}
 	}
 	
-	public void addItem(AudioFileDAO audioFileDAO, String itemPanelType) {
-		IAudioItemPanel panel = (IAudioItemPanel) ClassGenerator.newInstance(itemPanelType);
-		panel.setupPanel(this, audioFileDAO);
+	public void addItem(MixDetails mixDetails) {
+		MixerItemPanel panel = new MixerItemPanel();
+		panel.setupPanel(this, mixDetails);
 		list.add((Widget)panel);
 		data.add(panel);
 	}
@@ -64,7 +68,7 @@ public class MixerList extends CaptionPanel implements IAudioList {
 		return 0;
 	}
 	
-	public List<IAudioItemPanel> getData() {
+	public List<MixerItemPanel> getData() {
 		return data;
 	}
 	
@@ -101,6 +105,14 @@ public class MixerList extends CaptionPanel implements IAudioList {
     }
 	public ArrayList<DAOEventHandler> getDAOEventHandlers() {
 		return daoHandlers;
+	}
+
+	public MixDAO getMixDAO() {
+		return mixDAO;
+	}
+
+	public void setMixDAO(MixDAO mixDAO) {
+		this.mixDAO = mixDAO;
 	}
     
 }

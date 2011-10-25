@@ -21,7 +21,9 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.solution.musiccollab.shared.model.Model;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.MixDAO;
+import com.solution.musiccollab.shared.value.MixDetails;
 
+@Deprecated
 public class MixServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -38,8 +40,8 @@ public class MixServlet extends HttpServlet {
         
     	if(action != null && action.equals("play")) {
     		MixDAO mixDAO = dao.ofy().query(MixDAO.class).filter("uniqueID", uniqueID).get();
-    		for (String filePath : mixDAO.getSamplePathList()) {
-	    		AudioFileDAO audioFileDAO = dao.ofy().query(AudioFileDAO.class).filter("filePath", filePath).get();
+    		for (MixDetails mixDetails : mixDAO.getMixDetailsList()) {
+	    		AudioFileDAO audioFileDAO = dao.ofy().query(AudioFileDAO.class).filter("filePath", mixDetails.getFilePath()).get();
 				if(userid != null)
 					audioFileDAO.addDownload(userid);
 				
@@ -69,14 +71,13 @@ public class MixServlet extends HttpServlet {
 	    	String mixName = req.getParameter("mixName");
 			MixDAO mix = dao.getOrCreateMix(mixName);
 			mix.setOwner(req.getParameter("userid"));
-			mix.addSamplePath(req.getParameter("audioFilePath"));
-			mix.addSamplePath(req.getParameter("fileList"));
+			//mix.addMixDetail(req.getParameter("audioFilePath"));
 			dao.ofy().put(mix);
 			
 			//connect to all related AudioFiles
 			
-			for (String filePath : mix.getSamplePathList()) {
-				AudioFileDAO audioFileDAO = dao.ofy().query(AudioFileDAO.class).filter("filePath", filePath).get();
+			for (MixDetails mixDetails : mix.getMixDetailsList()) {
+				AudioFileDAO audioFileDAO = dao.ofy().query(AudioFileDAO.class).filter("filePath", mixDetails.getFilePath()).get();
 				audioFileDAO.addMix(mix.getMixName());
 				dao.ofy().put(audioFileDAO);
 			}

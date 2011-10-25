@@ -26,17 +26,20 @@ import com.google.appengine.api.files.FileService;
 import com.google.appengine.api.files.FileServiceFactory;
 import com.google.appengine.api.files.FileWriteChannel;
 import com.google.appengine.repackaged.com.google.common.primitives.Bytes;
+import com.solution.musiccollab.client.interfaces.AudioService;
 import com.solution.musiccollab.server.audio.AudioHelper;
 import com.solution.musiccollab.server.audio.AudioUtil;
 import com.solution.musiccollab.shared.model.Model;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.MixDAO;
+import com.solution.musiccollab.shared.value.MixDetails;
 
 public class DownloadFileServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private BlobstoreService blobService = BlobstoreServiceFactory.getBlobstoreService();
 	private BlobInfoFactory blobInfoFactory = new BlobInfoFactory(DatastoreServiceFactory.getDatastoreService());
+	private AudioServiceImpl audioService = new AudioServiceImpl();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
@@ -77,6 +80,7 @@ public class DownloadFileServlet extends HttpServlet {
 				blobService.serve(blobKey, response);
 			}
 			else if(mixDAO != null) {
+				mixDAO.setMixDetailsList(audioService.getMixDetailsList(mixDAO));
 				//assuming merge for now
 				if(userid != null) {
 					mixDAO.addDownload(userid);
@@ -84,16 +88,16 @@ public class DownloadFileServlet extends HttpServlet {
 				}
 				
 				List<byte[]> dataList = new ArrayList<byte[]>();
-				for(String filePath : mixDAO.getSamplePathList()) {
-					BlobKey blobKey = new BlobKey(filePath);
+				for(MixDetails mixDetails : mixDAO.getMixDetailsList()) {
+					BlobKey blobKey = new BlobKey(mixDetails.getFilePath());
 					BlobInfo blobInfo =  blobInfoFactory.loadBlobInfo(blobKey);
-					//byte[] data = blobService.fetchData(blobKey, 0, blobInfo.getSize());
 					byte[] data = fetchData(blobKey, blobInfo);
 					dataList.add(data);
 				}
 				
 				response.setHeader("Content-Type", mixDAO.getContentType());
-				response.setHeader("Content-disposition", "attachment;filename=trythis.wav");
+				//TODO: find out content extension
+				response.setHeader("Content-disposition", "attachment;filename=\"" + mixDAO.getMixName() + ".wav\"");
 				
 				//temporary logic
 				if(dataList.size() == 1) {

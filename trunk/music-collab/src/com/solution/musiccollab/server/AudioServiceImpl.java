@@ -1,11 +1,13 @@
 package com.solution.musiccollab.server;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import com.solution.musiccollab.client.interfaces.AudioService;
+import com.solution.musiccollab.shared.UUID;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.MixDAO;
+import com.solution.musiccollab.shared.value.MixDetails;
 import com.solution.musiccollab.shared.value.UserDAO;
 import com.google.appengine.api.blobstore.BlobInfo;
 import com.google.appengine.api.blobstore.BlobInfoFactory;
@@ -53,9 +55,18 @@ public class AudioServiceImpl extends RemoteServiceServlet implements AudioServi
 		}
 	}
 	
+	private void attachTransientDataMixDetails(List<MixDetails> rawList) {
+		DAO dao = new DAO();
+		for(MixDetails mixDetails : rawList) {
+			mixDetails.setAudioFile(dao.ofy().query(AudioFileDAO.class).filter("filePath", mixDetails.getFilePath()).get());
+		}
+	}
+	
 	private void attachTransientData(MixDAO mixDAO) {
 		DAO dao = new DAO();
 		mixDAO.setOwnerUserDAO(dao.ofy().query(UserDAO.class).filter("userid", mixDAO.getOwner()).get());
+		List<MixDetails> list = dao.ofy().query(MixDetails.class).filter("uniqueID in", mixDAO.getMixDetailsIDList()).list();
+		mixDAO.setMixDetailsList(dao.ofy().query(MixDetails.class).filter("uniqueID in", mixDAO.getMixDetailsIDList()).list());
 	}
 
 	@Override
@@ -68,10 +79,11 @@ public class AudioServiceImpl extends RemoteServiceServlet implements AudioServi
 	}
 	
 	@Override
-	public List<AudioFileDAO> getAudioFileList(MixDAO mixDAO) {
+	public List<MixDetails> getMixDetailsList(MixDAO mixDAO) {
 		DAO dao = new DAO();
-		List<AudioFileDAO> rawList = dao.ofy().query(AudioFileDAO.class).filter("filePath in", mixDAO.getSamplePathList()).list();
-		attachTransientData(rawList);
+		
+		List<MixDetails> rawList = dao.ofy().query(MixDetails.class).filter("uniqueID in", mixDAO.getMixDetailsIDList()).list();
+		attachTransientDataMixDetails(rawList);
 		return rawList;
 	}
 
@@ -88,13 +100,28 @@ public class AudioServiceImpl extends RemoteServiceServlet implements AudioServi
 		DAO dao = new DAO();
 		
 		if(mixDAO.getUniqueID() == null)
-			mixDAO.setUniqueID(UUID.randomUUID().toString());
+			mixDAO.setUniqueID(UUID.uuid());
 			
 		dao.ofy().put(mixDAO);
+		
+		for(MixDetails mixDetails : mixDAO.getMixDetailsList()) {
+			if(mixDetails.delete())
+				deleteMixDetails(mixDetails);
+			else
+				saveMixDetails(mixDetails);
+		}
 		
 		attachTransientData(mixDAO);
 		
 		return mixDAO;
+	}
+	
+	private MixDetails saveMixDetails(MixDetails mixDetails) {
+		DAO dao = new DAO();
+		
+		dao.ofy().put(mixDetails);
+		
+		return mixDetails;
 	}
 
 	@Override
@@ -118,6 +145,12 @@ public class AudioServiceImpl extends RemoteServiceServlet implements AudioServi
 	public Boolean deleteMix(MixDAO mixDAO) {
 		DAO dao = new DAO();
 		dao.ofy().delete(mixDAO);
+		return true;
+	}
+	
+	private Boolean deleteMixDetails(MixDetails mixDetails) {
+		DAO dao = new DAO();
+		dao.ofy().delete(mixDetails);
 		return true;
 	}
 }

@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.MixDAO;
+import com.solution.musiccollab.shared.value.MixDetails;
 import com.solution.musiccollab.shared.value.UserDAO;
 
 @RemoteServiceRelativePath("audio")
@@ -14,8 +15,8 @@ public interface AudioService extends RemoteService {
 	List<AudioFileDAO> getAudioByUser(UserDAO user);
 	List<AudioFileDAO> getAudioFilesLimit(int limit);
 	byte[] getAudioData(AudioFileDAO audioFileDAO);
-	List<AudioFileDAO> getAudioFileList(MixDAO mixDAO);
 	List<MixDAO> getAllMixes();
+	List<MixDetails> getMixDetailsList(MixDAO mixDAO);
 
 	AudioFileDAO saveAudioFile(AudioFileDAO audioFileDAO);
 	MixDAO saveMix(MixDAO mixDAO);

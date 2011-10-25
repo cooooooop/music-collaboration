@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+
+import com.solution.musiccollab.shared.UUID;
 
 @SuppressWarnings("serial")
 @Entity
@@ -18,12 +19,14 @@ public class MixDAO implements Serializable
 	private String mixName;
     private String owner;
     private List<String> userDownloads = new ArrayList<String>();
-    private List<String> samplePathList = new ArrayList<String>();
     private Date createDate;
     private String contentType = "audio/wav";
+    private List<String> mixDetailsIDList = new ArrayList<String>();
     
     @Transient
     private UserDAO ownerUserDAO;
+    @Transient
+    private List<MixDetails> mixDetailsList = new ArrayList<MixDetails>();
     
     public MixDAO() { /*empty constructor required for objectify*/ }
     
@@ -48,16 +51,19 @@ public class MixDAO implements Serializable
 		this.mixName = mixName;
 	}
 
-	public List<String> getSamplePathList() {
-		return samplePathList;
-	}
-
-	public void setSamplePathList(List<String> samplePathList) {
-		this.samplePathList = samplePathList;
+	public MixDetails addMixDetail(AudioFileDAO audioFileDAO) {
+		String detailsID = UUID.uuid();
+		mixDetailsIDList.add(detailsID);
+		
+		MixDetails mixDetails = new MixDetails(detailsID, audioFileDAO);
+		mixDetailsList.add(mixDetails);
+		
+		return mixDetails;
 	}
 	
-	public void addSamplePath(String samplePath) {
-		this.samplePathList.add(samplePath);
+	public void removeMixDetail(MixDetails mixDetails) {
+		this.mixDetailsList.remove(mixDetails);
+		this.mixDetailsIDList.remove(mixDetails.getUniqueID());
 	}
 
 	public String getOwner() {
@@ -108,6 +114,22 @@ public class MixDAO implements Serializable
 
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
+	}
+	
+	public List<String> getMixDetailsIDList() {
+		return mixDetailsIDList;
+	}
+
+	public void setMixDetailsIDList(List<String> mixDetailsIDList) {
+		this.mixDetailsIDList = mixDetailsIDList;
+	}
+
+	public List<MixDetails> getMixDetailsList() {
+		return mixDetailsList;
+	}
+
+	public void setMixDetailsList(List<MixDetails> mixDetailsList) {
+		this.mixDetailsList = mixDetailsList;
 	}
 
 }
