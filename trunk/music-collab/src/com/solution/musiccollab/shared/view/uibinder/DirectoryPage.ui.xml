@@ -26,19 +26,17 @@
 	</ui:style>
 	
 	
-	<g:ScrollPanel styleName="{style.scrollPanel}">
-		<g:VerticalPanel width="100%" height="100%" horizontalAlignment="ALIGN_CENTER">
-	   		<g:VerticalPanel width="100%">
-	    		<g:cell horizontalAlignment="ALIGN_LEFT">
-	    			<g:Label ui:field="userCountLabel"/>
-	    		</g:cell>
-	   			<g:cell horizontalAlignment="ALIGN_LEFT">
-	    			<g:Button ui:field="backButton" text="Back"/>
-	    		</g:cell>
-	   		</g:VerticalPanel>
-	   		<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_CENTER" >
-	    		<s:UsersList ui:field="usersList" styleName="{style.audio}" visible="false"/>
-	   		</g:HorizontalPanel>
-		</g:VerticalPanel>
-	</g:ScrollPanel>
+	<g:VerticalPanel width="100%" height="100%" horizontalAlignment="ALIGN_CENTER">
+   		<g:VerticalPanel width="100%">
+    		<g:cell horizontalAlignment="ALIGN_LEFT">
+    			<g:Label ui:field="userCountLabel"/>
+    		</g:cell>
+   			<g:cell horizontalAlignment="ALIGN_LEFT">
+    			<g:Button ui:field="backButton" text="Back"/>
+    		</g:cell>
+   		</g:VerticalPanel>
+   		<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_CENTER" >
+    		<s:UsersList ui:field="usersList" styleName="{style.audio}" visible="false"/>
+   		</g:HorizontalPanel>
+	</g:VerticalPanel>
 </ui:UiBinder> 

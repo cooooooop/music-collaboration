@@ -11,7 +11,7 @@ import com.solution.musiccollab.shared.value.UserDAO;
 
 @RemoteServiceRelativePath("audio")
 public interface AudioService extends RemoteService {
-	List<AudioFileDAO> getAll();
+	List<AudioFileDAO> getAll(String contentType);
 	List<AudioFileDAO> getAudioByUser(UserDAO user);
 	List<AudioFileDAO> getAudioFilesLimit(int limit);
 	byte[] getAudioData(AudioFileDAO audioFileDAO);
