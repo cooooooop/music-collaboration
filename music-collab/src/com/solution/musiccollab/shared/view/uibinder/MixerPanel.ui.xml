@@ -45,21 +45,19 @@
 	</ui:style>
 	
 	
-	<g:ScrollPanel styleName="{style.scrollPanel}">
-    	<g:HorizontalPanel width="100%" >
-	    	<g:VerticalPanel width="100%">
-		        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
-		        <g:Label ui:field="uploadDateLabel" styleName="{style.upload}"/>
-	        	<g:Label ui:field="fileOwnerLabel" styleName="{style.subtitle}"/>
-	        	<g:HorizontalPanel>
-			        <g:Button ui:field="downloadButton" text="Download" />
-			        <g:Button ui:field="playStopButton" text="Play"/>
-			        <g:Button ui:field="saveButton" text="Save"/>
-	        	</g:HorizontalPanel>
-	        	<g:Label ui:field="downloadsLabel" styleName="{style.listens}"/>
-	    	</g:VerticalPanel>
-   			<s:MixerList ui:field="mixerList" styleName="{style.audio}" visible="false"/>
-   			<s:AudioFilesList ui:field="audioFilesList" styleName="{style.audio}" visible="false"/>
-	   	</g:HorizontalPanel>
-	</g:ScrollPanel>
+   	<g:HorizontalPanel width="100%" >
+    	<g:VerticalPanel width="100%">
+	        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
+	        <g:Label ui:field="uploadDateLabel" styleName="{style.upload}"/>
+        	<g:Label ui:field="fileOwnerLabel" styleName="{style.subtitle}"/>
+        	<g:HorizontalPanel>
+		        <g:Button ui:field="downloadButton" text="Download" />
+		        <g:Button ui:field="playStopButton" text="Play"/>
+		        <g:Button ui:field="saveButton" text="Save"/>
+        	</g:HorizontalPanel>
+        	<g:Label ui:field="downloadsLabel" styleName="{style.listens}"/>
+    	</g:VerticalPanel>
+  			<s:MixerList ui:field="mixerList" styleName="{style.audio}" visible="false"/>
+  			<s:AudioFilesList ui:field="audioFilesList" styleName="{style.audio}" visible="false"/>
+   	</g:HorizontalPanel>
 </ui:UiBinder> 

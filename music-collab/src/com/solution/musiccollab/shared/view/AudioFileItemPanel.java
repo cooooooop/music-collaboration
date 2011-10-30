@@ -146,15 +146,19 @@ public class AudioFileItemPanel extends Composite implements IAudioItemPanel, ID
 			}
 		});
 		
-		jamButton.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				for(NavigationEventHandler handler : parentList.getNavigationHandlers()) {
-					handler.onMixerNavigation(new NavigationEvent(data));
-		        }
-			}
-		});
+		if(data.getContentType().equals("audio/wav")) {
+			jamButton.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					for(NavigationEventHandler handler : parentList.getNavigationHandlers()) {
+						handler.onMixerNavigation(new NavigationEvent(data));
+			        }
+				}
+			});
+		}
+		else
+			jamButton.setVisible(false);
 		
 		if(Model.currentUser == null || !Model.currentUser.getUserid().equals(data.getOwner())) {
 			deleteButton.setVisible(false);

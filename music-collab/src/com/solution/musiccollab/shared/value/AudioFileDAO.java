@@ -100,6 +100,10 @@ public class AudioFileDAO implements Serializable
 	public void setContentType(String contentType) {
 		if(contentType.equals("audio/mp3"))
 			this.contentType = "audio/mpeg";
+		else if(contentType.equals("audio/x-wav"))
+			this.contentType = "audio/wav";
+		else if(contentType.equals("audio/wave"))
+			this.contentType = "audio/wav";
 		else
 			this.contentType = contentType;
 	}

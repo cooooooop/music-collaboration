@@ -25,7 +25,7 @@
 		
 	</ui:style>
 	
-	<g:HorizontalPanel width="30em" height="3em" styleName="{style.main}">
+	<g:HorizontalPanel width="20em" height="3em" styleName="{style.main}">
 		<g:VerticalPanel>
 	        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
 	        <g:HorizontalPanel>

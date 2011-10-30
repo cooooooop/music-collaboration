@@ -3,7 +3,7 @@
         xmlns:g='urn:import:com.google.gwt.user.client.ui'
         xmlns:s='urn:import:com.solution.musiccollab.shared.view'>
 	<ui:style>
-		.scrollPanel
+		.mainPanel
 		{
 			background-color			:	#4E6BAE;	
 		}
@@ -20,13 +20,11 @@
 	</ui:style>
 	
 	
-	<g:ScrollPanel styleName="{style.scrollPanel}">
-    		<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_CENTER" >
-	    		<s:UsersList ui:field="usersList" styleName="{style.list}" visible="false"/>
-	    		<g:VerticalPanel>
-		    		<s:AudioFilesList ui:field="audioFilesList" styleName="{style.list}" visible="false"/>
-		    		<s:MixesList ui:field="mixesList" styleName="{style.list}" visible="false"/>
-	    		</g:VerticalPanel>
-    		</g:HorizontalPanel>
-	</g:ScrollPanel>
+	<g:HorizontalPanel width="100%" height="100%" horizontalAlignment="ALIGN_CENTER" styleName="{style.mainPanel}">
+   		<s:UsersList ui:field="usersList" styleName="{style.list}" visible="false"/>
+   		<g:VerticalPanel>
+    		<s:AudioFilesList ui:field="audioFilesList" styleName="{style.list}" visible="false"/>
+    		<s:MixesList ui:field="mixesList" styleName="{style.list}" visible="false"/>
+   		</g:VerticalPanel>
+	</g:HorizontalPanel>
 </ui:UiBinder> 

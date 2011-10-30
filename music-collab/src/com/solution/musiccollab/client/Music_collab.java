@@ -21,10 +21,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DeckLayoutPanel;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.solution.musiccollab.client.interfaces.AudioService;
@@ -74,6 +76,8 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 	private DirectoryPage directoryPage = new DirectoryPage();
 	private MixerPanel mixerPanel = new MixerPanel();
 	private DeckLayoutPanel bodyDeck = new DeckLayoutPanel();
+	private ScrollPanel scrollPanel = new ScrollPanel();
+	private VerticalPanel innerScrollPanel = new VerticalPanel();
 	
 	public void onModuleLoad() {
 		updatableWidgets = new ArrayList<IUpdatable>();
@@ -85,7 +89,16 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		headerBar.addNavigationEventHandler(this);
 		
 		rootLayoutPanel = (RootLayoutPanel) RootLayoutPanel.get();
-		rootLayoutPanel.add(headerBar);
+		rootLayoutPanel.add(scrollPanel);
+		rootLayoutPanel.setWidgetLeftRight(scrollPanel, 0, Unit.PX, 0, Unit.PX);
+		rootLayoutPanel.setWidgetTopBottom(scrollPanel, 0, Unit.PX, 0, Unit.PX);
+		scrollPanel.add(innerScrollPanel);
+		scrollPanel.getElement().setAttribute("style", scrollPanel.getElement().getAttribute("style") + "background-color:#4E6BAE;");
+
+		innerScrollPanel.add(headerBar);
+		innerScrollPanel.setWidth("100%");
+		innerScrollPanel.setHeight("100%");
+		innerScrollPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
 		
 		bodyDeck.add(bodyPanel);
 		bodyDeck.add(memberPage);
@@ -110,9 +123,9 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		memberPage.getAudioFilesList().addFileSelectEventHandler(this);
 		directoryPage.getUsersList().addNavigationEventHandler(this);
 		
-		rootLayoutPanel.add(bodyDeck);
-		rootLayoutPanel.setWidgetTopBottom(bodyDeck, headerBar.getOffsetHeight(), Unit.PX, 0, Unit.PX);
-
+		innerScrollPanel.add(bodyDeck);
+		bodyDeck.setWidth("55em");
+		
 		loadCurrentUser();
 		
 	}
@@ -167,8 +180,8 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		});
 	}
 	
-	private void getAudioFilesList(final IAudioList list, final String itemPanelType) {
-		audioService.getAll(new AsyncCallback<List<AudioFileDAO>>() {
+	private void getAudioFilesList(final IAudioList list, final String itemPanelType, final String contentType) {
+		audioService.getAll(contentType, new AsyncCallback<List<AudioFileDAO>>() {
 			
 			@Override
 			public void onSuccess(List<AudioFileDAO> result) {
@@ -296,6 +309,8 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		for(IUpdatable updatableWidget : updatableWidgets) {
 			updatableWidget.update();
 		}
+		
+		bodyDeck.setHeight(String.valueOf(bodyDeck.getVisibleWidget().getOffsetHeight()) + "px");
 	}
 
 	@Override
@@ -314,7 +329,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		
 		bodyDeck.showWidget(bodyPanel);
 		getUsersList(bodyPanel.getUsersList());
-		getAudioFilesList(bodyPanel.getAudioFilesList(), "AudioFileItemPanel");
+		getAudioFilesList(bodyPanel.getAudioFilesList(), "AudioFileItemPanel", null);
 		getMixesList(bodyPanel.getMixesList());
 		bodyPanel.update();
 	}
@@ -379,7 +394,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		if(event.getMixDAO() != null) {
 			stopPlaying();
 			getMixDetailsList(event.getMixDAO(), mixerPanel.getMixerList());
-			getAudioFilesList(mixerPanel.getAudioList(), "AudioFileLiteItemPanel");
+			getAudioFilesList(mixerPanel.getAudioList(), "AudioFileLiteItemPanel", "audio/wav");
 			mixerPanel.setMixDAO(event.getMixDAO());
 			bodyDeck.showWidget(mixerPanel);
 		}
@@ -450,7 +465,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 						dialog.hide();
 
 						stopPlaying();
-						getAudioFilesList(mixerPanel.getAudioList(), "AudioFileLiteItemPanel");
+						getAudioFilesList(mixerPanel.getAudioList(), "AudioFileLiteItemPanel", "audio/wav");
 						mixerPanel.setMixDAO(event.getMixDAO());
 						bodyDeck.showWidget(mixerPanel);
 					}

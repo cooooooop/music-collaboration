@@ -6,7 +6,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.allen_sauer.gwt.voices.client.Sound;
 import com.google.appengine.api.blobstore.BlobInfo;
 import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
@@ -25,11 +23,7 @@ import com.google.appengine.api.files.AppEngineFile;
 import com.google.appengine.api.files.FileService;
 import com.google.appengine.api.files.FileServiceFactory;
 import com.google.appengine.api.files.FileWriteChannel;
-import com.google.appengine.repackaged.com.google.common.primitives.Bytes;
-import com.solution.musiccollab.client.interfaces.AudioService;
-import com.solution.musiccollab.server.audio.AudioHelper;
 import com.solution.musiccollab.server.audio.AudioUtil;
-import com.solution.musiccollab.shared.model.Model;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.MixDAO;
 import com.solution.musiccollab.shared.value.MixDetails;
@@ -80,6 +74,10 @@ public class DownloadFileServlet extends HttpServlet {
 				blobService.serve(blobKey, response);
 			}
 			else if(mixDAO != null) {
+				//try to use laoe library - currently generates null pointer
+//				AClip clip = new AClip();
+//				Audio audio = clip.getAudio();
+				
 				mixDAO.setMixDetailsList(audioService.getMixDetailsList(mixDAO));
 				//assuming merge for now
 				if(userid != null) {

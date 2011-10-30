@@ -41,9 +41,13 @@ public class AudioServiceImpl extends RemoteServiceServlet implements AudioServi
 	}
 
 	@Override
-	public List<AudioFileDAO> getAll() {
+	public List<AudioFileDAO> getAll(String contentType) {
 		DAO dao = new DAO();
-		List<AudioFileDAO> rawList = dao.ofy().query(AudioFileDAO.class).list();
+		List<AudioFileDAO> rawList;
+		if(contentType != null)
+			rawList = dao.ofy().query(AudioFileDAO.class).filter("contentType", contentType).list();
+		else
+			rawList = dao.ofy().query(AudioFileDAO.class).list();
 		attachTransientData(rawList);
 		return rawList;
 	}
