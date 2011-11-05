@@ -27,48 +27,17 @@ public class AudioUtil {
 		return audioMixByteArrayOutputStream.toByteArray();
 	}
 	
-//	public static byte[] concat(byte[] sample1, byte[] sample2) {
-//		List<AudioInputStream> audioInputStreamList = new ArrayList<AudioInputStream>();
-//		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(sample1);
-//		AudioInputStream audioInputStream = null;
-//		
-//		try
-//		{
-//			audioInputStream = AudioSystem.getAudioInputStream(byteArrayInputStream);
-//		}
-//		catch (Exception e)
-//		{
-//			e.printStackTrace();
-//		}
-//		
-//		audioInputStreamList.add(audioInputStream);
-//		
-//		byteArrayInputStream = new ByteArrayInputStream(sample2);
-//		audioInputStream = null;
-//		try
-//		{
-//			audioInputStream = AudioSystem.getAudioInputStream(byteArrayInputStream);
-//		}
-//		catch (Exception e)
-//		{
-//			e.printStackTrace();
-//		}
-//		
-//		audioInputStreamList.add(audioInputStream);
-//		
-//		AudioInputStream audioSequenceInputStream = new SequenceAudioInputStream(audioInputStream.getFormat(), audioInputStreamList);
-//		
-//		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//		
-//		try {
-//			AudioSystem.write(audioSequenceInputStream, AudioFileFormat.Type.WAVE, byteArrayOutputStream);
-//		}
-//		catch (IOException e)
-//		{
-//			e.printStackTrace();
-//		}
-//		
-//		return byteArrayOutputStream.toByteArray();
-//	}
+	public static byte[] concat(byte[] sample1, byte[] sample2, String contentType) {
+		List<ByteArrayInputStream> byteArrayInputStreamList = new ArrayList<ByteArrayInputStream>();
+		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(sample1);
+		byteArrayInputStreamList.add(byteArrayInputStream);
+		byteArrayInputStream = new ByteArrayInputStream(sample2);
+		byteArrayInputStreamList.add(byteArrayInputStream);
+		
+		ByteArrayOutputStream audioSequenceInputStream = new SequenceAudioInputStream(contentType, byteArrayInputStreamList);
+		
+		return audioSequenceInputStream.toByteArray();
+
+	}
 	
 }
