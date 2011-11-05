@@ -13,6 +13,8 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
+import com.solution.musiccollab.server.audio.value.WAVSound;
+
 public class AudioMixByteArrayOutputStream extends ByteArrayOutputStream {
 	private List<ByteArrayInputStream> byteArrayInputStreams;
 	private String contentType;
@@ -32,24 +34,32 @@ public class AudioMixByteArrayOutputStream extends ByteArrayOutputStream {
 		
 		int newByte;
 		ByteArrayInputStream input1 = byteArrayInputStreams.get(0);
-		ByteArrayInputStream input2 = byteArrayInputStreams.get(1);
-
-		for(int b = 0; b < 44; b++) {
-			bytes.add(new Byte((byte) input1.read()));
-			input2.read();
-		}
-		
 		while((newByte = input1.read()) != -1) {
-			newByte += input2.read();
 			bytes.add(new Byte((byte) newByte));
 		}
 		
-		byte[] retArray = new byte[bytes.size()];
+		byte[] array = new byte[bytes.size()];
 		for(int i = 0; i < bytes.size(); i++) {
-			retArray[i] = bytes.get(i);
+			array[i] = bytes.get(i);
 		}
 		
-		return retArray;
+		WAVSound wav1 = new WAVSound(array);
+		
+		ByteArrayInputStream input2 = byteArrayInputStreams.get(1);
+
+		bytes = new ArrayList<Byte>();
+		while((newByte = input2.read()) != -1) {
+			bytes.add(new Byte((byte) newByte));
+		}
+		
+		array = new byte[bytes.size()];
+		for(int i = 0; i < bytes.size(); i++) {
+			array[i] = bytes.get(i);
+		}
+		
+		wav1.mix(new WAVSound(array));
+		
+		return wav1.getData();
 	}
 
 }

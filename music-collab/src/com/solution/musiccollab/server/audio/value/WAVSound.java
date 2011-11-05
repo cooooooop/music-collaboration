@@ -190,6 +190,27 @@ public class WAVSound {
 		}
 	}
 	
+	public void mix(WAVSound wavSound) {
+		if(getFormat().equals(wavSound.getFormat()) && getAudioFormat() == wavSound.getAudioFormat()) {
+			List<Byte> bytes = new ArrayList<Byte>();
+			for(int i = 0; i < 44; i++) {
+				bytes.add(data[i]);
+			}
+			
+			byte[] audioData = getAudioData();
+			byte[] wavSoundData = wavSound.getAudioData();
+			for(int i = 0; i < audioData.length; i++) {
+				bytes.add(new Byte(((byte) ((audioData[i] + wavSoundData[i]) / 2))));
+			}
+			
+			data = new byte[bytes.size()];
+			for(int i = 0; i < bytes.size(); i++) {
+				data[i] = bytes.get(i);
+			}
+			
+		}
+	}
+	
 	public String toString() {
 		return "ChunkID: " + getChunkID() + "\n" + 
 			   "ChunkSize: " + getChunkSize() + "\n" + 
