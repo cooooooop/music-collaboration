@@ -48,7 +48,8 @@ String message = (String) request.getParameter("message");
 			<input type="radio" name="ccRadio" value="yes">Yes <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Tell me more...</a>
 			<input type="radio" name="ccRadio" value="no" checked>No <a href="http://creativecommons.org/licenses/by-nc/3.0/" target="_blank">Tell me more...</a><br>
 			<br>
-			<input type="submit" value="Upload"/>
+			<input type="submit" name="btnPreview" value="Preview"/>
+			<input type="submit" name="btnUpload" value="Upload"/>
 			<br>
 			<%= message %>
 			</center>

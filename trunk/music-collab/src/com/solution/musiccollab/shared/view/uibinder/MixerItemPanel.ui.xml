@@ -28,7 +28,7 @@
 	<g:HorizontalPanel width="20em" height="3em" styleName="{style.main}">
 		<g:VerticalPanel>
 	        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
-	        <g:HorizontalPanel>
+	        <g:HorizontalPanel visible="false">
 		        <g:Label text="Start Time" styleName="{style.labels}"/>
 		        <g:TextBox ui:field="startTimeTextBox" width="1em"/>
 		        <g:Label text="Trim Start Time" styleName="{style.labels}"/>
