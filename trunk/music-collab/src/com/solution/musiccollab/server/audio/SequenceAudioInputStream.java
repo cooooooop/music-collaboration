@@ -59,8 +59,6 @@ public class SequenceAudioInputStream extends ByteArrayOutputStream {
 		
 		wav1.add(new WAVSound(array));
 		
-		System.out.println(wav1.toString());
-		
 		return wav1.getData();
 	}
 
