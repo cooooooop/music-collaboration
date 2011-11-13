@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
         xmlns:g='urn:import:com.google.gwt.user.client.ui'
-        xmlns:s='urn:import:com.solution.musiccollab.shared.view'>
+        xmlns:s='urn:import:com.solution.musiccollab.shared.view' xmlns:e="urn:import:com.solution.musiccollab.shared.view.editor">
 	<ui:style>
 		.scrollPanel
 		{
@@ -57,7 +57,10 @@
         	</g:HorizontalPanel>
         	<g:Label ui:field="downloadsLabel" styleName="{style.listens}"/>
     	</g:VerticalPanel>
+    	<e:MixEditor ui:field="mixEditor"/>
+    	<g:VerticalPanel>
   			<s:MixerList ui:field="mixerList" styleName="{style.audio}" visible="false"/>
   			<s:AudioFilesList ui:field="audioFilesList" styleName="{style.audio}" visible="false"/>
+    	</g:VerticalPanel>
    	</g:HorizontalPanel>
 </ui:UiBinder> 

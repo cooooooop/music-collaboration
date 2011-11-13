@@ -57,9 +57,11 @@ public class MixerList extends CaptionPanel {
 	}
 	
 
-	public void removeItem(AudioFileDAO audioFileDAO, IAudioItemPanel audioItemPanel) {
-		list.remove((Widget) audioItemPanel);
-		data.remove(audioFileDAO);
+	public void removeItem(MixDetails mixDetails, MixerItemPanel mixerItemPanel) {
+		list.remove((Widget) mixerItemPanel);
+		data.remove(mixerItemPanel);
+		
+		mixDAO.removeMixDetail(mixDetails);
 	}
 
 	public int getSize() {

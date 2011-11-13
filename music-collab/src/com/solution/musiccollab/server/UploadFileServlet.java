@@ -2,9 +2,7 @@ package com.solution.musiccollab.server;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -18,13 +16,8 @@ import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.solution.musiccollab.server.audio.AudioUtil;
-import com.solution.musiccollab.shared.model.Model;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
-import com.solution.musiccollab.shared.value.MixDetails;
 
 public class UploadFileServlet extends HttpServlet {
 	
@@ -43,7 +36,11 @@ public class UploadFileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //TODO: check contentType of upload, make sure it is valid audio. store contentType for later download
-	    try {
+    	
+    	//TODO: preview action currently stores unused blob, either delete after use or reconfigure the 
+    	//upload JSP to upload data straight to this servlet without the blobstore intermediary
+	    
+    	try {
 	    	
     		Map<String, BlobKey> blobs = blobService.getUploadedBlobs(req);
 	        BlobKey blobKey = blobs.get(blobs.keySet().iterator().next());
@@ -81,6 +78,9 @@ public class UploadFileServlet extends HttpServlet {
 				bos.write(AudioUtil.concat(data, data, blobInfo.getContentType()));
 				bos.flush();
 		        bos.close();
+		        
+		        blobService.delete(blobKey);
+		        
 		    }
 	    }
 	    catch (Exception e) {

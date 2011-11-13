@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.solution.musiccollab.client.interfaces.AudioService;
+import com.solution.musiccollab.server.audio.value.WAVSound;
 import com.solution.musiccollab.shared.UUID;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.MixDAO;
@@ -56,20 +57,37 @@ public class AudioServiceImpl extends RemoteServiceServlet implements AudioServi
 		DAO dao = new DAO();
 		for(AudioFileDAO audioFile : rawList) {
 			audioFile.setOwnerUserDAO(dao.ofy().query(UserDAO.class).filter("userid", audioFile.getOwner()).get());
+			WAVSound audioAsWAV = new WAVSound(getAudioData(audioFile));
+			audioFile.setAudioLength(audioAsWAV.getLengthMillis());
 		}
 	}
 	
 	private void attachTransientDataMixDetails(List<MixDetails> rawList) {
 		DAO dao = new DAO();
 		for(MixDetails mixDetails : rawList) {
-			mixDetails.setAudioFile(dao.ofy().query(AudioFileDAO.class).filter("filePath", mixDetails.getFilePath()).get());
+			AudioFileDAO audioFile = dao.ofy().query(AudioFileDAO.class).filter("filePath", mixDetails.getFilePath()).get();
+			mixDetails.setAudioFile(audioFile);
+			byte[] data = getAudioData(audioFile);
+			
+			int interval = data.length / 300;
+			
+			List<Byte> bytes = new ArrayList<Byte>();
+			for(int i = 0; i < data.length; i += interval) {
+				bytes.add(data[i]);
+			}
+			
+			byte[] array = new byte[bytes.size()];
+			for(int i = 0; i < bytes.size(); i++) {
+				array[i] = bytes.get(i);
+			}
+			
+			mixDetails.setData(array);
 		}
 	}
 	
 	private void attachTransientData(MixDAO mixDAO) {
 		DAO dao = new DAO();
 		mixDAO.setOwnerUserDAO(dao.ofy().query(UserDAO.class).filter("userid", mixDAO.getOwner()).get());
-		List<MixDetails> list = dao.ofy().query(MixDetails.class).filter("uniqueID in", mixDAO.getMixDetailsIDList()).list();
 		mixDAO.setMixDetailsList(dao.ofy().query(MixDetails.class).filter("uniqueID in", mixDAO.getMixDetailsIDList()).list());
 	}
 
@@ -79,7 +97,7 @@ public class AudioServiceImpl extends RemoteServiceServlet implements AudioServi
 		BlobKey blobKey = new BlobKey(audioFileDAO.getFilePath());
 		BlobInfo blobInfo =  blobInfoFactory.loadBlobInfo(blobKey);
 		
-		return blobService.fetchData(blobKey, 0, blobInfo.getSize());
+		return fetchData(blobKey, blobInfo);
 	}
 	
 	@Override
@@ -141,6 +159,8 @@ public class AudioServiceImpl extends RemoteServiceServlet implements AudioServi
 	@Override
 	public Boolean deleteAudioFile(AudioFileDAO audioFileDAO) {
 		DAO dao = new DAO();
+		BlobKey blobKey = new BlobKey(audioFileDAO.getFilePath());
+		blobService.delete(blobKey);
 		dao.ofy().delete(audioFileDAO);
 		return true;
 	}
@@ -157,4 +177,27 @@ public class AudioServiceImpl extends RemoteServiceServlet implements AudioServi
 		dao.ofy().delete(mixDetails);
 		return true;
 	}
+	
+	public byte[] fetchData(BlobKey blobKey, BlobInfo blobInfo) {
+    	int halfMeg = 524288;
+    	byte[] bytes = new byte[(int)blobInfo.getSize()];
+    	
+    	int i = 1;
+    	for(i = 1; i * halfMeg < blobInfo.getSize(); i++) {
+    		byte[] fetched = blobService.fetchData(blobKey, (i - 1) * halfMeg, i * halfMeg - 1);
+    		
+    		for(int j = 0; j < fetched.length; j++) {
+    			bytes[j + (i - 1) * halfMeg] = fetched[j];
+    		}
+    	}
+    	
+    	byte[] fetched = blobService.fetchData(blobKey, (i - 1) * halfMeg, i * halfMeg - 1);
+		
+		for(int j = 0; j < fetched.length; j++) {
+			bytes[j + (i - 1) * halfMeg] = fetched[j];
+		}
+		
+		return bytes;
+
+    }
 }

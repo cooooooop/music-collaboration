@@ -20,6 +20,7 @@ import com.solution.musiccollab.shared.event.NavigationEventHandler;
 import com.solution.musiccollab.shared.model.Model;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.MixDAO;
+import com.solution.musiccollab.shared.view.editor.MixEditor;
 
 public class MixerPanel extends Composite implements IUpdatable, IDAOEditor {
 
@@ -31,6 +32,9 @@ public class MixerPanel extends Composite implements IUpdatable, IDAOEditor {
 	
 	@UiField
 	AudioFilesList audioFilesList;
+	
+	@UiField
+	MixEditor mixEditor;
 	
 	@UiField
 	Label uploadDateLabel;
@@ -126,7 +130,7 @@ public class MixerPanel extends Composite implements IUpdatable, IDAOEditor {
 	
 	@Override
 	public void update() {
-		mixerList.setVisible(mixerList.getSize() > 0);
+//		mixerList.setVisible(mixerList.getSize() > 0);
 		
 		if(audioFilesList.getSize() > 0) {
 			audioFilesList.setVisible(true);
@@ -141,6 +145,7 @@ public class MixerPanel extends Composite implements IUpdatable, IDAOEditor {
 			return;
 		
 		mixerList.setMixDAO(mixDAO);
+		mixEditor.setMixDAO(mixDAO);
 		
 		fileNameLabel.setText(mixDAO.getMixName());
 
@@ -184,6 +189,7 @@ public class MixerPanel extends Composite implements IUpdatable, IDAOEditor {
 	
 	public void addToMix(AudioFileDAO audioFileDAO) {
 		mixerList.addItem(mixDAO.addMixDetail(audioFileDAO));
+		mixEditor.setMixDAO(mixDAO);
 	}
 	
 	public void setPlayStopStatus(boolean playing) {

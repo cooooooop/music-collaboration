@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.solution.musiccollab.server.audio.AudioHelper;
+import com.solution.musiccollab.shared.value.MixDetails;
 
 public class WAVSound {
 
@@ -12,6 +13,19 @@ public class WAVSound {
 	
 	public WAVSound(byte[] data) {
 		this.data = data;
+	}
+	
+	/**
+	 * This constructor uses the mixDetails object to modify the data argument (trim or add silence)
+	 * @param data
+	 * @param mixDetails
+	 */
+	public WAVSound(byte[] data, MixDetails mixDetails) {
+		this.data = data;
+		trim(mixDetails.getTrimStartTime(), mixDetails.getTrimEndTime());
+		if(mixDetails.getStartTime() > 0) {
+			addSilence(mixDetails.getStartTime());
+		}
 	}
 	
 	public String getChunkID() {
@@ -149,9 +163,11 @@ public class WAVSound {
 	}
 	
 	public void setAudioData(byte[] bytes) {
-		for(int i = 44; i < data.length; i++) {
+		for(int i = 44; i < bytes.length; i++) {
 			data[i] = bytes[i - 44];
 		}
+		
+		data = Arrays.copyOfRange(data, 0, 44 + bytes.length);
 	}
 	
 	public byte[] getData() {
@@ -160,6 +176,77 @@ public class WAVSound {
 	
 	public void setData(byte[] bytes) {
 		data = bytes;
+	}
+	
+	public long getLengthMillis() {
+		return new Double(((double) getSubchunk2Size() / (double) getByteRate()) * 1000).longValue();
+	}
+	
+	private void trim(long start, long end) {
+		int startByteSize = new Double(((double) start * (double) getByteRate()) / 1000).intValue();
+		long endDiff = getLengthMillis() - end;
+		int endByteSize = new Double(((double) endDiff * (double) getByteRate()) / 1000).intValue();
+		
+		List<Byte> bytes = new ArrayList<Byte>();
+		byte[] audioData = getAudioData();
+		
+		for(int i = 0; i < 44; i++) {
+			bytes.add(data[i]);
+		}
+		
+		for(int i = startByteSize; i < audioData.length - endByteSize; i++) {
+			bytes.add(audioData[i]);
+		}
+		
+		data = new byte[bytes.size()];
+		for(int i = 0; i < bytes.size(); i++) {
+			data[i] = bytes.get(i);
+		}
+		
+		int chunkSize = getChunkSize();
+		chunkSize -= startByteSize + endByteSize;
+		setChunkSize(AudioHelper.toByta(chunkSize));
+		
+		int subchunk2Size = getSubchunk2Size();
+		subchunk2Size -= startByteSize + endByteSize;
+		setSubchunk2Size(AudioHelper.toByta(subchunk2Size));
+		
+	}
+	
+	private void addSilence(long timeInMillis) {
+		int byteSize = new Double(((double) timeInMillis * (double) getByteRate()) / 1000).intValue();
+		byte[] silence = new byte[byteSize];
+		Arrays.fill(silence, (byte) 0);
+		
+		byte[] wavSoundData = new byte[data.length];
+		for(int i = 0; i < data.length; i++) {
+			wavSoundData[i] = data[i];
+		}
+		
+		setAudioData(silence);
+		
+		List<Byte> bytes = new ArrayList<Byte>();
+		for(int i = 0; i < data.length; i++) {
+			bytes.add(data[i]);
+		}
+		
+		for(int i = 0; i < wavSoundData.length; i++) {
+			bytes.add(wavSoundData[i]);
+		}
+		
+		data = new byte[bytes.size()];
+		for(int i = 0; i < bytes.size(); i++) {
+			data[i] = bytes.get(i);
+		}
+		
+		int chunkSize = getChunkSize();
+		chunkSize += silence.length;
+		setChunkSize(AudioHelper.toByta(chunkSize));
+		
+		int subchunk2Size = getSubchunk2Size();
+		subchunk2Size += silence.length;
+		setSubchunk2Size(AudioHelper.toByta(subchunk2Size));
+			
 	}
 	
 	public void add(WAVSound wavSound) {
@@ -197,16 +284,44 @@ public class WAVSound {
 				bytes.add(data[i]);
 			}
 			
-			byte[] audioData = getAudioData();
-			byte[] wavSoundData = wavSound.getAudioData();
-			for(int i = 0; i < audioData.length; i++) {
-				bytes.add(new Byte(((byte) ((audioData[i] + wavSoundData[i]) / 2))));
+			byte[] longer = getAudioData();
+			byte[] shorter = wavSound.getAudioData();
+			int difference = 0;
+			
+			if(longer.length < shorter.length) {
+				longer = shorter;
+				shorter = getAudioData();
+				difference = longer.length - shorter.length;
+			}
+			
+			double a;
+			double b;
+			byte finalByte;
+			for(int i = 0; i < longer.length; i++) {
+				if(i < shorter.length) {
+					a = ((double) (longer[i] + 128)) / 256;
+					b = ((double) (shorter[i] + 128)) / 256;
+					
+					finalByte = (byte) ((((a + b) - (a * b)) * 256) - 128);
+				
+					bytes.add(new Byte(finalByte));
+				}
+				else
+					bytes.add(longer[i]);
 			}
 			
 			data = new byte[bytes.size()];
 			for(int i = 0; i < bytes.size(); i++) {
 				data[i] = bytes.get(i);
 			}
+			
+			int chunkSize = getChunkSize();
+			chunkSize += difference;
+			setChunkSize(AudioHelper.toByta(chunkSize));
+			
+			int subchunk2Size = getSubchunk2Size();
+			subchunk2Size += difference;
+			setSubchunk2Size(AudioHelper.toByta(subchunk2Size));
 			
 		}
 	}

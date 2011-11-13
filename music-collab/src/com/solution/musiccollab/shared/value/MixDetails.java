@@ -20,11 +20,14 @@ public class MixDetails implements Serializable
 	private long startTime; //time sample begins in the final file
 	private long trimStartTime; //time to start sample relative to sample beginning
 	private long trimEndTime; //time to stop sample relative to sample beginning
+	private long audioLength;
 	private double[] volumeArray; //volume of each byte (0.0 - 1.0), should be same size as sample data array
 	private String channel = CHANNEL_MONO; 
 	
 	@Transient
 	private AudioFileDAO audioFile;
+	@Transient
+	private byte[] data;
 	
 	public MixDetails() { /*empty constructor required for objectify*/ }
 	
@@ -32,6 +35,10 @@ public class MixDetails implements Serializable
 		this.uniqueID = uniqueID;
 		this.filePath = audioFileDAO.getFilePath();
 		this.audioFile = audioFileDAO;
+		startTime = 0;
+		trimStartTime = 0;
+		trimEndTime = audioFileDAO.getAudioLength();
+		audioLength = audioFileDAO.getAudioLength();
 	}
 	
 	public long getStartTime() {
@@ -56,6 +63,14 @@ public class MixDetails implements Serializable
 
 	public void setTrimEndTime(long trimEndTime) {
 		this.trimEndTime = trimEndTime;
+	}
+	
+	public long getAudioLength() {
+		return audioLength;
+	}
+	
+	public void setAudioLength(long audioLength) {
+		this.audioLength = audioLength;
 	}
 
 	public double[] getVolumeArray() {
@@ -104,6 +119,14 @@ public class MixDetails implements Serializable
 
 	public void setAudioFile(AudioFileDAO audioFile) {
 		this.audioFile = audioFile;
+	}
+
+	public byte[] getData() {
+		return data;
+	}
+
+	public void setData(byte[] data) {
+		this.data = data;
 	}
 
 }

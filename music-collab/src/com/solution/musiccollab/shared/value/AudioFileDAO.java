@@ -30,6 +30,9 @@ public class AudioFileDAO implements Serializable
     @Transient
     private UserDAO ownerUserDAO;
 
+    @Transient
+    private long audioLength;
+    
     public AudioFileDAO() { /*empty constructor required for objectify*/ }
     
     public AudioFileDAO(String filePath) {
@@ -134,6 +137,14 @@ public class AudioFileDAO implements Serializable
 
 	public void setBitrate(int bitrate) {
 		this.bitrate = bitrate;
+	}
+
+	public long getAudioLength() {
+		return audioLength;
+	}
+
+	public void setAudioLength(long audioLength) {
+		this.audioLength = audioLength;
 	}
 
 }

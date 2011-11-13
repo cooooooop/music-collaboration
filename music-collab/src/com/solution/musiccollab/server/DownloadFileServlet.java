@@ -74,12 +74,9 @@ public class DownloadFileServlet extends HttpServlet {
 				blobService.serve(blobKey, response);
 			}
 			else if(mixDAO != null) {
-				//try to use laoe library - currently generates null pointer
-//				AClip clip = new AClip();
-//				Audio audio = clip.getAudio();
 				
 				mixDAO.setMixDetailsList(audioService.getMixDetailsList(mixDAO));
-				//assuming merge for now
+				
 				if(userid != null) {
 					mixDAO.addDownload(userid);
 					dao.ofy().put(mixDAO);
@@ -89,7 +86,7 @@ public class DownloadFileServlet extends HttpServlet {
 				for(MixDetails mixDetails : mixDAO.getMixDetailsList()) {
 					BlobKey blobKey = new BlobKey(mixDetails.getFilePath());
 					BlobInfo blobInfo =  blobInfoFactory.loadBlobInfo(blobKey);
-					byte[] data = fetchData(blobKey, blobInfo);
+					byte[] data = audioService.fetchData(blobKey, blobInfo);
 					dataList.add(data);
 				}
 				
@@ -97,13 +94,7 @@ public class DownloadFileServlet extends HttpServlet {
 				//TODO: find out content extension
 				response.setHeader("Content-disposition", "attachment;filename=\"" + mixDAO.getMixName() + ".wav\"");
 				
-				//temporary logic
-				if(dataList.size() == 1) {
-					bos.write(dataList.get(0));
-				}
-				else if(dataList.size() == 2) {
-					bos.write(AudioUtil.merge(dataList.get(0), dataList.get(1), mixDAO.getContentType()));
-				}
+				bos.write(AudioUtil.mix(dataList, mixDAO));
 				
 				bos.flush();
 		        bos.close();
@@ -113,29 +104,6 @@ public class DownloadFileServlet extends HttpServlet {
         catch (Exception e) {
         	throw new ServletException(e);
         }
-    }
-    
-    private byte[] fetchData(BlobKey blobKey, BlobInfo blobInfo) {
-    	int halfMeg = 524288;
-    	byte[] bytes = new byte[(int)blobInfo.getSize()];
-    	
-    	int i = 1;
-    	for(i = 1; i * halfMeg < blobInfo.getSize(); i++) {
-    		byte[] fetched = blobService.fetchData(blobKey, (i - 1) * halfMeg, i * halfMeg - 1);
-    		
-    		for(int j = 0; j < fetched.length; j++) {
-    			bytes[j + (i - 1) * halfMeg] = fetched[j];
-    		}
-    	}
-    	
-    	byte[] fetched = blobService.fetchData(blobKey, (i - 1) * halfMeg, i * halfMeg - 1);
-		
-		for(int j = 0; j < fetched.length; j++) {
-			bytes[j + (i - 1) * halfMeg] = fetched[j];
-		}
-		
-		return bytes;
-
     }
     
     public BlobKey putInBlobStoreString(String fileName, String contentType, byte[] filebytes) throws IOException {

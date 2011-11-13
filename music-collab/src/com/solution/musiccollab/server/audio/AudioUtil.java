@@ -13,6 +13,8 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
+import com.solution.musiccollab.shared.value.MixDAO;
+
 public class AudioUtil {
 	
 	public static byte[] merge(byte[] sample1, byte[] sample2, String contentType) {
@@ -38,6 +40,19 @@ public class AudioUtil {
 		
 		return audioSequenceInputStream.toByteArray();
 
+	}
+	
+	public static byte[] mix(List<byte[]> samples, MixDAO mixDAO) {
+		List<ByteArrayInputStream> byteArrayInputStreamList = new ArrayList<ByteArrayInputStream>();
+		for (byte[] sample : samples) {
+			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(sample);
+			byteArrayInputStreamList.add(byteArrayInputStream);
+		}
+		
+		ByteArrayOutputStream audioSequenceInputStream = new MixAudioInputStream(mixDAO, byteArrayInputStreamList);
+		
+		return audioSequenceInputStream.toByteArray();
+		
 	}
 	
 }
