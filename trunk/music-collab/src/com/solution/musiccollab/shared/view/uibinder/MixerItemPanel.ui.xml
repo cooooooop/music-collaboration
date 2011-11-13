@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-        xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+        xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:c="urn:import:com.google.gwt.canvas.client">
 	<ui:style>
 		
         .main
@@ -26,17 +26,23 @@
 	</ui:style>
 	
 	<g:HorizontalPanel width="20em" height="3em" styleName="{style.main}">
-		<g:VerticalPanel>
-	        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
-	        <g:HorizontalPanel visible="false">
-		        <g:Label text="Start Time" styleName="{style.labels}"/>
-		        <g:TextBox ui:field="startTimeTextBox" width="1em"/>
-		        <g:Label text="Trim Start Time" styleName="{style.labels}"/>
-		        <g:TextBox ui:field="trimStartTimeTextBox" width="1em"/>
-		        <g:Label text="Trim End Time" styleName="{style.labels}"/>
-		        <g:TextBox ui:field="trimEndTimeTextBox" width="1em"/>
-	        
-	        </g:HorizontalPanel>
+		<g:VerticalPanel ui:field="vlist">
+        	<g:cell width="100%" horizontalAlignment="ALIGN_LEFT">
+		        <g:Label ui:field="fileNameLabel" styleName="{style.title}"/>
+	        </g:cell>
+        	<g:cell width="100%" horizontalAlignment="ALIGN_LEFT">
+		        <g:HorizontalPanel>
+			        <g:Label text="S.T." styleName="{style.labels}"/>
+			        <g:TextBox ui:field="startTimeTextBox" width="4em"/>
+			        <g:Label text="T.S.T." styleName="{style.labels}"/>
+			        <g:TextBox ui:field="trimStartTimeTextBox" width="4em"/>
+			        <g:Label text="T.E.T." styleName="{style.labels}"/>
+			        <g:TextBox ui:field="trimEndTimeTextBox" width="4em"/>
+		        </g:HorizontalPanel>
+		    </g:cell>
+	        <g:cell width="100%" horizontalAlignment="ALIGN_RIGHT">
+	        	<g:Button ui:field="btnRemove" text="[x]"/>
+	        </g:cell>
 		</g:VerticalPanel>
 	</g:HorizontalPanel>
 </ui:UiBinder> 

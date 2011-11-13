@@ -26,8 +26,9 @@ String message = (String) request.getParameter("message");
     </script>
 	</head>
 	<body>	
-		Upload any audio file from your computer. For now, only WAV format files can be mixed together and edited.	
-		<form method="POST" action="<%= uploadUrl %>" enctype="multipart/form-data">
+		Upload any audio file from your computer. For now, only WAV format files can be mixed together and edited.
+		Preview will create a file that loops your upload once so you can see if it loops well. After clicking Preview you will need to reopen this window though.
+		<form name="myform" method="POST" action="<%= uploadUrl %>" enctype="multipart/form-data">
 			<table width="100%">
 				<tr>	
 					<td>File</td>

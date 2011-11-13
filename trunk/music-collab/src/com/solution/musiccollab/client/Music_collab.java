@@ -386,7 +386,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 
 	@Override
 	public void onUploadNavigation(NavigationEvent event) {
-		Window.open("/uploadFile?message=&userid=" + event.getUserDAO().getUserid(), "_blank", "width=443,height=274,resizable,scrollbars=yes,status=1");	
+		Window.open("/uploadFile?message=&userid=" + event.getUserDAO().getUserid(), "_blank", "width=444,height=444,resizable,scrollbars=yes,status=1");	
 	}
 
 	@Override
@@ -490,34 +490,56 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 	}
 	
 	@Override
-	public void onMixSelected(FileSelectEvent event) {
-		String useridArg = "";
-		if(Model.currentUser != null)
-			useridArg = "&userid=" + Model.currentUser.getUserid();
-		Window.open("downloadFile?audioid=" + event.getSelectedMix().getUniqueID() + "&action=download" + useridArg, "_self", "");									
+	public void onMixSelected(final FileSelectEvent event) {
+		audioService.saveMix(event.getSelectedMix(), new AsyncCallback<MixDAO>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				//label.setText(SERVER_ERROR);				
+			}
+
+			@Override
+			public void onSuccess(MixDAO result) {
+				String useridArg = "";
+				if(Model.currentUser != null)
+					useridArg = "&userid=" + Model.currentUser.getUserid();
+				Window.open("downloadFile?audioid=" + event.getSelectedMix().getUniqueID() + "&action=download" + useridArg, "_self", "");									
+			}
+		});
 	}
 
 	@Override
-	public void onMixPlay(FileSelectEvent event) {
-		String useridArg = "";
-		if(Model.currentUser != null)
-			useridArg = "&userid=" + Model.currentUser.getUserid();
-		
-		Model.currentPlayingMixerPanel = event.getMixerPanel();
-		Model.currentPlayingMixItemPanel = event.getMixItemPanel();
-		Model.currentSound = soundController.createSound(event.getSelectedMix().getContentType(), "downloadFile?audioid=" + event.getSelectedMix().getUniqueID() + useridArg);
-	    Model.currentSound.play();
-	    
-	    Model.currentSound.addEventHandler(new SoundHandler() {
-			
+	public void onMixPlay(final FileSelectEvent event) {
+		audioService.saveMix(event.getSelectedMix(), new AsyncCallback<MixDAO>() {
+
 			@Override
-			public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
-				event.getLoadState();
+			public void onFailure(Throwable caught) {
+				//label.setText(SERVER_ERROR);				
 			}
-			
+
 			@Override
-			public void onPlaybackComplete(PlaybackCompleteEvent event) {
-				stopPlaying();
+			public void onSuccess(MixDAO result) {
+				String useridArg = "";
+				if(Model.currentUser != null)
+					useridArg = "&userid=" + Model.currentUser.getUserid();
+				
+				Model.currentPlayingMixerPanel = event.getMixerPanel();
+				Model.currentPlayingMixItemPanel = event.getMixItemPanel();
+				Model.currentSound = soundController.createSound(event.getSelectedMix().getContentType(), "downloadFile?audioid=" + event.getSelectedMix().getUniqueID() + useridArg);
+			    Model.currentSound.play();
+			    
+			    Model.currentSound.addEventHandler(new SoundHandler() {
+					
+					@Override
+					public void onSoundLoadStateChange(SoundLoadStateChangeEvent event) {
+						event.getLoadState();
+					}
+					
+					@Override
+					public void onPlaybackComplete(PlaybackCompleteEvent event) {
+						stopPlaying();
+					}
+				});
 			}
 		});
 	}

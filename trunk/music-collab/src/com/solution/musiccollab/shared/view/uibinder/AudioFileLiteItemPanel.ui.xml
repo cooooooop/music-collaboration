@@ -53,6 +53,7 @@
 		.title
 		{
 			color: #001C5E;
+			font-size: small;
 			white-space: nowrap;
 			
 		}
