@@ -52,9 +52,9 @@ public class UserItemPanel extends Composite {
 	
 	private String getLoginText() {
 		Date today = new Date();
-		int days = getDaysDiff(today, data.getLastLogin());
-		int hours = getHoursDiff(today, data.getLastLogin());
-		int mins = getMinsDiff(today, data.getLastLogin());
+		long days = getDaysDiff(today, data.getLastLogin());
+		long hours = getHoursDiff(today, data.getLastLogin());
+		long mins = getMinsDiff(today, data.getLastLogin());
 		
 		if(days > 1)
 			return "Last seen: " + days + " days ago";
@@ -72,17 +72,19 @@ public class UserItemPanel extends Composite {
 		return "Online now";
 	}
 	
-	private int getDaysDiff(Date date1, Date date2) {
-		long temp = Math.abs(date1.getTime() - date2.getTime());
-		return Math.abs(((int)date1.getTime() - (int)date2.getTime()) / (1000 * 60 * 60 * 24));
+	private long getDaysDiff(Date date1, Date date2) {
+		long diff = date1.getTime() - date2.getTime();
+		return diff / (1000 * 60 * 60 * 24);
 	}
 	
-	private int getHoursDiff(Date date1, Date date2) {
-		return Math.abs(((int)date1.getTime() - (int)date2.getTime()) / (1000 * 60 * 60));
+	private long getHoursDiff(Date date1, Date date2) {
+		long diff = date1.getTime() - date2.getTime();
+		return diff / (1000 * 60 * 60);
 	}
 	
-	private int getMinsDiff(Date date1, Date date2) {
-		return Math.abs(((int)date1.getTime() - (int)date2.getTime()) / (1000 * 60));
+	private long getMinsDiff(Date date1, Date date2) {
+		long diff = date1.getTime() - date2.getTime();
+		return diff / (1000 * 60);
 	}
 	
 }
