@@ -33,17 +33,15 @@ public class Sample {
 
 		context.setFillStyle(sampleBGColor);
 
-		if(selected)
-			context.setFillStyle(sampleFGColor);
-		context.fillRect(x1, yOffset + height * (track - 1) + interval * (track - 1), timeAxis.sampleWidth(mixDetails), height);
+		CanvasUtil.drawRoundedRect(context, x1, yOffset + height * (track - 1) + interval * (track - 1), timeAxis.sampleWidth(mixDetails), height, 5);
 		
 		if(selected) {
-			context.setFillStyle(sampleBGColor);
-			context.fillRect(x1 + 2, yOffset + height * (track - 1) + interval * (track - 1) + 2, timeAxis.sampleWidth(mixDetails) - 4, height - 4);
-
 			context.setFillStyle(sampleFGColor);
+			CanvasUtil.drawRoundedRectStroke(context, x1, yOffset + height * (track - 1) + interval * (track - 1), timeAxis.sampleWidth(mixDetails), height, 5);
 			context.fillText("[x]", x1 + timeAxis.sampleWidth(mixDetails) - 20, yOffset + height * (track - 1) + interval * (track - 1) + 15);
 		}
+		
+		//TODO: draw the wave form - probably need to generate image on server instead of sending back data points
 //		if(mixDetails.getData() != null) {
 //			double x = x1;
 //			context.beginPath();

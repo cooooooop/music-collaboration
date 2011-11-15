@@ -54,5 +54,9 @@ public class TimeAxis {
 	public int getHeight() {
 		return height;
 	}
+	
+	public void setLength(long length) {
+		this.length = length;
+	}
 
 }

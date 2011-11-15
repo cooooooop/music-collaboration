@@ -57,7 +57,13 @@
         	</g:HorizontalPanel>
         	<g:Label ui:field="downloadsLabel" styleName="{style.listens}"/>
     	</g:VerticalPanel>
-    	<e:MixEditor ui:field="mixEditor"/>
+    	<g:VerticalPanel width="100%" horizontalAlignment="ALIGN_RIGHT">
+        	<g:HorizontalPanel>
+		        <g:Button ui:field="zoomInButton" text="Zoom In" />
+		        <g:Button ui:field="zoomOutButton" text="Zoom Out"/>
+        	</g:HorizontalPanel>
+    		<e:MixEditor ui:field="mixEditor"/>
+    	</g:VerticalPanel>
     	<g:VerticalPanel>
   			<s:MixerList ui:field="mixerList" styleName="{style.audio}" visible="false"/>
   			<s:AudioFilesList ui:field="audioFilesList" styleName="{style.audio}" visible="false"/>

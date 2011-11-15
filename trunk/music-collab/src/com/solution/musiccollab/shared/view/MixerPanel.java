@@ -56,7 +56,13 @@ public class MixerPanel extends Composite implements IUpdatable, IDAOEditor {
 
 	@UiField
 	Button saveButton;
+	
+	@UiField
+	Button zoomInButton;
 
+	@UiField
+	Button zoomOutButton;
+	
 	private boolean playing = false;
 	
 	private MixDAO mixDAO;
@@ -116,6 +122,22 @@ public class MixerPanel extends Composite implements IUpdatable, IDAOEditor {
 					
 					setPlayStopStatus(playing = true);
 				}
+			}
+		});
+		
+		zoomInButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				mixEditor.increaseZoom();
+			}
+		});
+		
+		zoomOutButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				mixEditor.decreaseZoom();
 			}
 		});
 	}

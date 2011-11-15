@@ -41,7 +41,10 @@ public class MixEditor extends Composite {
 	private boolean mouseDownOverRemove = false;
 	private int action = -1; //0 is move, 1 is trim start, 2 is trim end
 	
-	private TimeAxis timeAxis = new TimeAxis(30000, width);
+	private long[] zoomPositions = new long[] {5000, 15000, 30000, 60000, 300000, 600000};
+	private int zoomIndex = 2;
+	
+	private TimeAxis timeAxis = new TimeAxis(zoomPositions[zoomIndex], width);
 	private List<Sample> samples;
 	
 	public MixEditor() {
@@ -191,6 +194,21 @@ public class MixEditor extends Composite {
 	public void setMixDAO(MixDAO mixDAO) {
 		this.mixDAO = mixDAO;
 		update();
+	}
+	
+	public void decreaseZoom() {
+		if(zoomIndex < zoomPositions.length -1) {
+			zoomIndex++;
+		}
+		
+		timeAxis.setLength(zoomPositions[zoomIndex]);
+	}
+	
+	public void increaseZoom() {
+		if(zoomIndex > 0)
+			zoomIndex--;
+
+		timeAxis.setLength(zoomPositions[zoomIndex]);
 	}
 	
 	private void update() {
