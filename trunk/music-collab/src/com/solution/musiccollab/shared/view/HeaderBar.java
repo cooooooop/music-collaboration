@@ -37,6 +37,9 @@ public class HeaderBar extends Composite implements IUpdatable {
 	Label issuesLink;
 	
 	@UiField
+	Button uploadBtn;
+	
+	@UiField
 	Label userLabel;
 	
 	@UiField
@@ -87,6 +90,16 @@ public class HeaderBar extends Composite implements IUpdatable {
 			
 			@Override
 			public void execute() {
+				for(NavigationEventHandler handler : handlers) {
+					handler.onUploadNavigation(new NavigationEvent(Model.currentUser));
+		        }
+			}
+		});
+		
+		uploadBtn.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
 				for(NavigationEventHandler handler : handlers) {
 					handler.onUploadNavigation(new NavigationEvent(Model.currentUser));
 		        }
@@ -152,6 +165,7 @@ public class HeaderBar extends Composite implements IUpdatable {
 		if(Model.currentUser != null) {
 			userLabel.setText("You are logged in as " + Model.currentUser.getNickname());
 			accountMenuItem.setText("ACCOUNT");
+			uploadBtn.setVisible(true);
 			
 			accountMenuItem.setCommand(null);
 			accountMenuItem.setSubMenu(accountMenuBar);
@@ -162,6 +176,7 @@ public class HeaderBar extends Composite implements IUpdatable {
 			userLabel.setText("");
 			accountMenuItem.setSubMenu(null);
 			accountMenuItem.setText("LOG IN");
+			uploadBtn.setVisible(false);
 			
 			accountMenuItem.setCommand(new Command() {
 				
