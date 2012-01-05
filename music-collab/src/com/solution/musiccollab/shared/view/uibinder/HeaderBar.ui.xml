@@ -121,11 +121,14 @@
 	        </g:VerticalPanel>
         </g:cell>
         <g:cell width="100%" horizontalAlignment="ALIGN_RIGHT">
-	        <g:VerticalPanel spacing="0" height="100%">
-	        	<g:cell width="100%" horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
-			        <g:Label ui:field="issuesLink" text="Suggestions?" horizontalAlignment="ALIGN_RIGHT" wordWrap="false" styleName="{style.link}"/>
+	        <g:HorizontalPanel spacing="5" height="100%" verticalAlignment="ALIGN_BOTTOM">
+	        	<g:cell width="100%">
+			        <g:Label ui:field="issuesLink" text="Suggestions?" wordWrap="false" styleName="{style.link}"/>
 	        	</g:cell>
-	        </g:VerticalPanel>
+	        	<g:cell width="100%">
+			        <g:Button ui:field="uploadBtn" text="Upload File" styleName="{style.login}" visible="false"/>
+	        	</g:cell>
+	        </g:HorizontalPanel>
         </g:cell>
 	</g:HorizontalPanel>
 </ui:UiBinder> 
