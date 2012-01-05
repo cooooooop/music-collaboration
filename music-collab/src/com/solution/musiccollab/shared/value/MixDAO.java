@@ -95,8 +95,7 @@ public class MixDAO implements Serializable
 	}
 	
 	public void addDownload(String userid) {
-		if(!userDownloads.contains(userid))
-			userDownloads.add(userid);
+		userDownloads.add(userid);
 	}
 
 	public UserDAO getOwnerUserDAO() {
