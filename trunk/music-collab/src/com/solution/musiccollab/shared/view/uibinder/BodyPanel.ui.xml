@@ -23,8 +23,8 @@
 	<g:HorizontalPanel width="100%" height="100%" horizontalAlignment="ALIGN_CENTER" styleName="{style.mainPanel}">
    		<s:UsersList ui:field="usersList" styleName="{style.list}" visible="false"/>
    		<g:VerticalPanel>
-    		<s:AudioFilesList ui:field="audioFilesList" styleName="{style.list}" visible="false"/>
     		<s:MixesList ui:field="mixesList" styleName="{style.list}" visible="false"/>
+    		<s:AudioFilesList ui:field="audioFilesList" styleName="{style.list}" visible="false"/>
    		</g:VerticalPanel>
 	</g:HorizontalPanel>
 </ui:UiBinder> 
