@@ -148,4 +148,8 @@ public class AudioFileLiteItemPanel extends Composite implements IAudioItemPanel
 		this.mixerPanel = mixerPanel;
 	}
 	
+	@Override
+	public AudioFileDAO getData() {
+		return data;
+	}
 }

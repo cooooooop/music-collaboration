@@ -16,4 +16,6 @@ public interface UsersService extends RemoteService {
 	
 	UserDAO saveUser(UserDAO userDAO);
 	Boolean deleteUser(UserDAO userDAO);
+	
+	String getUploadURL(String url);
 }

@@ -14,4 +14,6 @@ public interface UsersServiceAsync {
 	
 	void saveUser(UserDAO userDAO, AsyncCallback<UserDAO> callback);
 	void deleteUser(UserDAO userDAO, AsyncCallback<Boolean> callback);
+	
+	void getUploadURL(String url, AsyncCallback<String> callback);
 }
