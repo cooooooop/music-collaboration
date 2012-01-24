@@ -49,6 +49,7 @@ import com.solution.musiccollab.shared.view.AudioFileLiteItemPanel;
 import com.solution.musiccollab.shared.view.AudioFilesList;
 import com.solution.musiccollab.shared.view.BodyPanel;
 import com.solution.musiccollab.shared.view.DirectoryPage;
+import com.solution.musiccollab.shared.view.FileUploadPanel;
 import com.solution.musiccollab.shared.view.HeaderBar;
 import com.solution.musiccollab.shared.view.IAudioList;
 import com.solution.musiccollab.shared.view.IUpdatable;
@@ -72,6 +73,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 	private HeaderBar headerBar = new HeaderBar();
 	private RootLayoutPanel rootLayoutPanel;
 	private BodyPanel bodyPanel = new BodyPanel();
+	private FileUploadPanel fileUploadPanel = new FileUploadPanel();
 	private MemberPage memberPage = new MemberPage();
 	private DirectoryPage directoryPage = new DirectoryPage();
 	private MixerPanel mixerPanel = new MixerPanel();
@@ -83,6 +85,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		updatableWidgets = new ArrayList<IUpdatable>();
 		updatableWidgets.add(headerBar);
 		updatableWidgets.add(bodyPanel);
+		updatableWidgets.add(fileUploadPanel);
 		updatableWidgets.add(memberPage);
 		updatableWidgets.add(directoryPage);
 		updatableWidgets.add(mixerPanel);
@@ -101,6 +104,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		innerScrollPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
 		
 		bodyDeck.add(bodyPanel);
+		bodyDeck.add(fileUploadPanel);
 		bodyDeck.add(memberPage);
 		bodyDeck.add(directoryPage);
 		bodyDeck.add(mixerPanel);
@@ -119,6 +123,9 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		mixerPanel.getMixerList().addDAOEventHandler(this);
 		mixerPanel.getAudioList().addNavigationEventHandler(this);
 		mixerPanel.getAudioList().addFileSelectEventHandler(this);
+		fileUploadPanel.getAudioFilesList().addFileSelectEventHandler(this);
+		fileUploadPanel.getAudioFilesList().addNavigationEventHandler(this);
+		fileUploadPanel.getAudioFilesList().addDAOEventHandler(this);
 		
 		memberPage.getAudioFilesList().addFileSelectEventHandler(this);
 		directoryPage.getUsersList().addNavigationEventHandler(this);
@@ -386,7 +393,21 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 
 	@Override
 	public void onUploadNavigation(NavigationEvent event) {
-		Window.open("/uploadFile?message=&userid=" + event.getUserDAO().getUserid(), "_blank", "width=444,height=444,resizable,scrollbars=yes,status=1");	
+		stopPlaying();
+		usersService.getUploadURL("/uploadFile?userid=" + Model.currentUser.getUserid(), new AsyncCallback<String>() {
+			
+			@Override
+			public void onSuccess(String result) {
+				fileUploadPanel.setUploadURL(result);
+				bodyDeck.showWidget(fileUploadPanel);
+				fileUploadPanel.update();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+		});
+		
 	}
 
 	@Override

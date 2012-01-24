@@ -48,7 +48,16 @@ public class AudioFilesList extends CaptionPanel implements IAudioList {
 	@Override
 	public void removeItem(AudioFileDAO audioFileDAO, IAudioItemPanel audioItemPanel) {
 		list.remove((Widget) audioItemPanel);
-		data.remove(audioFileDAO);
+		data.remove(audioItemPanel);
+	}
+	
+	public List<AudioFileDAO> getItems() {
+		List<AudioFileDAO> items = new ArrayList<AudioFileDAO>();
+		for(IAudioItemPanel panel : data) {
+			items.add(panel.getData());
+		}
+		
+		return items;
 	}
 	
 	public int getSize() {

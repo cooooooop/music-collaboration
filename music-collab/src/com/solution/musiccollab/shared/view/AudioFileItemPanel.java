@@ -197,4 +197,9 @@ public class AudioFileItemPanel extends Composite implements IAudioItemPanel, ID
 		
 	}
 	
+	@Override
+	public AudioFileDAO getData() {
+		return data;
+	}
+	
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+        xmlns:g='urn:import:com.google.gwt.user.client.ui'
+        xmlns:s='urn:import:com.solution.musiccollab.shared.view'>
+	<ui:style>
+		.mainPanel
+		{
+			background-color			:	#4E6BAE;	
+		}
+		
+		.list
+		{
+			border-style				:	solid;
+			border-color				:	#001C5E;
+		    background-color            :   #4E6BAE;
+		    display						: 	inline-block;
+		    color						:	#FFF;
+		}
+		
+		.white
+		{
+		    color						:	#FFF;
+		}
+		
+		.backgroundColor
+		{
+			background-color: #C5A159;
+			border-color: #001C5E;
+			border-style: solid;
+		}
+		
+	</ui:style>
+	
+	<g:VerticalPanel ui:field="parentPanel" width="100%" spacing="10">
+		<g:cell width="100%" horizontalAlignment="ALIGN_CENTER">
+			<g:Label ui:field="infoLabel" styleName="{style.white}"
+					text="Use the form on the left to select audio files. Once uploaded they will appear on the right."/>
+		</g:cell>
+		<g:cell width="100%" horizontalAlignment="ALIGN_LEFT">
+			<g:HorizontalPanel spacing="5">
+				<g:cell width="100%" horizontalAlignment="ALIGN_LEFT">
+					<g:FormPanel ui:field="form" width="100%">
+						<g:VerticalPanel width="100%" horizontalAlignment="ALIGN_CENTER" spacing="5" styleName="{style.backgroundColor}">
+						   	<g:FileUpload name="upload" ui:field="fileUpload" width="100%"/>
+							<g:HorizontalPanel width="100%" verticalAlignment="ALIGN_MIDDLE">
+								<g:Label text="Title:"/>
+								<g:TextBox name="title" ui:field="txtTitle" width="90%"/>
+							</g:HorizontalPanel>
+							<g:Label text="Allow commercial uses of your work?"/>
+							<g:HorizontalPanel ui:field="radioButtonPanel" verticalAlignment="ALIGN_MIDDLE">
+							</g:HorizontalPanel>
+					   		<g:Button ui:field="submitButton" text="Upload"/>
+						</g:VerticalPanel>
+					</g:FormPanel>
+				</g:cell>
+				<g:cell width="100%" horizontalAlignment="ALIGN_LEFT">
+					<s:AudioFilesList ui:field="audioFilesList" styleName="{style.list}" visible="false"/>
+				</g:cell>
+			</g:HorizontalPanel>
+		</g:cell>
+	</g:VerticalPanel>
+</ui:UiBinder> 

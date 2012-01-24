@@ -2,12 +2,14 @@ package com.solution.musiccollab.server;
 
 import java.util.List;
 
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.solution.musiccollab.client.interfaces.UsersService;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.UserDAO;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -59,6 +61,11 @@ public class UsersServiceImpl extends RemoteServiceServlet implements
 		DAO dao = new DAO();
 		dao.ofy().delete(userDAO);
 		return true;
+	}
+	
+	@Override
+	public String getUploadURL(String url) {
+		return BlobstoreServiceFactory.getBlobstoreService().createUploadUrl(url);
 	}
 	
 }
