@@ -21,4 +21,6 @@ public interface AudioServiceAsync {
 	void saveMix(MixDAO mixDAO, AsyncCallback<MixDAO> callback);
 	void deleteAudioFile(AudioFileDAO audioFileDAO, AsyncCallback<Boolean> callback);
 	void deleteMix(MixDAO mixDAO, AsyncCallback<Boolean> callback);
+	
+	void getRelatedAudio(AudioFileDAO audioFileDAO, AsyncCallback<List<AudioFileDAO>> callback);
 }

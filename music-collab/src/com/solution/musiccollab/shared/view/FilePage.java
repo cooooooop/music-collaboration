@@ -15,26 +15,31 @@ import com.google.gwt.user.client.ui.Widget;
 import com.solution.musiccollab.shared.event.NavigationEvent;
 import com.solution.musiccollab.shared.event.NavigationEventHandler;
 import com.solution.musiccollab.shared.model.Model;
+import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.UserDAO;
 
-public class MemberPage extends Composite implements IUpdatable{
+public class FilePage extends Composite implements IUpdatable{
 
 	@UiField
-	AudioFilesList audioFilesList;
+	AudioFilesList relatedAudioFilesList;
 	
 	@UiField
 	Label userNameLabel;
 	
 	@UiField
-	Label backLabel;
-
-	private ArrayList<NavigationEventHandler> handlers = new ArrayList<NavigationEventHandler>();
+	Label titleLabel;
 	
-	@UiTemplate("uibinder/MemberPage.ui.xml")
-	interface MyUiBinder extends UiBinder<Widget, MemberPage> { }
+	@UiField
+	Label backLabel;
+	
+	private ArrayList<NavigationEventHandler> handlers = new ArrayList<NavigationEventHandler>();
+	private UserDAO owner;
+	
+	@UiTemplate("uibinder/FilePage.ui.xml")
+	interface MyUiBinder extends UiBinder<Widget, FilePage> { }
 	private static final MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
-	public MemberPage() {
+	public FilePage() {
 		initWidget(uiBinder.createAndBindUi(this));
 		
 		backLabel.addClickHandler(new ClickHandler() {
@@ -46,20 +51,35 @@ public class MemberPage extends Composite implements IUpdatable{
 		        }
 			}
 		});
+		
+		userNameLabel.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				for(NavigationEventHandler handler : handlers) {
+					handler.onMemberPageNavigation(new NavigationEvent(FilePage.this.owner));
+		        }
+			}
+		});
+		
 	}
 	
 	@Override
 	public void update() {
-		audioFilesList.setVisible(audioFilesList.getSize() > 0);
+		relatedAudioFilesList.setCaptionText("Related Files");
+		relatedAudioFilesList.setVisible(relatedAudioFilesList.getSize() > 0);
 		
 	}
-
-	public void setUserDAO(UserDAO userDAO) {
-		this.userNameLabel.setText(userDAO.getNickname());
+	
+	public void setAudioDAO(AudioFileDAO audioFileDAO) {
+		this.owner = audioFileDAO.getOwnerUserDAO();
+		
+		this.userNameLabel.setText(audioFileDAO.getOwnerUserDAO().getNickname());
+		this.titleLabel.setText(audioFileDAO.getFileName());
 	}
 	
 	public AudioFilesList getAudioFilesList() {
-		return audioFilesList;
+		return relatedAudioFilesList;
 	}
 	
 	public void addNavigationEventHandler(NavigationEventHandler handler) {

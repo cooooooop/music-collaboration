@@ -23,4 +23,6 @@ public interface AudioService extends RemoteService {
 	MixDAO saveMix(MixDAO mixDAO);
 	Boolean deleteAudioFile(AudioFileDAO audioFileDAO);
 	Boolean deleteMix(MixDAO mixDAO);
+	
+	List<AudioFileDAO> getRelatedAudio(AudioFileDAO audioFile);
 }

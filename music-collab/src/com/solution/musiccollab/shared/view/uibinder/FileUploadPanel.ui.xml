@@ -34,7 +34,7 @@
 	<g:VerticalPanel ui:field="parentPanel" width="100%" spacing="10">
 		<g:cell width="100%" horizontalAlignment="ALIGN_CENTER">
 			<g:Label ui:field="infoLabel" styleName="{style.white}"
-					text="Use the form on the left to select audio files. Once uploaded they will appear on the right."/>
+					text="Use the form to select an audio file from your computer, name it and select a license. Uploads appear on the right."/>
 		</g:cell>
 		<g:cell width="100%" horizontalAlignment="ALIGN_LEFT">
 			<g:HorizontalPanel spacing="5">

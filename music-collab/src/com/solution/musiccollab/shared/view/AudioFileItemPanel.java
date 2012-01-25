@@ -76,6 +76,16 @@ public class AudioFileItemPanel extends Composite implements IAudioItemPanel, ID
 		this.data = audioFileDAO;
 		
 		fileNameLabel.setText(audioFileDAO.getFileName());
+		fileNameLabel.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				for(NavigationEventHandler handler : parentList.getNavigationHandlers()) {
+					handler.onFilePageNavigation(new NavigationEvent(data));
+		        }
+			}
+		});
+		
 		if(audioFileDAO.getDownloads() == 1)
 			downloadsLabel.setText(audioFileDAO.getDownloads() + " listen");
 		else

@@ -49,6 +49,7 @@ import com.solution.musiccollab.shared.view.AudioFileLiteItemPanel;
 import com.solution.musiccollab.shared.view.AudioFilesList;
 import com.solution.musiccollab.shared.view.BodyPanel;
 import com.solution.musiccollab.shared.view.DirectoryPage;
+import com.solution.musiccollab.shared.view.FilePage;
 import com.solution.musiccollab.shared.view.FileUploadPanel;
 import com.solution.musiccollab.shared.view.HeaderBar;
 import com.solution.musiccollab.shared.view.IAudioList;
@@ -75,6 +76,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 	private BodyPanel bodyPanel = new BodyPanel();
 	private FileUploadPanel fileUploadPanel = new FileUploadPanel();
 	private MemberPage memberPage = new MemberPage();
+	private FilePage filePage = new FilePage();
 	private DirectoryPage directoryPage = new DirectoryPage();
 	private MixerPanel mixerPanel = new MixerPanel();
 	private DeckLayoutPanel bodyDeck = new DeckLayoutPanel();
@@ -87,6 +89,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		updatableWidgets.add(bodyPanel);
 		updatableWidgets.add(fileUploadPanel);
 		updatableWidgets.add(memberPage);
+		updatableWidgets.add(filePage);
 		updatableWidgets.add(directoryPage);
 		updatableWidgets.add(mixerPanel);
 		headerBar.addNavigationEventHandler(this);
@@ -106,6 +109,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		bodyDeck.add(bodyPanel);
 		bodyDeck.add(fileUploadPanel);
 		bodyDeck.add(memberPage);
+		bodyDeck.add(filePage);
 		bodyDeck.add(directoryPage);
 		bodyDeck.add(mixerPanel);
 		
@@ -117,6 +121,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		bodyPanel.getMixesList().addDAOEventHandler(this);
 		bodyPanel.getUsersList().addNavigationEventHandler(this);
 		memberPage.addNavigationEventHandler(this);
+		memberPage.getAudioFilesList().addNavigationEventHandler(this);
 		directoryPage.addNavigationEventHandler(this);
 		mixerPanel.getMixerList().addNavigationEventHandler(this);
 		mixerPanel.getMixerList().addFileSelectEventHandler(this);
@@ -126,6 +131,10 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		fileUploadPanel.getAudioFilesList().addFileSelectEventHandler(this);
 		fileUploadPanel.getAudioFilesList().addNavigationEventHandler(this);
 		fileUploadPanel.getAudioFilesList().addDAOEventHandler(this);
+		filePage.getAudioFilesList().addFileSelectEventHandler(this);
+		filePage.getAudioFilesList().addNavigationEventHandler(this);
+		filePage.getAudioFilesList().addDAOEventHandler(this);
+		filePage.addNavigationEventHandler(this);
 		
 		memberPage.getAudioFilesList().addFileSelectEventHandler(this);
 		directoryPage.getUsersList().addNavigationEventHandler(this);
@@ -232,6 +241,21 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		});
 	}
 	
+	private void getRelatedAudioFilesList(final AudioFilesList list, AudioFileDAO audioFile) {
+		audioService.getRelatedAudio(audioFile, new AsyncCallback<List<AudioFileDAO>>() {
+			
+			@Override
+			public void onSuccess(List<AudioFileDAO> result) {
+				list.setItems(result, "AudioFileItemPanel");
+				updateUI();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+		});
+	}
+	
 	private void getLastTenUsers(final UsersList list) {
 		usersService.getUsersLimit(10, new AsyncCallback<List<UserDAO>>() {
 			
@@ -317,7 +341,14 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 			updatableWidget.update();
 		}
 		
-		bodyDeck.setHeight(String.valueOf(bodyDeck.getVisibleWidget().getOffsetHeight()) + "px");
+//		Object temp = bodyDeck.getVisibleWidget();
+//		if(temp instanceof FileUploadPanel) {
+//			int try1 = ((FileUploadPanel)temp).getOffsetHeight();
+//			System.out.println(try1);
+//		}
+		
+		//bodyDeck.setHeight(String.valueOf(bodyDeck.getVisibleWidget().getOffsetHeight()) + "px");
+		bodyDeck.setHeight(String.valueOf(Window.getClientHeight()) +"px");
 	}
 
 	@Override
@@ -338,7 +369,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		getUsersList(bodyPanel.getUsersList());
 		getAudioFilesList(bodyPanel.getAudioFilesList(), "AudioFileItemPanel", null);
 		getMixesList(bodyPanel.getMixesList());
-		bodyPanel.update();
+		updateUI();
 	}
 	
 	@Override
@@ -388,7 +419,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		bodyDeck.showWidget(memberPage);
 		getAudioFilesList(memberPage.getAudioFilesList(), event.getUserDAO());
 		memberPage.setUserDAO(event.getUserDAO());
-		memberPage.update();
+		updateUI();
 	}
 
 	@Override
@@ -400,7 +431,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 			public void onSuccess(String result) {
 				fileUploadPanel.setUploadURL(result);
 				bodyDeck.showWidget(fileUploadPanel);
-				fileUploadPanel.update();
+				updateUI();
 			}
 			
 			@Override
@@ -507,7 +538,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 				mixNameTextInput.selectAll();
 			}
 		}
-		mixerPanel.update();
+		updateUI();
 	}
 	
 	@Override
@@ -576,7 +607,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		
 		bodyDeck.showWidget(directoryPage);
 		getUsersList(directoryPage.getUsersList());
-		directoryPage.update();
+		updateUI();
 	}
 
 	@Override
@@ -679,6 +710,14 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 				updateUI();
 			}
 		});
+	}
+
+	@Override
+	public void onFilePageNavigation(NavigationEvent event) {
+		getRelatedAudioFilesList(filePage.getAudioFilesList(), event.getAudioFileDAO());
+		filePage.setAudioDAO(event.getAudioFileDAO());
+		bodyDeck.showWidget(filePage);
+		updateUI();
 	}
 
 }
