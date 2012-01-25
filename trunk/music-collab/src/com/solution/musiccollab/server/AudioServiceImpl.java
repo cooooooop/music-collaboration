@@ -53,6 +53,40 @@ public class AudioServiceImpl extends RemoteServiceServlet implements AudioServi
 		return rawList;
 	}
 	
+	@Override
+	public List<AudioFileDAO> getRelatedAudio(AudioFileDAO audioFile) {
+		DAO dao = new DAO();
+		List<AudioFileDAO> rawList = new ArrayList<AudioFileDAO>();
+
+		List<String> alreadyAdded = new ArrayList<String>();
+		List<MixDAO> mixList = dao.ofy().query(MixDAO.class).list();
+		for(MixDAO mix : mixList) {
+			List<MixDetails> list = getMixDetailsList(mix);
+			attachTransientDataMixDetails(list);
+			boolean add = false;
+			List<AudioFileDAO> tempList = new ArrayList<AudioFileDAO>();
+			for (MixDetails details : list) {
+				tempList.add(details.getAudioFile());
+				
+				if(details.getAudioFile().getFilePath().equals(audioFile.getFilePath())) {
+					add = true;
+				}
+			}
+			
+			if(add) {
+				for(AudioFileDAO audio : tempList) {
+					if(!alreadyAdded.contains(audio.getFilePath()) && !audio.getFilePath().equals(audioFile.getFilePath())) {
+						rawList.add(audio);
+						alreadyAdded.add(audio.getFilePath());
+					}
+				}
+			}
+		}
+		
+		attachTransientData(rawList);
+		return rawList;
+	}
+	
 	private void attachTransientData(List<AudioFileDAO> rawList) {
 		DAO dao = new DAO();
 		for(AudioFileDAO audioFile : rawList) {
@@ -208,4 +242,5 @@ public class AudioServiceImpl extends RemoteServiceServlet implements AudioServi
 		return bytes;
 
     }
+	
 }
