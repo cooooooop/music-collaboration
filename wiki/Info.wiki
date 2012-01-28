@@ -1,4 +1,4 @@
-Hi Dave,
+Hi XXXX,
 
 Thanks for maintaining interest in helping me with this project. If you are not able to connect to the internet with your laptop at work you will probably want to download all the files you need first at home, then try to setup everything. I imagine you are interested in some specifics about how the application will work but I think that is getting several steps ahead of ourselves. As you are coming into this blind I will first need to introduce you to the different technologies that we will be using, to program and to work together.
 
@@ -49,7 +49,7 @@ I would recommend a mixture of #2 and #3, but be warned that you need to get the
  
 
 
-At the end of this email I will write out a concise list of things you should do to set up your environment, there will be more specific information about SVN and how to use it. I added a new file and then committed it, called HELLO in the ServiceProject folder. You should try to commit your own changes to that file as practice. Oh, important part: you need a username and since we are using google code it needs to be tied to your gmail account. I have added mahtron@gmail.com, go to https://code.google.com/p/music-collaboration/ and login, then go to Source, there should be a link to see the password you need to use for this. It might be at this address: https://code.google.com/hosting/settings
+At the end of this email I will write out a concise list of things you should do to set up your environment, there will be more specific information about SVN and how to use it. I added a new file and then committed it, called HELLO in the ServiceProject folder. You should try to commit your own changes to that file as practice. Oh, important part: you need a username and since we are using google code it needs to be tied to your gmail account. I have added xxxxxx@gmail.com, go to https://code.google.com/p/music-collaboration/ and login, then go to Source, there should be a link to see the password you need to use for this. It might be at this address: https://code.google.com/hosting/settings
  
 
 
