@@ -11,14 +11,18 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RichTextArea;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.solution.musiccollab.shared.event.DAOEvent;
+import com.solution.musiccollab.shared.event.DAOEventHandler;
 import com.solution.musiccollab.shared.event.NavigationEvent;
 import com.solution.musiccollab.shared.event.NavigationEventHandler;
 import com.solution.musiccollab.shared.model.Model;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.UserDAO;
 
-public class FilePage extends Composite implements IUpdatable{
+public class FilePage extends Composite implements IUpdatable, IDAOEditor {
 
 	@UiField
 	AudioFilesList relatedAudioFilesList;
@@ -32,8 +36,17 @@ public class FilePage extends Composite implements IUpdatable{
 	@UiField
 	Label backLabel;
 	
+	@UiField
+	VerticalPanel richTextPanel;
+	
+	@UiField
+	Button saveButton;
+	
 	private ArrayList<NavigationEventHandler> handlers = new ArrayList<NavigationEventHandler>();
-	private UserDAO owner;
+	private ArrayList<DAOEventHandler> daoHandlers = new ArrayList<DAOEventHandler>();
+	private AudioFileDAO audioFileDAO;
+	private RichTextArea richTextArea = new RichTextArea();
+	private RichTextToolbar richTextToolbar = new RichTextToolbar(richTextArea);
 	
 	@UiTemplate("uibinder/FilePage.ui.xml")
 	interface MyUiBinder extends UiBinder<Widget, FilePage> { }
@@ -57,11 +70,15 @@ public class FilePage extends Composite implements IUpdatable{
 			@Override
 			public void onClick(ClickEvent event) {
 				for(NavigationEventHandler handler : handlers) {
-					handler.onMemberPageNavigation(new NavigationEvent(FilePage.this.owner));
+					handler.onMemberPageNavigation(new NavigationEvent(FilePage.this.audioFileDAO.getOwnerUserDAO()));
 		        }
 			}
 		});
 		
+		richTextArea.setWidth("100%");
+		richTextPanel.add(richTextToolbar);
+		richTextPanel.add(richTextArea);		
+		richTextPanel.setHeight("100%");
 	}
 	
 	@Override
@@ -72,10 +89,23 @@ public class FilePage extends Composite implements IUpdatable{
 	}
 	
 	public void setAudioDAO(AudioFileDAO audioFileDAO) {
-		this.owner = audioFileDAO.getOwnerUserDAO();
+		this.audioFileDAO = audioFileDAO;
 		
 		this.userNameLabel.setText(audioFileDAO.getOwnerUserDAO().getNickname());
 		this.titleLabel.setText(audioFileDAO.getFileName());
+		
+		this.richTextArea.setHTML(audioFileDAO.getUserContent());
+		
+		saveButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				FilePage.this.audioFileDAO.setUserContent(richTextArea.getHTML());
+				for(DAOEventHandler handler : daoHandlers) {
+					handler.onSaveAudio(new DAOEvent(FilePage.this.audioFileDAO, FilePage.this));
+		        }
+			}
+		});
 	}
 	
 	public AudioFilesList getAudioFilesList() {
@@ -89,5 +119,25 @@ public class FilePage extends Composite implements IUpdatable{
     public void removeNavigationEventHandler(NavigationEventHandler handler) {
     	handlers.remove(handler);
     }
+    
+    public void addDAOEventHandler(DAOEventHandler handler) {
+		daoHandlers.add(handler);
+    }
+
+    public void removeDAOEventHandler(DAOEventHandler handler) {
+    	daoHandlers.remove(handler);
+    }
+
+	@Override
+	public void removeDAO(Object dao) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateDAO(Object dao) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

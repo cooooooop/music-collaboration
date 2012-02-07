@@ -19,6 +19,7 @@ public class AudioFileDAO implements Serializable
 	private String fileName;
     private String owner;
     private String filePath;
+    private String userContent;
     private Boolean allowCommercialUse = false;
     private List<String> userDownloads = new ArrayList<String>();
     private List<String> mixes = new ArrayList<String>();
@@ -144,6 +145,14 @@ public class AudioFileDAO implements Serializable
 
 	public void setAudioLength(long audioLength) {
 		this.audioLength = audioLength;
+	}
+
+	public String getUserContent() {
+		return userContent;
+	}
+
+	public void setUserContent(String userContent) {
+		this.userContent = userContent;
 	}
 
 }

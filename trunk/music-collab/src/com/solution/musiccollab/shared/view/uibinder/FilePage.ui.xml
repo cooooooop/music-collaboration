@@ -50,6 +50,10 @@
 				<g:Label ui:field="titleLabel" styleName="{style.header}"/>
 			</g:cell>
 		</g:HorizontalPanel>
+		<g:VerticalPanel width="100%" ui:field="richTextPanel"/>
+		<g:cell horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
+			<g:Button ui:field="saveButton" text="Save"/>
+		</g:cell>
    		<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_CENTER" >
     		<s:AudioFilesList ui:field="relatedAudioFilesList" styleName="{style.audio}" visible="false"/>
    		</g:HorizontalPanel>

@@ -135,6 +135,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		filePage.getAudioFilesList().addNavigationEventHandler(this);
 		filePage.getAudioFilesList().addDAOEventHandler(this);
 		filePage.addNavigationEventHandler(this);
+		filePage.addDAOEventHandler(this);
 		
 		memberPage.getAudioFilesList().addFileSelectEventHandler(this);
 		directoryPage.getUsersList().addNavigationEventHandler(this);
@@ -347,8 +348,10 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 //			System.out.println(try1);
 //		}
 		
-		//bodyDeck.setHeight(String.valueOf(bodyDeck.getVisibleWidget().getOffsetHeight()) + "px");
-		bodyDeck.setHeight(String.valueOf(Window.getClientHeight()) +"px");
+		if(!(bodyDeck.getVisibleWidget() instanceof FileUploadPanel)) //weird issue for file upload panel
+			bodyDeck.setHeight(String.valueOf(bodyDeck.getVisibleWidget().getOffsetHeight()) + "px");
+		else
+			bodyDeck.setHeight(String.valueOf(Window.getClientHeight()) +"px");
 	}
 
 	@Override
