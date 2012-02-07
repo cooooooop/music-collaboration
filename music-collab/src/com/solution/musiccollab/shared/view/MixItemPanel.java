@@ -95,6 +95,16 @@ public class MixItemPanel extends Composite implements IDAOEditor {
 		        }
 			}
 		});
+		
+		fileNameLabel.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				for(NavigationEventHandler handler : parentList.getNavigationHandlers()) {
+					handler.onMixPageNavigation(new NavigationEvent(data));
+		        }
+			}
+		});
 
 		//TODO: use most restrictive license of all related audiofiles
 //		if(audioFileDAO.getAllowCommercialUse() != null && audioFileDAO.getAllowCommercialUse())

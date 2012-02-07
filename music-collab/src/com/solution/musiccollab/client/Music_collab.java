@@ -55,6 +55,7 @@ import com.solution.musiccollab.shared.view.HeaderBar;
 import com.solution.musiccollab.shared.view.IAudioList;
 import com.solution.musiccollab.shared.view.IUpdatable;
 import com.solution.musiccollab.shared.view.MemberPage;
+import com.solution.musiccollab.shared.view.MixPage;
 import com.solution.musiccollab.shared.view.MixerItemPanel;
 import com.solution.musiccollab.shared.view.MixerList;
 import com.solution.musiccollab.shared.view.MixerPanel;
@@ -77,6 +78,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 	private FileUploadPanel fileUploadPanel = new FileUploadPanel();
 	private MemberPage memberPage = new MemberPage();
 	private FilePage filePage = new FilePage();
+	private MixPage mixPage = new MixPage();
 	private DirectoryPage directoryPage = new DirectoryPage();
 	private MixerPanel mixerPanel = new MixerPanel();
 	private DeckLayoutPanel bodyDeck = new DeckLayoutPanel();
@@ -90,6 +92,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		updatableWidgets.add(fileUploadPanel);
 		updatableWidgets.add(memberPage);
 		updatableWidgets.add(filePage);
+		updatableWidgets.add(mixPage);
 		updatableWidgets.add(directoryPage);
 		updatableWidgets.add(mixerPanel);
 		headerBar.addNavigationEventHandler(this);
@@ -110,6 +113,7 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		bodyDeck.add(fileUploadPanel);
 		bodyDeck.add(memberPage);
 		bodyDeck.add(filePage);
+		bodyDeck.add(mixPage);
 		bodyDeck.add(directoryPage);
 		bodyDeck.add(mixerPanel);
 		
@@ -136,6 +140,11 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		filePage.getAudioFilesList().addDAOEventHandler(this);
 		filePage.addNavigationEventHandler(this);
 		filePage.addDAOEventHandler(this);
+		mixPage.getAudioFilesList().addFileSelectEventHandler(this);
+		mixPage.getAudioFilesList().addNavigationEventHandler(this);
+		mixPage.getAudioFilesList().addDAOEventHandler(this);
+		mixPage.addNavigationEventHandler(this);
+		mixPage.addDAOEventHandler(this);
 		
 		memberPage.getAudioFilesList().addFileSelectEventHandler(this);
 		directoryPage.getUsersList().addNavigationEventHandler(this);
@@ -169,6 +178,29 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 			public void onSuccess(List<MixDetails> result) {
 				mix.setMixDetailsList(result);
 				list.setItems(result);
+				updateUI();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	}
+	
+	private void getMixDetailsList(final MixDAO mix, final AudioFilesList list) {
+		audioService.getMixDetailsList(mix, new AsyncCallback<List<MixDetails>>() {
+			
+			@Override
+			public void onSuccess(List<MixDetails> result) {
+				List<AudioFileDAO> audioFiles = new ArrayList<AudioFileDAO>();
+				for (MixDetails details : result) {
+					audioFiles.add(details.getAudioFile());
+				}
+				
+				list.setItems(audioFiles, "AudioFileItemPanel");
 				updateUI();
 			}
 			
@@ -720,6 +752,15 @@ public class Music_collab implements EntryPoint, NavigationEventHandler, FileSel
 		getRelatedAudioFilesList(filePage.getAudioFilesList(), event.getAudioFileDAO());
 		filePage.setAudioDAO(event.getAudioFileDAO());
 		bodyDeck.showWidget(filePage);
+		updateUI();
+	}
+	
+	@Override
+	public void onMixPageNavigation(NavigationEvent event) {
+		getMixDetailsList(event.getMixDAO(), mixPage.getAudioFilesList());
+		
+		mixPage.setMixDAO(event.getMixDAO());
+		bodyDeck.showWidget(mixPage);
 		updateUI();
 	}
 

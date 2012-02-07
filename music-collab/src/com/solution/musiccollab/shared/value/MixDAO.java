@@ -18,6 +18,7 @@ public class MixDAO implements Serializable
     private String uniqueID;
 	private String mixName;
     private String owner;
+    private String userContent;
     private List<String> userDownloads = new ArrayList<String>();
     private Date createDate;
     private String contentType = "audio/wav";
@@ -41,6 +42,14 @@ public class MixDAO implements Serializable
 
 	public void setUniqueID(String uniqueID) {
 		this.uniqueID = uniqueID;
+	}
+	
+	public String getUserContent() {
+		return userContent;
+	}
+
+	public void setUserContent(String userContent) {
+		this.userContent = userContent;
 	}
 
 	public String getMixName() {
