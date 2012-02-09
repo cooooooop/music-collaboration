@@ -35,8 +35,8 @@
     			<g:Button ui:field="backButton" text="Back"/>
     		</g:cell>
    		</g:VerticalPanel>
-   		<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_CENTER" >
-    		<s:UsersList ui:field="usersList" styleName="{style.audio}" visible="false"/>
+   		<g:HorizontalPanel horizontalAlignment="ALIGN_CENTER" >
+    		<s:UsersList ui:field="usersList" visible="false"/>
    		</g:HorizontalPanel>
 	</g:VerticalPanel>
 </ui:UiBinder> 

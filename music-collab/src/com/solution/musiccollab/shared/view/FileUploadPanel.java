@@ -136,7 +136,7 @@ public class FileUploadPanel extends Composite implements IUpdatable{
 	
 	@Override
 	public void update() {
-		audioFilesList.setCaptionText("Uploads");
+		audioFilesList.title.setText("Uploads");
 		audioFilesList.setVisible(audioFilesList.getSize() > 0);
 		form.reset();
 	}

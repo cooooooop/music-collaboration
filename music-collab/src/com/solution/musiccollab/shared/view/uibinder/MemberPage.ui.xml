@@ -44,8 +44,8 @@
 				<g:Label ui:field="userNameLabel" styleName="{style.header}"/>
 			</g:cell>
 		</g:HorizontalPanel>
-   		<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_CENTER" >
-    		<s:AudioFilesList ui:field="audioFilesList" styleName="{style.audio}" visible="false"/>
+   		<g:HorizontalPanel horizontalAlignment="ALIGN_CENTER" >
+    		<s:AudioFilesList ui:field="audioFilesList" visible="false"/>
    		</g:HorizontalPanel>
 	</g:VerticalPanel>
 </ui:UiBinder> 

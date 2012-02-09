@@ -54,8 +54,8 @@
 		<g:cell horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_TOP">
 			<g:Button ui:field="saveButton" text="Save"/>
 		</g:cell>
-   		<g:HorizontalPanel width="100%" horizontalAlignment="ALIGN_CENTER" >
-    		<s:AudioFilesList ui:field="relatedAudioFilesList" styleName="{style.audio}" visible="false"/>
+   		<g:HorizontalPanel horizontalAlignment="ALIGN_CENTER" >
+    		<s:AudioFilesList ui:field="relatedAudioFilesList" visible="false"/>
    		</g:HorizontalPanel>
 	</g:VerticalPanel>
 </ui:UiBinder> 

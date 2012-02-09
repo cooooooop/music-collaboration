@@ -11,7 +11,7 @@ import com.solution.musiccollab.shared.event.NavigationEventHandler;
 import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.MixDAO;
 
-public class MixesList extends CaptionPanel {
+public class MixesList extends ListPanel {
 	
 	private ArrayList<FileSelectEventHandler> handlers = new ArrayList<FileSelectEventHandler>();
 	private ArrayList<NavigationEventHandler> navigationHandlers = new ArrayList<NavigationEventHandler>();
@@ -22,14 +22,14 @@ public class MixesList extends CaptionPanel {
 	
 	public MixesList() {
 		
-		setCaptionText(caption);
+		title.setText(caption);
 		list = new VerticalPanel();
 		list.setHeight("100%");
 		list.setWidth("100%");
 		
-		list.getElement().setAttribute("style", "background-color:#C5A159; border-style:solid; border-color:#FFF;");
+		list.getElement().setAttribute("style", "background-color:#C5A159; border-style:solid; border-color:#CCC;");
 		
-		add(list);
+		rootPanel.add(list);
 	}
 	
 	public void setItems(List<MixDAO> mixDAOs) {

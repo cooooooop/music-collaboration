@@ -83,7 +83,7 @@ public class FilePage extends Composite implements IUpdatable, IDAOEditor {
 	
 	@Override
 	public void update() {
-		relatedAudioFilesList.setCaptionText("Related Files");
+		relatedAudioFilesList.title.setText("Related Files");
 		relatedAudioFilesList.setVisible(relatedAudioFilesList.getSize() > 0);
 		
 	}
