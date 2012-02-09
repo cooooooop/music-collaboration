@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.CaptionPanel;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.solution.musiccollab.shared.event.FileSelectEventHandler;
 import com.solution.musiccollab.shared.event.NavigationEventHandler;
-import com.solution.musiccollab.shared.value.AudioFileDAO;
 import com.solution.musiccollab.shared.value.UserDAO;
 
-public class UsersList extends CaptionPanel {
+public class UsersList extends ListPanel {
 	
 	private ArrayList<NavigationEventHandler> handlers = new ArrayList<NavigationEventHandler>();
 	
@@ -21,15 +18,15 @@ public class UsersList extends CaptionPanel {
 	
 	public UsersList() {
 		
-		setCaptionText(caption);
+		title.setText(caption);
 		list = new VerticalPanel();
 
 		list.setHeight("100%");
 		list.setWidth("100%");
 
-		list.getElement().setAttribute("style", "background-color:#C5A159; border-style:solid; border-color:#FFF;");
+		list.getElement().setAttribute("style", "background-color:#C5A159; border-style:solid; border-color:#CCC;");
 		
-		add(list);
+		rootPanel.add(list);
 	}
 	
 	public void setItems(List<UserDAO> userDAOs) {

@@ -59,7 +59,6 @@
 		.header
 		{
 			cursor: pointer;
-			font-family: cursive;
 			font-size: xx-large;	
 		}
 		

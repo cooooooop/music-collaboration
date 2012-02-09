@@ -53,8 +53,8 @@
 						</g:VerticalPanel>
 					</g:FormPanel>
 				</g:cell>
-				<g:cell width="100%" horizontalAlignment="ALIGN_LEFT">
-					<s:AudioFilesList ui:field="audioFilesList" styleName="{style.list}" visible="false"/>
+				<g:cell horizontalAlignment="ALIGN_LEFT">
+					<s:AudioFilesList ui:field="audioFilesList" visible="false"/>
 				</g:cell>
 			</g:HorizontalPanel>
 		</g:cell>

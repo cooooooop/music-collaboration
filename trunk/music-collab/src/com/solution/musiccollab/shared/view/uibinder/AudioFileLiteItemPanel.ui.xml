@@ -47,7 +47,7 @@
         .main
 		{
         	border-bottom-style: solid;
-		    border-color: #FFF;
+		    border-color: #CCC;
 		}
 		
 		.title
@@ -55,6 +55,7 @@
 			color: #001C5E;
 			font-size: small;
 			white-space: nowrap;
+			cursor: pointer;
 			
 		}
 		

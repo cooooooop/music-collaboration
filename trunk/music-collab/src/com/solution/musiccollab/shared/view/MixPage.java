@@ -84,7 +84,7 @@ public class MixPage extends Composite implements IUpdatable, IDAOEditor {
 	
 	@Override
 	public void update() {
-		audioFilesList.setCaptionText("Audio Files");
+		audioFilesList.title.setText("Audio Files");
 		audioFilesList.setVisible(audioFilesList.getSize() > 0);
 	}
 	

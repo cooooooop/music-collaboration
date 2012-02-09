@@ -61,6 +61,16 @@ public class AudioFileLiteItemPanel extends Composite implements IAudioItemPanel
 		this.data = audioFileDAO;
 		
 		titleLabel.setText(audioFileDAO.getFileName());
+		titleLabel.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				for(NavigationEventHandler handler : parentList.getNavigationHandlers()) {
+					handler.onFilePageNavigation(new NavigationEvent(data));
+		        }
+			}
+		});
+		
 		fileOwnerLabel.setText(audioFileDAO.getOwnerUserDAO().getNickname());
 		
 		fileOwnerLabel.addClickHandler(new ClickHandler() {

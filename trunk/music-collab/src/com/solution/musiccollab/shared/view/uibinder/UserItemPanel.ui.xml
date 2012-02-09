@@ -5,7 +5,7 @@
 		.main
 		{
 			border-bottom-style: solid;
-		    border-color: #FFF;
+		    border-color: #CCC;
 		    color: #00123D;
 		}
 		
