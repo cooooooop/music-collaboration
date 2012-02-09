@@ -49,11 +49,12 @@ public class DownloadFileServlet extends HttpServlet {
 			MixDAO mixDAO = dao.ofy().query(MixDAO.class).filter("uniqueID", audioid).get();
 
 			if(audioFileDAO != null) {
-				if(userid != null) {
+				if(userid != null)
 					audioFileDAO.addDownload(userid);
-					dao.ofy().put(audioFileDAO);
-				}
-
+				else
+					audioFileDAO.addDownload("null");
+				dao.ofy().put(audioFileDAO);
+				
 				BlobKey blobKey = new BlobKey(audioFileDAO.getFilePath());
 				BlobInfo blobInfo =  blobInfoFactory.loadBlobInfo(blobKey);
 				
