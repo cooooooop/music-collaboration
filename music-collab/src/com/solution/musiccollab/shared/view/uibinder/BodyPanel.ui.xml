@@ -5,16 +5,17 @@
 	<ui:style>
 		.mainPanel
 		{
-			background-color			:	#4E6BAE;	
+			background-color			:	#4E6BAE;
 		}
 		
 	</ui:style>
 	
 	
-	<g:HorizontalPanel height="100%" horizontalAlignment="ALIGN_CENTER" styleName="{style.mainPanel}">
+	<g:HorizontalPanel height="100%" horizontalAlignment="ALIGN_CENTER" styleName="{style.mainPanel}" spacing="5">
    		<s:UsersList ui:field="usersList" visible="false"/>
    		<g:VerticalPanel>
     		<s:MixesList ui:field="mixesList" visible="false"/>
+    		<g:HorizontalPanel width="100%" height="5px"/>
     		<s:AudioFilesList ui:field="audioFilesList" visible="false"/>
    		</g:VerticalPanel>
 	</g:HorizontalPanel>

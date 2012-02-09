@@ -64,7 +64,7 @@
         	</g:HorizontalPanel>
     		<e:MixEditor ui:field="mixEditor"/>
     	</g:VerticalPanel>
-    	<g:VerticalPanel>
+    	<g:VerticalPanel spacing="5">
   			<s:MixerList ui:field="mixerList" styleName="{style.audio}" visible="false"/>
   			<s:AudioFilesList ui:field="audioFilesList" visible="false"/>
     	</g:VerticalPanel>
