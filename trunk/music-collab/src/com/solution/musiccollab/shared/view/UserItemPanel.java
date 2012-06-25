@@ -56,8 +56,12 @@ public class UserItemPanel extends Composite {
 		long hours = getHoursDiff(today, data.getLastLogin());
 		long mins = getMinsDiff(today, data.getLastLogin());
 		
-		if(days > 30)
-			return "Last seen " + new Integer((int) Math.floor(days / 30)) + " months ago";
+		if(days > 30) {
+			int months = new Integer((int) Math.floor(days / 30));
+			if(months > 1)
+				return "Last seen " + months + " months ago";
+			return "Last seen " + months + " month ago";
+		}
 		else if(days > 1)
 			return "Last seen " + days + " days ago";
 		else if(days == 1)

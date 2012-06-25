@@ -28,9 +28,7 @@ public class UploadFileServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String uploadUrl = blobService.createUploadUrl("/uploadFile?userid=" + req.getParameter("userid") + "&message=");
-        req.setAttribute("uploadUrl", uploadUrl);
-        req.getRequestDispatcher("upload_file.jsp").forward(req, resp);
+    	resp.getWriter().write(blobService.createUploadUrl("/uploadFile?userid=" + req.getParameter("userid")));
     }
 
     @Override
@@ -50,7 +48,7 @@ public class UploadFileServlet extends HttpServlet {
 		    
 		    BlobInfo blobInfo =  blobInfoFactory.loadBlobInfo(blobKey);
 
-		    Boolean commercialUse = req.getParameter("ccRadio").equals("yes");
+		    Boolean commercialUse = true;
 			
 		    //Store the file in the Datastore under the current user
 	        
