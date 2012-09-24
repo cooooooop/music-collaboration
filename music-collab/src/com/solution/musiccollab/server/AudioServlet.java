@@ -22,6 +22,7 @@ public class AudioServlet extends HttpServlet {
 		
 		int limit;
 		String order = req.getParameter("order");
+		String owner = req.getParameter("owner");
 		Query<AudioFileDAO> query = dao.ofy().query(AudioFileDAO.class);
 		try {
 			limit = Integer.parseInt(req.getParameter("limit"));
@@ -33,16 +34,22 @@ public class AudioServlet extends HttpServlet {
 		
 		if(order != null)
 			query = query.order(order);
+		if(owner != null)
+			query = query.filter("owner", owner);
 		
-		
-    	JSONSerializer.audioListSerialize(query.list(), resp);
+		List<AudioFileDAO> rawList = query.list();
+		for(AudioFileDAO audioFile : rawList)
+			audioFile.setOwnerUserDAO(dao.ofy().query(UserDAO.class).filter("userid", audioFile.getOwner()).get());
+			
+    	JSONSerializer.audioListSerialize(rawList, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	dao = new DAO();
-		List<UserDAO> users = dao.ofy().query(UserDAO.class).order("lastLogin").list();
-    	JSONSerializer.userListSerialize(users, resp);
+//    	don't support
+//    	dao = new DAO();
+//		List<UserDAO> users = dao.ofy().query(UserDAO.class).order("lastLogin").list();
+//    	JSONSerializer.userListSerialize(users, resp);
         
     }
 }

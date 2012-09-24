@@ -21,6 +21,8 @@ public class UsersServlet extends HttpServlet {
 		
 		int limit;
 		String order = req.getParameter("order");
+		String orderDir = req.getParameter("orderDir");
+		String email = req.getParameter("email");
 		Query<UserDAO> query = dao.ofy().query(UserDAO.class);
 		try {
 			limit = Integer.parseInt(req.getParameter("limit"));
@@ -33,15 +35,20 @@ public class UsersServlet extends HttpServlet {
 		if(order != null)
 			query = query.order(order);
 		
+		if(email != null)
+			query = query.filter("email", email);
 		
-    	JSONSerializer.userListSerialize(query.list(), resp);
+		boolean ascending = orderDir == null ? true : orderDir.equals("asc");
+		
+    	JSONSerializer.userListSerialize(query.list(), ascending, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	dao = new DAO();
-		List<UserDAO> users = dao.ofy().query(UserDAO.class).order("lastLogin").list();
-    	JSONSerializer.userListSerialize(users, resp);
+//		don't support
+//    	dao = new DAO();
+//		List<UserDAO> users = dao.ofy().query(UserDAO.class).order("lastLogin").list();
+//    	JSONSerializer.userListSerialize(users, resp);
         
     }
 }

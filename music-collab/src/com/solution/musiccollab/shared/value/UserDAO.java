@@ -19,6 +19,9 @@ public class UserDAO implements Serializable
 	private String nickname;
 	@Indexed
 	private Date lastLogin;
+	
+	//number of clicks related to User
+	private Integer rank;
 
 	public UserDAO() { /*empty constructor required for objectify*/ }
     
@@ -56,6 +59,14 @@ public class UserDAO implements Serializable
 
 	public Date getLastLogin() {
 		return lastLogin;
+	}
+
+	public Integer getRank() {
+		return rank;
+	}
+
+	public void setRank(Integer rank) {
+		this.rank = rank;
 	}
 
 }
