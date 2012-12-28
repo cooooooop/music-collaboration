@@ -175,7 +175,7 @@ public class HeaderBar extends Composite implements IUpdatable {
 		else {
 			userLabel.setText("");
 			accountMenuItem.setSubMenu(null);
-			accountMenuItem.setText("LOG IN");
+			accountMenuItem.setText("LOG IN / REGISTER");
 			uploadBtn.setVisible(false);
 			
 			accountMenuItem.setCommand(new Command() {

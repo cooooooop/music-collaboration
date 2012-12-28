@@ -27,6 +27,11 @@
   </servlet>
   
   <servlet>
+    <servlet-name>emailServlet</servlet-name>
+    <servlet-class>com.solution.musiccollab.server.EmailServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
     <servlet-name>audioServlet</servlet-name>
     <servlet-class>com.solution.musiccollab.server.AudioServlet</servlet-class>
   </servlet>
@@ -69,6 +74,11 @@
   <servlet-mapping>
     <servlet-name>usersServlet</servlet-name>
     <url-pattern>/users_json</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>emailServlet</servlet-name>
+    <url-pattern>/email</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
