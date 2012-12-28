@@ -15,10 +15,25 @@ public class AudioServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
     private DAO dao = new DAO();
+    private AudioServiceImpl audioService = new AudioServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		dao = new DAO();
+		
+		String action = req.getParameter("action");
+		if(action != null && action.equals("delete")) {
+			String filePath = req.getParameter("filePath");
+			if(filePath != null) {
+				if(audioService.deleteAudioFile(audioService.getAudioFile(filePath))) {
+					resp.getWriter().write("1");
+					return;
+				}
+			}
+			
+			resp.getWriter().write("0");
+			return;
+		}
 		
 		int limit;
 		String order = req.getParameter("order");

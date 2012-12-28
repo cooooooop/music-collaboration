@@ -90,7 +90,7 @@
      	        <g:Label ui:field="titleHeader" text="Jamster Collab" wordWrap="false" styleName="{style.header}"/>
 			    <g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_LEFT" spacing="5">
 				   <g:MenuBar styleName="{style.menu}">
-				        <g:MenuItem ui:field="accountMenuItem" text="LOG IN" styleName="{style.login}">
+				        <g:MenuItem ui:field="accountMenuItem" text="LOG IN / REGISTER" styleName="{style.login}">
 					        <g:MenuBar ui:field="accountMenuBar" vertical="true" styleName="{style.menu}">
 						        <g:MenuItem ui:field="myPageMenuItem"><div class="{style.label}">My Page</div></g:MenuItem>
 						        <g:MenuItem ui:field="uploadMenuItem"><div class="{style.label}">Upload File</div></g:MenuItem>
